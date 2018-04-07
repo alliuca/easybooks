@@ -5,11 +5,12 @@ const onChange = (pagination, filters, sorter) => {
   console.log('params', pagination, filters, sorter);
 };
 
-const Table = ({ columns, data }) => (
+const Table = ({ columns, data, ...props }) => (
   <AntdTable
     columns={columns}
     dataSource={data}
     onChange={onChange}
+    {...props}
   />
 );
 

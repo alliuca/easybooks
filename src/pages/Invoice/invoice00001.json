@@ -1,0 +1,21 @@
+{
+  "details": {
+    "invoiceNumber": "00001",
+    "dateOfIssue": "03/03/2018",
+    "client": "Acme Inc.",
+    "amount": "1000",
+    "status": "Paid"
+  },
+  "items": [
+    {
+      "description": "Sign Up Form's refactoring",
+      "hours": "24",
+      "amount": "800"
+    },
+    {
+      "description": "SEO fixes",
+      "hours": "6",
+      "amount": "200"
+    }
+  ]
+}
