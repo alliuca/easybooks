@@ -1,11 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { css } from 'emotion';
 import { Menu, Icon } from 'antd';
 
 const MainMenu = () => (
   <Menu className={styles.menu}>
     <Menu.Item key="1" className={styles.menuItem}>
-      <Icon type="file-text" /> Invoices
+      <Link to="/invoices">
+        <Icon type="file-text" /> Invoices
+      </Link>
     </Menu.Item>
   </Menu>
 );
@@ -17,9 +20,13 @@ const styles = {
     color: #fff;
   `,
   menuItem: css`
+    color: #fff;
     &:hover {
       background: #69c0ff;
       color: #fff;
+    }
+    a, a:hover {
+      color: currentColor;
     }
   `,
 };

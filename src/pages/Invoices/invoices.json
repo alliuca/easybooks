@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "key": "1",
+      "invoiceNumber": "00001",
+      "dateOfIssue": "03/03/2018",
+      "client": "Acme Inc.",
+      "amount": "1000",
+      "status": "Paid"
+    },
+    {
+      "key": "2",
+      "invoiceNumber": "00002",
+      "dateOfIssue": "10/03/2018",
+      "client": "Acme Inc.",
+      "amount": "1300",
+      "status": "Paid"
+    },
+    {
+      "key": "3",
+      "invoiceNumber": "00003",
+      "dateOfIssue": "04/04/2018",
+      "client": "Acme Inc.",
+      "amount": "200",
+      "status": "Waiting"
+    }
+  ]
+}
