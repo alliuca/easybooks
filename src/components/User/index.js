@@ -7,8 +7,8 @@ const User = ({ withShortInfo }) => (
     <Avatar size="large" icon="user" />
     { withShortInfo && (
       <div className={styles.shortInfo}>
-        <div>Luca Allievi</div>
-        <strong>alliuca.com</strong>
+        <div>John Doe</div>
+        <strong>doe.com</strong>
       </div>
     ) }
   </div>

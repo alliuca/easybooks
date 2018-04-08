@@ -8,11 +8,13 @@
   },
   "items": [
     {
+      "key": "1",
       "description": "Sign Up Form's refactoring",
       "hours": "24",
       "amount": "800"
     },
     {
+      "key": "2",
       "description": "SEO fixes",
       "hours": "6",
       "amount": "200"

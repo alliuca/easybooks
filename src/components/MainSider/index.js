@@ -17,6 +17,7 @@ const MainSider = () => (
 
 const styles = {
   sider: css`
+    padding-top: 30px;
     background: #40a9ff;
     color: #fff;
   `,

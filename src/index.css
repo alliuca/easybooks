@@ -9,3 +9,7 @@ body {
   font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+.text-right {
+  text-align: right;
+}

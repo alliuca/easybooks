@@ -1,14 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { css } from 'emotion';
 import { Menu, Icon } from 'antd';
 
 const MainMenu = () => (
   <Menu className={styles.menu}>
     <Menu.Item key="1" className={styles.menuItem}>
-      <Link to="/invoices">
+      <NavLink to="/invoices" className={styles.menuItemLink}>
         <Icon type="file-text" /> Invoices
-      </Link>
+      </NavLink>
     </Menu.Item>
   </Menu>
 );
@@ -20,13 +20,25 @@ const styles = {
     color: #fff;
   `,
   menuItem: css`
-    color: #fff;
-    &:hover {
-      background: #69c0ff;
+    &.ant-menu-item {
+      padding: 0;
+
+      & > a {
+        color: #fff;
+      }
+    }
+    &.ant-menu-item-selected {
+      background: #69c0ff !important;
       color: #fff;
     }
-    a, a:hover {
-      color: currentColor;
+  `,
+  menuItemLink: css`
+    padding: 0 20px;
+    transition: inherit;
+    color: #fff;
+
+    &:hover, &.active {
+      background: #69c0ff;
     }
   `,
 };
