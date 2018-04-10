@@ -73,8 +73,20 @@ class Invoices extends Component {
     });
   }
 
-  render() {
+  handleAdd = () => {
     const { history } = this.props;
+    const { invoices } = this.state;
+    const currentInvoice = invoices.length > 0 ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10) : 0;
+    history.push(`/invoice/${this.pad(currentInvoice + 1)}`)
+  }
+
+  pad = (str, size = 5) => {
+    var s = String(str);
+    while (s.length < (size || 2)) { s = "0" + s; }
+    return s;
+  }
+
+  render() {
     const { invoices, messages } = this.state;
     return (
       <InvoicesContext.Provider value={{ updateMessages: this.updateMessages }}>
@@ -89,7 +101,7 @@ class Invoices extends Component {
                 <Button
                   type="primary"
                   icon="plus-circle-o"
-                  onClick={() => history.push('/invoices/new')}
+                  onClick={this.handleAdd}
                 >
                   Create New Invoice
                 </Button>

@@ -1,6 +1,7 @@
 // TODO: Omg, refactor this
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import moment from 'moment-mini';
 import { css } from 'emotion';
 import {
   Avatar,
@@ -13,6 +14,7 @@ import {
 } from 'antd';
 import EditableTable from './../EditableTable';
 import EditableCell from './../EditableCell';
+import { InvoiceContext } from './../../pages/Invoice';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -45,6 +47,13 @@ class InvoiceForm extends Component {
   state = {
     total: 0,
     subtotal: 0,
+    details: {
+      client: 'Acme Inc.',
+      billedTo: `Acme Inc.\n150 Main Street\nVancouver, BC, Canada\nV6A`,
+      dateOfIssue: moment().format('DD/MM/YYYY'),
+      invoiceNumber: this.props.number,
+    },
+    status: 'Waiting',
     fees: {
       items: [],
       count: 0,
@@ -110,162 +119,192 @@ class InvoiceForm extends Component {
     }
   }
 
+  onInputChange = (e) => {
+    this.setState({
+      details: {
+        ...this.state.details,
+        [e.target.name]: e.target.value,
+      }
+    });
+  }
+
   render() {
-    const { total, subtotal, fees } = this.state;
+    const { save, number } = this.props;
+    const {
+      total,
+      subtotal,
+      details,
+      fees
+    } = this.state;
     return (
-      <React.Fragment>
+      <Fragment>
         <Form className={styles.form}>
-          <div className={styles.header}>
-            <Row gutter={15}>
-              <Col span={8}>
-                <Avatar size="large" className={styles.companyLogo}>C</Avatar>
-                <div>
-                  <div>John Doe</div>
-                  <div>JHNDOE1234</div>
-                  <div>VAT: 0123456789</div>
-                </div>
-              </Col>
-              <Col span={8} align="right">
-                <div>+1 555-555</div>
-                <div>john@doe.com</div>
-                <div>doe.com</div>
-              </Col>
-              <Col span={8} align="right">
-                <div>102 West Hastings</div>
-                <div>Vancouver, BC, Canada</div>
-                <div>V6B</div>
-              </Col>
-            </Row>
-          </div>
-          <div className={styles.content}>
-            <Row gutter={15}>
-              <Col span={8}>
-                <div>
-                  <h5>Billed To:</h5>
-                  <FormItem>
+          <Row>
+            <Col span={6}>
+              <Input
+                name="client"
+                addonBefore="Client"
+                value={details.client}
+                onChange={this.onInputChange}
+              />
+            </Col>
+          </Row>
+          <br />
+          <div className={styles.template}>
+            <div className={styles.header}>
+              <Row gutter={15}>
+                <Col span={8}>
+                  <Avatar size="large" className={styles.companyLogo}>C</Avatar>
+                  <div>
+                    <div>John Doe</div>
+                    <div>JHNDOE1234</div>
+                    <div>VAT: 0123456789</div>
+                  </div>
+                </Col>
+                <Col span={8} align="right">
+                  <div>+1 555-555</div>
+                  <div>john@doe.com</div>
+                  <div>doe.com</div>
+                </Col>
+                <Col span={8} align="right">
+                  <div>102 West Hastings</div>
+                  <div>Vancouver, BC, Canada</div>
+                  <div>V6B</div>
+                </Col>
+              </Row>
+            </div>
+            <div className={styles.content}>
+              <Row gutter={15}>
+                <Col span={8}>
+                  <div>
+                    <h5>Billed To:</h5>
+                    <FormItem>
+                      <TextArea
+                        name="billedTo"
+                        value={details.billedTo}
+                        rows={5}
+                        columns={10}
+                        autosize={true}
+                        onChange={this.onInputChange}
+                      />
+                    </FormItem>
+                  </div>
+                </Col>
+                <Col span={8}>
+                  <div>
+                    <h5>Invoice Number</h5>
+                    <Input
+                      name="invoiceNumber"
+                      value={details.invoiceNumber}
+                      onChange={this.onInputChange}
+                    />
+                  </div>
+                </Col>
+                <Col span={8} className="text-right">
+                  <div>
+                    <h5>Invoice Total</h5>
+                    <span className="text-right">$ {total}</span>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <EditableTable
+              columns={columns}
+              data={data}
+              pagination={false}
+              editableCells={['description', 'hours', 'amount']}
+              updateData={this.updateData}
+            />
+            <div>
+              <Row gutter={15} type="flex" align="bottom">
+                <Col span={12}>
+                  <div className={styles.terms}>
+                    <h5>Invoice Terms</h5>
                     <TextArea
-                      value={`Acme Inc. \n150 Main Street \nVancouver, BC, Canada \nV6A`}
-                      rows={5}
-                      columns={10}
+                      value={`Please pay by bank transfer to: \n\nLending Institution: Acme Bank \nBIC/SWIFT: AB000000 \nBank account holder: John Doe`}
+                      rows={6}
+                      columns={15}
                       autosize={true}
                     />
-                  </FormItem>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div>
-                  <h5>Invoice Number</h5>
-                  <Input value="00004" />
-                </div>
-              </Col>
-              <Col span={8} className="text-right">
-                <div>
-                  <h5>Invoice Total</h5>
-                  <Input value={`$ ${total}`} className="text-right" />
-                </div>
-              </Col>
-            </Row>
-          </div>
-          <EditableTable
-            columns={columns}
-            data={data}
-            pagination={false}
-            editableCells={['description', 'hours', 'amount']}
-            updateData={this.updateData}
-          />
-          <div>
-            <Row gutter={15} type="flex" align="bottom">
-              <Col span={12}>
-                <div className={styles.terms}>
-                  <h5>Invoice Terms</h5>
-                  <TextArea
-                    value={`Please pay by bank transfer to: \n\nLending Institution: Acme Bank \nBIC/SWIFT: AB000000 \nBank account holder: John Doe`}
-                    rows={6}
-                    columns={15}
-                    autosize={true}
-                  />
-                </div>
-              </Col>
-              <Col span={12}>
-                <div className={styles.summary}>
-                  <Row gutter={15}>
-                    <Col span={12}>Subtotal</Col>
-                    <Col span={12}>{subtotal}</Col>
-                  </Row>
-                  { fees.items.map(f => {
-                    if (f.editable) {
-                      return (
-                        <Row key={f.key} gutter={15}>
-                          <Col span={12}>
-                            <EditableCell
-                              value={f.name}
-                              onChange={this.onCellChange('fees', f.key, 'name')}
-                            />
-                          </Col>
-                          <Col span={12}>
-                            <EditableCell
-                              value={f.value.toString()}
-                              onChange={this.onCellChange(`fees`, f.key, 'value')}
-                            />
-                          </Col>
-                        </Row>
-                      )
-                    } else {
-                      return (
-                        <Row key={f.key} gutter={15}>
-                          <Col span={12}>{f.name}</Col>
-                          <Col span={12}>{f.amount}</Col>
-                        </Row>
-                      );
-                    }
-                  }) }
-                  <div className={styles.addFeeButton}>
-                    <Button
-                      size="small"
-                      icon="plus"
-                      onClick={this.handleAddFee}
-                    >
-                      Add fee
-                    </Button>
                   </div>
-                  <Row gutter={15}>
-                    <Col span={12}>Total</Col>
-                    <Col span={12}>{total}</Col>
-                  </Row>
-                  <Row gutter={15} className={styles.amountDue}>
-                    <Col span={12}>Amount Due (EUR)</Col>
-                    <Col span={12}>{total}</Col>
-                  </Row>
-                </div>
-              </Col>
-            </Row>
-          </div>
-          <div className={styles.legal}>
-            <TextArea
-              value={`Non EEC services given in accordance with the Protectorate's Decree 633/366. \n\nOperation falling under the income tax policy.`}
-              autosize={true}
-            />
+                </Col>
+                <Col span={12}>
+                  <div className={styles.summary}>
+                    <Row gutter={15}>
+                      <Col span={12}>Subtotal</Col>
+                      <Col span={12}>{subtotal}</Col>
+                    </Row>
+                    { fees.items.map(f => {
+                      if (f.editable) {
+                        return (
+                          <Row key={f.key} gutter={15}>
+                            <Col span={12}>
+                              <EditableCell
+                                value={f.name}
+                                onChange={this.onCellChange('fees', f.key, 'name')}
+                              />
+                            </Col>
+                            <Col span={12}>
+                              <EditableCell
+                                value={f.value.toString()}
+                                onChange={this.onCellChange(`fees`, f.key, 'value')}
+                              />
+                            </Col>
+                          </Row>
+                        )
+                      } else {
+                        return (
+                          <Row key={f.key} gutter={15}>
+                            <Col span={12}>{f.name}</Col>
+                            <Col span={12}>{f.amount}</Col>
+                          </Row>
+                        );
+                      }
+                    }) }
+                    <div className={styles.addFeeButton}>
+                      <Button
+                        size="small"
+                        icon="plus"
+                        onClick={this.handleAddFee}
+                      >
+                        Add fee
+                      </Button>
+                    </div>
+                    <Row gutter={15}>
+                      <Col span={12}>Total</Col>
+                      <Col span={12}>{total}</Col>
+                    </Row>
+                    <Row gutter={15} className={styles.amountDue}>
+                      <Col span={12}>Amount Due (EUR)</Col>
+                      <Col span={12}>{total}</Col>
+                    </Row>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+            <div className={styles.legal}>
+              <TextArea
+                value={`Non EEC services given in accordance with the Protectorate's Decree 633/366. \n\nOperation falling under the income tax policy.`}
+                autosize={true}
+              />
+            </div>
           </div>
         </Form>
         <Button
           type="primary"
           icon="save"
           className={styles.save}
-          onClick={() => {}}
+          onClick={save.bind(this, number, this.state)}
         >
           Save
         </Button>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
 
 const styles = {
   form: css`
-    background-color: #fff;
-    box-shadow: 2px 2px 15px #e8e8e8;
-    margin-bottom: 30px;
-
     .ant-table-body {
       padding: 20px;
     }
@@ -282,6 +321,11 @@ const styles = {
         border-radius: 0;
       }
     }
+  `,
+  template: css`
+    background-color: #fff;
+    box-shadow: 2px 2px 15px #e8e8e8;
+    margin-bottom: 30px;
   `,
   header: css`
     height: 125px;

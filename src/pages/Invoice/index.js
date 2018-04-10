@@ -10,7 +10,7 @@ import {
 } from 'antd';
 import Spinner from './../../components/Spinner';
 import Table from './../../components/Table';
-import { details, items } from './invoice00001.json';
+import InvoiceForm from './../../components/InvoiceForm';
 const { Content } = Layout;
 
 const columns = [
@@ -57,6 +57,32 @@ class Invoice extends Component {
     });
   }
 
+  save = async (number, data) => {
+    const { history } = this.props;
+    const { details, total, status, items } = data;
+    const res = await axios.post(`http://localhost:3030/api/invoices/${number}`, {
+      key: number,
+      invoiceNumber: number,
+      dateOfIssue: details.dateOfIssue,
+      client: details.client,
+      billedTo: details.billedTo,
+      amount: total,
+      status: status,
+      items: items,
+    });
+    const saved = res.data;
+    history.push({
+      pathname: '/invoices',
+      state: {
+        msg: {
+          id: `save${number}`,
+          type: 'success',
+          text: saved
+        }
+      }
+    });
+  }
+
   render() {
     const { match } = this.props;
     const { data, loading } = this.state;
@@ -66,7 +92,13 @@ class Invoice extends Component {
           { !loading ? (
             <Fragment>
             { !data.key
-              ? <h1>Invoice #{ match.params.number } not found</h1>
+              ? (
+                <Fragment>
+                  <h1>New Invoice #{ match.params.number }</h1>
+                  <Divider />
+                  <InvoiceForm number={match.params.number} save={this.save} />
+                </Fragment>
+                )
               : (
                 <Fragment>
                   <h1>Invoice #{ match.params.number }</h1>
@@ -98,11 +130,11 @@ class Invoice extends Component {
                       </Col>
                     </Row>
                   </div>
-                  {/* <Table
+                  <Table
                     columns={columns}
-                    data={items}
+                    data={data.items}
                     pagination={false}
-                  /> */}
+                  />
                   <Row>
                     <Col span={12}>
                       <Button
