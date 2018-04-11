@@ -10,11 +10,9 @@ import {
   Col,
   Input,
   Button,
-  Icon,
 } from 'antd';
 import EditableTable from './../EditableTable';
 import EditableCell from './../EditableCell';
-import { InvoiceContext } from './../../pages/Invoice';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
@@ -38,27 +36,25 @@ const columns = [
   },
 ];
 
-const data = {
-  dataSource: [],
-  count: 1,
-}
-
 class InvoiceForm extends Component {
   state = {
-    total: 0,
-    subtotal: 0,
+    total: this.props.data.amount,
+    subtotal: this.props.data.subtotal,
     details: {
-      client: 'Acme Inc.',
-      billedTo: `Acme Inc.\n150 Main Street\nVancouver, BC, Canada\nV6A`,
+      client: this.props.data.client,
+      currency: this.props.data.currency,
+      billedTo: this.props.data.billedTo || `Acme Inc.\n150 Main Street\nVancouver, BC, Canada\nV6A`,
       dateOfIssue: moment().format('DD/MM/YYYY'),
       invoiceNumber: this.props.number,
+      terms: this.props.data.terms || `Please pay by bank transfer to:\n\nLending Institution: Acme Bank\nBIC/SWIFT: AB000000\nBank account holder: John Doe`,
+      notes: this.props.data.notes || `Non EEC services given in accordance with the Protectorate's Decree 633/366.\n\nOperation falling under the income tax policy.`,
     },
     status: 'Waiting',
     fees: {
-      items: [],
+      items: this.props.data.fees ? this.props.data.fees.items : [],
       count: 0,
     },
-    items: [],
+    items: this.props.data.items ? this.props.data.items : [],
   }
 
   updateTotal = () => {
@@ -134,17 +130,26 @@ class InvoiceForm extends Component {
       total,
       subtotal,
       details,
-      fees
+      fees,
+      items,
     } = this.state;
     return (
       <Fragment>
         <Form className={styles.form}>
-          <Row>
+          <Row gutter={15}>
             <Col span={6}>
               <Input
                 name="client"
                 addonBefore="Client"
                 value={details.client}
+                onChange={this.onInputChange}
+              />
+            </Col>
+            <Col span={6}>
+              <Input
+                name="currency"
+                addonBefore="Currency"
+                value={details.currency}
                 onChange={this.onInputChange}
               />
             </Col>
@@ -203,14 +208,15 @@ class InvoiceForm extends Component {
                 <Col span={8} className="text-right">
                   <div>
                     <h5>Invoice Total</h5>
-                    <span className="text-right">$ {total}</span>
+                    <span className="text-right">{details.currency} {total}</span>
                   </div>
                 </Col>
               </Row>
             </div>
             <EditableTable
               columns={columns}
-              data={data}
+              currency={details.currency}
+              data={items}
               pagination={false}
               editableCells={['description', 'hours', 'amount']}
               updateData={this.updateData}
@@ -221,10 +227,12 @@ class InvoiceForm extends Component {
                   <div className={styles.terms}>
                     <h5>Invoice Terms</h5>
                     <TextArea
-                      value={`Please pay by bank transfer to: \n\nLending Institution: Acme Bank \nBIC/SWIFT: AB000000 \nBank account holder: John Doe`}
+                      name="terms"
+                      value={details.terms}
                       rows={6}
                       columns={15}
                       autosize={true}
+                      onChange={this.onInputChange}
                     />
                   </div>
                 </Col>
@@ -245,6 +253,7 @@ class InvoiceForm extends Component {
                               />
                             </Col>
                             <Col span={12}>
+                              {details.currency}&nbsp;
                               <EditableCell
                                 value={f.value.toString()}
                                 onChange={this.onCellChange(`fees`, f.key, 'value')}
@@ -272,11 +281,11 @@ class InvoiceForm extends Component {
                     </div>
                     <Row gutter={15}>
                       <Col span={12}>Total</Col>
-                      <Col span={12}>{total}</Col>
+                      <Col span={12}>{details.currency} {total}</Col>
                     </Row>
                     <Row gutter={15} className={styles.amountDue}>
                       <Col span={12}>Amount Due (EUR)</Col>
-                      <Col span={12}>{total}</Col>
+                      <Col span={12}>{details.currency} {total}</Col>
                     </Row>
                   </div>
                 </Col>
@@ -284,8 +293,10 @@ class InvoiceForm extends Component {
             </div>
             <div className={styles.legal}>
               <TextArea
-                value={`Non EEC services given in accordance with the Protectorate's Decree 633/366. \n\nOperation falling under the income tax policy.`}
+                name="notes"
+                value={details.notes}
                 autosize={true}
+                onChange={this.onInputChange}
               />
             </div>
           </div>

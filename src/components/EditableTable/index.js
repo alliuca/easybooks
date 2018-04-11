@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { css } from 'emotion';
 import { Table, Button } from 'antd';
 import EditableCell from './../EditableCell';
@@ -8,14 +8,35 @@ class EditableTable extends Component {
     super(props);
     this.columns = props.columns;
     props.editableCells.map(c =>
-      this.columns[this.columns.findIndex(col => col.dataIndex === c)].render = (text, record) => (
-        <EditableCell
-          value={text}
-          onChange={this.onCellChange(record.key, c)}
-        />
-      )
+      this.columns[this.columns.findIndex(col => col.dataIndex === c)].render = (text, record) => {
+        if (c === 'description') {
+          return (
+            <Fragment>
+              <EditableCell
+                value={record.name}
+                onChange={this.onCellChange(record.key, c)}
+                style={{ display: 'block', marginBottom: 7, fontSize: '12px' }}
+              />
+              <EditableCell
+                value={text}
+                onChange={this.onCellChange(record.key, c)}
+                style={{ display: 'block' }}
+              />
+            </Fragment>
+          );
+        }
+        return (
+          <EditableCell
+            value={text}
+            onChange={this.onCellChange(record.key, c)}
+          />
+        )
+      }
     );
-    this.state = props.data;
+    this.state = {
+      dataSource: props.data,
+      count: 1,
+    };
   }
 
   onCellChange = (key, dataIndex) => {
@@ -39,6 +60,7 @@ class EditableTable extends Component {
     const { count, dataSource } = this.state;
     const newData = {
       key: count,
+      name: 'Item Name',
       description: 'Item Description',
       hours: '0',
       amount: '0',

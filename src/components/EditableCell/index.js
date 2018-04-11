@@ -27,7 +27,7 @@ class EditableCell extends Component {
   render() {
     const { value, editable } = this.state;
     return (
-      <div className={styles.editableCell}>
+      <div className={styles.editableCell} style={this.props.style || {}}>
         { editable
           ? (
             <div className={styles.editableCellInputWrapper}>
@@ -61,6 +61,7 @@ class EditableCell extends Component {
 const styles = {
   editableCell: css`
     position: relative;
+    display: inline-block;
     padding-right: 24px;
 
     &:hover .anticon-edit {

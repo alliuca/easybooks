@@ -7,6 +7,7 @@ import {
   Row,
   Col,
   Button,
+  Popconfirm,
 } from 'antd';
 import Spinner from './../../components/Spinner';
 import Table from './../../components/Table';
@@ -32,6 +33,9 @@ class Invoice extends Component {
   state = {
     data: {},
     loading: true,
+    actions: {
+      pdf: { loading: false }
+    }
   }
 
   async componentDidMount() {
@@ -59,16 +63,21 @@ class Invoice extends Component {
 
   save = async (number, data) => {
     const { history } = this.props;
-    const { details, total, status, items } = data;
+    const { details, total, subtotal, status, items, fees } = data;
     const res = await axios.post(`http://localhost:3030/api/invoices/${number}`, {
       key: number,
       invoiceNumber: number,
       dateOfIssue: details.dateOfIssue,
       client: details.client,
+      currency: details.currency,
       billedTo: details.billedTo,
       amount: total,
+      subtotal: subtotal,
       status: status,
       items: items,
+      fees: fees,
+      terms: details.terms,
+      notes: details.notes,
     });
     const saved = res.data;
     history.push({
@@ -83,9 +92,25 @@ class Invoice extends Component {
     });
   }
 
+  downloadPDF = async (number) => {
+    const { actions } = this.state;
+    const res = await axios.get(`http://localhost:3030/api/invoices/${number}/pdf`);
+    const filepath = res.data;
+    this.setState({
+      actions: {
+        ...actions,
+        pdf: {
+          ...actions.pdf,
+          filepath,
+          loading: false,
+        }
+      }
+    }, () => window.open(`http://localhost:3030/${filepath}`));
+  }
+
   render() {
     const { match } = this.props;
-    const { data, loading } = this.state;
+    const { data, loading, actions } = this.state;
     return (
       <Layout>
         <Content className={styles.content}>
@@ -96,64 +121,42 @@ class Invoice extends Component {
                 <Fragment>
                   <h1>New Invoice #{ match.params.number }</h1>
                   <Divider />
-                  <InvoiceForm number={match.params.number} save={this.save} />
+                  <InvoiceForm number={match.params.number} save={this.save} data={{}} />
                 </Fragment>
                 )
               : (
                 <Fragment>
                   <h1>Invoice #{ match.params.number }</h1>
                   <Divider />
-                  <div>
-                    <Row gutter={15}>
-                      <Col span={8}>
-                        <div>
-                          <h5>Billed To:</h5>
-                          <address>
-                            Acme Inc.<br />
-                            150 Main Street<br />
-                            Vancouver, BC, Canada<br />
-                            V6A
-                          </address>
-                        </div>
-                      </Col>
-                      <Col span={8}>
-                        <div>
-                          <h5>Invoice Number</h5>
-                          <span>{ data.invoiceNumber }</span>
-                        </div>
-                      </Col>
-                      <Col span={8} className={styles.columnTotal}>
-                        <div>
-                          <h5>Invoice Total</h5>
-                          <strong>$ { data.amount }</strong>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                  <Table
-                    columns={columns}
-                    data={data.items}
-                    pagination={false}
-                  />
+                  <InvoiceForm number={match.params.number} save={this.save} data={data} />
                   <Row>
                     <Col span={12}>
                       <Button
                         type="primary"
                         icon="download"
                         className={styles.download}
+                        loading={actions.pdf.loading}
+                        onClick={this.downloadPDF.bind(this, data.invoiceNumber)}
                       >
-                        Download .PDF
+                        { actions.pdf.loading ? 'Getting it...' : 'Download .PDF' }
                       </Button>
                     </Col>
                     <Col span={12} className="text-right">
-                      <Button
-                        type="danger"
-                        icon="delete"
-                        className={styles.download}
-                        onClick={this.deleteInvoice.bind(this, data.invoiceNumber)}
+                      <Popconfirm
+                        title="Are you sure delete this invoice?"
+                        onConfirm={this.deleteInvoice.bind(this, data.invoiceNumber)}
+                        onCancel={() => {}}
+                        okText="Yes"
+                        cancelText="No"
                       >
-                        Delete
-                      </Button>
+                        <Button
+                          type="danger"
+                          icon="delete"
+                          className={styles.download}
+                        >
+                          Delete
+                        </Button>
+                      </Popconfirm>
                     </Col>
                   </Row>
                 </Fragment>
