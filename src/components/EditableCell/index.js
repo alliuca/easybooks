@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { css } from 'emotion';
-import { Input, Icon } from 'antd';
+import { Input } from 'antd';
+import { Container, CellIcon } from './editablecell.theme';
 
 class EditableCell extends Component {
   state = {
@@ -27,73 +27,33 @@ class EditableCell extends Component {
   render() {
     const { value, editable } = this.state;
     return (
-      <div className={styles.editableCell} style={this.props.style || {}}>
+      <Container style={this.props.style || {}}>
         { editable
           ? (
-            <div className={styles.editableCellInputWrapper}>
+            <div>
               <Input
                 value={value}
                 onChange={this.handleChange}
                 onPressEnter={this.check}
               />
-              <Icon
+              <CellIcon
                 type="check"
-                className={styles.editableCellIconCheck}
                 onClick={this.check}
               />
             </div>
           ) : (
             <div>
               { value || ' ' }
-              <Icon
+              <CellIcon
                 type="edit"
-                className={styles.editableCellIcon}
                 onClick={this.edit}
               />
             </div>
           )
         }
-      </div>
+      </Container>
     );
   }
-}
-
-const styles = {
-  editableCell: css`
-    position: relative;
-    display: inline-block;
-    padding-right: 24px;
-
-    &:hover .anticon-edit {
-      display: inline-block;
-    }
-  `,
-  editableCellInputWrapper: css`
-    ${'' /* padding-right: 24px; */}
-  `,
-  editableCellIcon: css`
-    position: absolute;
-    right: 0;
-    width: 20px;
-    cursor: pointer;
-    line-height: 18px;
-    display: none;
-
-    &:hover {
-      color: #108ee9;
-    }
-  `,
-  editableCellIconCheck: css`
-    position: absolute;
-    right: 0;
-    width: 20px;
-    cursor: pointer;
-    line-height: 28px;
-
-    &:hover {
-      color: #108ee9;
-    }
-  `,
 }
 
 export default EditableCell;

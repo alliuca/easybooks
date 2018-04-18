@@ -1,38 +1,25 @@
 import React, { Component, Fragment } from 'react';
-import axios from 'axios';
-import { css } from 'emotion';
+import { connect } from 'react-redux';
+import { setMessages, clearAllMessages } from 'actions/app';
 import {
-  Layout,
+  fetchInvoice,
+  deleteInvoice,
+  saveInvoice,
+  downloadInvoicePDF,
+} from 'actions/invoices';
+import {
   Divider,
   Row,
   Col,
   Button,
   Popconfirm,
 } from 'antd';
-import Spinner from './../../components/Spinner';
-import Table from './../../components/Table';
-import InvoiceForm from './../../components/InvoiceForm';
-const { Content } = Layout;
-
-const columns = [
-  {
-    title: 'Description',
-    dataIndex: 'description',
-  },
-  {
-    title: 'Hours',
-    dataIndex: 'hours',
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'amount',
-  },
-];
+import Page from 'layout/Page';
+import Spinner from 'components/Spinner';
+import InvoiceForm from 'components/InvoiceForm';
 
 class Invoice extends Component {
   state = {
-    data: {},
-    loading: true,
     actions: {
       pdf: { loading: false }
     }
@@ -40,31 +27,25 @@ class Invoice extends Component {
 
   async componentDidMount() {
     const { match: { params: { number } } } = this.props;
-    const res = await axios.get(`http://localhost:3030/api/invoices/${number}`);
-    const data = res.data;
-    this.setState({ data: data, loading: false });
+    this.props.fetchInvoice(number);
+    this.props.clearAllMessages();
   }
 
   deleteInvoice = async number => {
     const { history } = this.props;
-    const res = await axios.delete(`http://localhost:3030/api/invoices/${number}`);
-    const deleted = res.data;
-    history.push({
-      pathname: '/invoices',
-      state: {
-        msg: {
-          id: `delete${number}`,
-          type: 'success',
-          text: deleted
-        }
-      }
+    this.props.deleteInvoice(number);
+    this.props.setMessages({
+      id: `delete${number}`,
+      type: 'success',
+      text: `Invoice #${number} has been deleted`,
     });
+    history.push('/invoices');
   }
 
   save = async (number, data) => {
     const { history } = this.props;
     const { details, total, subtotal, status, items, fees } = data;
-    const res = await axios.post(`http://localhost:3030/api/invoices/${number}`, {
+    await this.props.saveInvoice(number, {
       key: number,
       invoiceNumber: number,
       dateOfIssue: details.dateOfIssue,
@@ -79,113 +60,100 @@ class Invoice extends Component {
       terms: details.terms,
       notes: details.notes,
     });
-    const saved = res.data;
-    history.push({
-      pathname: '/invoices',
-      state: {
-        msg: {
-          id: `save${number}`,
-          type: 'success',
-          text: saved
-        }
-      }
+    await this.props.setMessages({
+      id: `save${number}`,
+      type: 'success',
+      text: `Invoice #${number} has been successfully saved`,
     });
+    history.push('/invoices');
   }
 
   downloadPDF = async (number) => {
     const { actions } = this.state;
-    const res = await axios.get(`http://localhost:3030/api/invoices/${number}/pdf`);
-    const filepath = res.data;
     this.setState({
       actions: {
         ...actions,
         pdf: {
-          ...actions.pdf,
-          filepath,
           loading: false,
         }
       }
-    }, () => window.open(`http://localhost:3030/${filepath}`));
+    });
+    await this.props.downloadInvoicePDF(number);
+    window.open(`http://localhost:3030/${this.props.invoice.filepath}`)
   }
 
   render() {
-    const { match } = this.props;
-    const { data, loading, actions } = this.state;
+    const { match: { params: { number } }, invoice } = this.props;
+    const { actions } = this.state;
+
     return (
-      <Layout>
-        <Content className={styles.content}>
-          { !loading ? (
-            <Fragment>
-            { !data.key
-              ? (
-                <Fragment>
-                  <h1>New Invoice #{ match.params.number }</h1>
-                  <Divider />
-                  <InvoiceForm number={match.params.number} save={this.save} data={{}} />
-                </Fragment>
-                )
-              : (
-                <Fragment>
-                  <h1>Invoice #{ match.params.number }</h1>
-                  <Divider />
-                  <InvoiceForm number={match.params.number} save={this.save} data={data} />
-                  <Row>
-                    <Col span={12}>
-                      <Button
-                        type="primary"
-                        icon="download"
-                        className={styles.download}
-                        loading={actions.pdf.loading}
-                        onClick={this.downloadPDF.bind(this, data.invoiceNumber)}
-                      >
-                        { actions.pdf.loading ? 'Getting it...' : 'Download .PDF' }
-                      </Button>
-                    </Col>
-                    <Col span={12} className="text-right">
-                      <Popconfirm
-                        title="Are you sure delete this invoice?"
-                        onConfirm={this.deleteInvoice.bind(this, data.invoiceNumber)}
-                        onCancel={() => {}}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <Button
-                          type="danger"
-                          icon="delete"
-                          className={styles.download}
-                        >
-                          Delete
-                        </Button>
-                      </Popconfirm>
-                    </Col>
-                  </Row>
-                </Fragment>
+      <Page>
+        { invoice ? (
+          <Fragment>
+          { !invoice.key
+            ? (
+              <Fragment>
+                <h1>New Invoice #{ number }</h1>
+                <Divider />
+                <InvoiceForm number={number} save={this.save} data={{}} />
+              </Fragment>
               )
-            }
-            </Fragment>
-          ) : <Spinner /> }
-        </Content>
-      </Layout>
+            : (
+              <Fragment>
+                <h1>Invoice #{ number }</h1>
+                <Divider />
+                <InvoiceForm number={number} save={this.save} data={invoice} />
+                <Row>
+                  <Col span={12}>
+                    <Button
+                      type="primary"
+                      icon="download"
+                      className="mt30"
+                      loading={actions.pdf.loading}
+                      onClick={this.downloadPDF.bind(this, invoice.invoiceNumber)}
+                    >
+                      { actions.pdf.loading ? 'Getting it...' : 'Download .PDF' }
+                    </Button>
+                  </Col>
+                  <Col span={12} className="text-right">
+                    <Popconfirm
+                      title="Are you sure you want to delete this invoice?"
+                      onConfirm={this.deleteInvoice.bind(this, invoice.invoiceNumber)}
+                      onCancel={() => {}}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button
+                        type="danger"
+                        icon="delete"
+                        className="mt30"
+                      >
+                        Delete
+                      </Button>
+                    </Popconfirm>
+                  </Col>
+                </Row>
+              </Fragment>
+            )
+          }
+          </Fragment>
+        ) : <Spinner /> }
+      </Page>
     );
   }
 };
 
-const styles = {
-  content: css`
-    background-color: #fafafa;
-    padding: 50px;
-  `,
-  columnTotal: css`
-    text-align: right;
+const mapStateToProps = ({ invoices: { current } }) => ({
+  invoice: current,
+});
 
-    strong {
-      font-size: 30px;
-      font-weight: normal;
-    }
-  `,
-  download: css`
-    margin-top: 30px;
-  `,
+const mapDispatchToProps = {
+  setMessages,
+  clearAllMessages,
+  fetchInvoice,
+  deleteInvoice,
+  saveInvoice,
+  downloadInvoicePDF,
 };
 
-export default Invoice;
+export default connect(mapStateToProps, mapDispatchToProps)(Invoice);

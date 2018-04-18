@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from './messages.theme';
-import Alert from './../Alert';
+import Alert from 'components/Alert';
 
 const Messages = ({ children }) => (
   <Container>

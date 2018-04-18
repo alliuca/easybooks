@@ -1,16 +1,11 @@
 import React, { Component, createContext } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { css } from 'emotion';
-import {
-  Layout,
-  Row,
-  Col,
-  Button,
-} from 'antd';
-import Table from './../../components/Table';
-import Messages from './../../components/Messages';
-const { Content } = Layout;
+import { Row, Col, Button } from 'antd';
+import utils from 'utils';
+import { fetchInvoices } from 'actions/invoices';
+import Page from 'layout/Page';
+import Table from 'components/Table';
 export const InvoicesContext = createContext();
 
 const columns = [
@@ -42,84 +37,47 @@ const columns = [
 ];
 
 class Invoices extends Component {
-  state = {
-    invoices: [],
-    messages: [],
-  }
-
-  async componentDidMount() {
-    const { history } = this.props;
-    if (history.location && history.location.state && history.location.state.msg) {
-      history.replace({ pathname: '/invoices', state: {} });
-    }
-    const res = await axios.get('http://localhost:3030/api/invoices');
-    const invoices = res.data;
-    this.setState({ invoices });
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (!nextProps.location.state || nextProps.location.state.msg === prevState.msg) {
-      return null;
-    }
-    return {
-      messages: [...prevState.messages, nextProps.location.state.msg],
-    };
-  }
-
-  updateMessages = (id) => {
-    const { messages } = this.state;
-    this.setState({
-      messages: messages.filter(message => message.id !== id)
-    });
+  componentDidMount() {
+    this.props.fetchInvoices();
   }
 
   handleAdd = () => {
-    const { history } = this.props;
-    const { invoices } = this.state;
+    const { history, invoices } = this.props;
     const currentInvoice = invoices.length > 0 ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10) : 0;
-    history.push(`/invoice/${this.pad(currentInvoice + 1)}`)
-  }
-
-  pad = (str, size = 5) => {
-    var s = String(str);
-    while (s.length < (size || 2)) { s = "0" + s; }
-    return s;
+    history.push(`/invoice/${utils.pad(currentInvoice + 1)}`);
   }
 
   render() {
-    const { invoices, messages } = this.state;
+    const { invoices } = this.props;
+
     return (
-      <InvoicesContext.Provider value={{ updateMessages: this.updateMessages }}>
-        <Layout>
-          <Content className={styles.content}>
-            <Messages>{messages}</Messages>
-            <Row gutter={15}>
-              <Col span={12}>
-                <h1>Invoices</h1>
-              </Col>
-              <Col span={12} className="text-right">
-                <Button
-                  type="primary"
-                  icon="plus-circle-o"
-                  onClick={this.handleAdd}
-                >
-                  Create New Invoice
-                </Button>
-              </Col>
-            </Row>
-            <Table columns={columns} data={invoices} />
-          </Content>
-        </Layout>
-      </InvoicesContext.Provider>
+      <Page>
+        <Row gutter={15}>
+          <Col span={12}>
+            <h1>Invoices</h1>
+          </Col>
+          <Col span={12} className="text-right">
+            <Button
+              type="primary"
+              icon="plus-circle-o"
+              onClick={this.handleAdd}
+            >
+              Create New Invoice
+            </Button>
+          </Col>
+        </Row>
+        <Table columns={columns} data={invoices} />
+      </Page>
     );
   }
 }
 
-const styles = {
-  content: css`
-    background-color: #fafafa;
-    padding: 50px;
-  `,
+const mapStateToProps = ({ invoices: { all } }) => ({
+  invoices: all,
+});
+
+const mapDispatchToProps = {
+  fetchInvoices,
 };
 
-export default Invoices;
+export default connect(mapStateToProps, mapDispatchToProps)(Invoices);

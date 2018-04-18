@@ -1,39 +1,39 @@
 import React, { Component } from 'react';
 import { Alert as AntdAlert } from 'antd';
-import { InvoicesContext } from './../../pages/Invoices';
+import { PageContext } from 'layout/Page';
 
 class Alert extends Component {
   state = {
     visible: true,
   }
 
-  handleClose = (updateMessages) => {
-    const { data: { id } } = this.props;
+  handleClose = (setMessages) => {
+    const { data } = this.props;
     this.setState({ visible: false });
-    updateMessages(id);
+    setMessages(data, true);
   }
 
   render() {
     const { data } = this.props;
     const { visible } = this.state;
     return (
-      <InvoicesContext.Consumer>
-        { ({ updateMessages }) => {
+      <PageContext.Consumer>
+        { ({ setMessages }) => {
           if (visible) {
             return (
-            <AntdAlert
-              message={data.text}
-              type={data.type}
-              showIcon
-              closable
-              afterClose={this.handleClose.bind(this, updateMessages)}
-            />
-          );
-        } else {
-          return null;
-        }
-      } }
-      </InvoicesContext.Consumer>
+              <AntdAlert
+                message={data.text}
+                type={data.type}
+                showIcon
+                closable
+                afterClose={this.handleClose.bind(this, setMessages)}
+              />
+            );
+          } else {
+            return null;
+          }
+        } }
+      </PageContext.Consumer>
     );
   }
 }

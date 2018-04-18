@@ -1,29 +1,17 @@
 import React from 'react';
-import { css } from 'emotion';
-import { Layout, Divider } from 'antd';
-import User from './../User';
-import MainMenu from './../MainMenu';
-const { Sider } = Layout;
+import { Divider } from 'antd';
+import { Container, Top } from './mainsider.theme';
+import User from 'components/User';
+import MainMenu from 'components/MainMenu';
 
 const MainSider = () => (
-  <Sider width={200} className={styles.sider}>
-    <div className={styles.top}>
+  <Container width={200}>
+    <Top>
       <User withShortInfo />
       <Divider />
-    </div>
+    </Top>
     <MainMenu />
-  </Sider>
+  </Container>
 );
-
-const styles = {
-  sider: css`
-    padding-top: 30px;
-    background: #40a9ff;
-    color: #fff;
-  `,
-  top: css`
-    padding: 20px 20px 0;
-  `,
-};
 
 export default MainSider;

@@ -11,8 +11,8 @@ import {
   Input,
   Button,
 } from 'antd';
-import EditableTable from './../EditableTable';
-import EditableCell from './../EditableCell';
+import EditableTable from 'components/EditableTable';
+import EditableCell from 'components/EditableCell';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 

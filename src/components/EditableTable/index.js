@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { css } from 'emotion';
-import { Table, Button } from 'antd';
-import EditableCell from './../EditableCell';
+import { Table } from 'antd';
+import { AddButton } from './editabletable.theme';
+import EditableCell from 'components/EditableCell';
 
 class EditableTable extends Component {
   constructor(props) {
@@ -81,17 +81,10 @@ class EditableTable extends Component {
           columns={columns}
           pagination={false}
         />
-        <Button className={styles.addButton} onClick={this.handleAdd}>Add Item</Button>
+        <AddButton onClick={this.handleAdd}>Add Item</AddButton>
       </div>
     );
   }
 }
-
-const styles = {
-  addButton: css`
-    display: block;
-    margin: 20px auto 0;
-  `,
-};
 
 export default EditableTable;

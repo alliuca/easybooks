@@ -1,29 +1,17 @@
 import React from 'react';
-import { css } from 'emotion';
 import { Avatar } from 'antd';
+import { Container, ShortInfo } from './user.theme';
 
 const User = ({ withShortInfo }) => (
-  <div className={styles.user}>
+  <Container>
     <Avatar size="large" icon="user" />
     { withShortInfo && (
-      <div className={styles.shortInfo}>
+      <ShortInfo>
         <div>John Doe</div>
         <strong>doe.com</strong>
-      </div>
+      </ShortInfo>
     ) }
-  </div>
+  </Container>
 );
-
-const styles = {
-  user: css`
-    text-align: center;
-  `,
-  shortInfo: css`
-    display: inline-block;
-    margin-left: 15px;
-    vertical-align: middle;
-    text-align: left;
-  `,
-};
 
 export default User;
