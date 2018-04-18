@@ -1,19 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import configureStore from './store';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Home from 'pages/Home';
+import Invoices from 'pages/Invoices';
+import Invoice from 'pages/Invoice';
+import Layout from 'components/Layout';
+import MainSider from 'components/MainSider';
+const store = configureStore();
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Provider store={store}>
+        <Router>
+          <Layout>
+            <MainSider />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/invoices" component={Invoices} />
+            <Route path="/invoice/:number" component={Invoice} />
+          </Layout>
+        </Router>
+      </Provider>
     );
   }
 }
