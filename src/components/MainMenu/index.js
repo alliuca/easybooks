@@ -9,6 +9,11 @@ const MainMenu = () => (
         <Icon type="file-text" /> Invoices
       </ItemLink>
     </Item>
+    <Item key="2">
+      <ItemLink to="/settings">
+        <Icon type="setting" /> Settings
+      </ItemLink>
+    </Item>
   </Container>
 );
 

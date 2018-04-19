@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from 'pages/Home';
 import Invoices from 'pages/Invoices';
 import Invoice from 'pages/Invoice';
+import Settings from 'pages/Settings';
 import Layout from 'components/Layout';
 import MainSider from 'components/MainSider';
 const store = configureStore();
@@ -19,6 +20,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/invoices" component={Invoices} />
             <Route path="/invoice/:number" component={Invoice} />
+            <Route exact path="/settings" component={Settings} />
           </Layout>
         </Router>
       </Provider>
