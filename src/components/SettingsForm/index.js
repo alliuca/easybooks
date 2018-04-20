@@ -32,10 +32,15 @@ class SettingsForm extends Component {
     }
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     const values = this.props.form.getFieldsValue();
-    this.props.saveSettings(values);
+    await this.props.saveSettings(values);
+    await this.props.setMessages({
+      id: 'save_settings',
+      type: 'success',
+      text: 'Settings has been successfully saved',
+    });
   }
 
   handleColorChange = (color, e) => {

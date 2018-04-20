@@ -11,3 +11,7 @@ export const FETCH_INVOICE = 'FETCH_INVOICE';
 export const DELETE_INVOICE = 'DELETE_INVOICE';
 export const SAVE_INVOICE = 'SAVE_INVOICE';
 export const DOWNLOAD_INVOICE_PDF = 'DOWNLOAD_INVOICE_PDF';
+
+// profile
+export const FETCH_PROFILE = 'FETCH_PROFILE';
+export const SAVE_PROFILE = 'SAVE_PROFILE';

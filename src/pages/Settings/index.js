@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSettings, saveSettings } from 'actions/app';
+import { fetchSettings, saveSettings, setMessages } from 'actions/app';
 import { Divider } from 'antd';
 import Page from 'layout/Page';
 import SettingsForm from 'components/SettingsForm';
@@ -13,7 +13,7 @@ class Settings extends Component {
   handleSaveSettings = (obj) => this.props.saveSettings(obj)
 
   render() {
-    const { settings } = this.props;
+    const { settings, setMessages } = this.props;
 
     return (
       <Page>
@@ -22,6 +22,7 @@ class Settings extends Component {
         <SettingsForm
           settings={settings}
           saveSettings={this.handleSaveSettings}
+          setMessages={setMessages}
         />
       </Page>
     );
@@ -35,6 +36,7 @@ const mapStateToProps = ({ app: { settings } }) => ({
 const mapDispatchToProps = {
   fetchSettings,
   saveSettings,
+  setMessages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

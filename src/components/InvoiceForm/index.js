@@ -2,18 +2,29 @@
 
 import React, { Component, Fragment } from 'react';
 import moment from 'moment-mini';
-import { css } from 'emotion';
 import {
-  Avatar,
-  Form,
   Row,
   Col,
   Input,
   Button,
 } from 'antd';
+import {
+  Form,
+  FormItem,
+  Template,
+  Header,
+  CompanyLogo,
+  Content,
+  Terms,
+  Summary,
+  AddFeeButton,
+  AmountDue,
+  Legal,
+  SaveButton,
+} from './invoiceform.theme';
 import EditableTable from 'components/EditableTable';
 import EditableCell from 'components/EditableCell';
-const FormItem = Form.Item;
+import { baseURL } from 'config';
 const { TextArea } = Input;
 
 const columns = [
@@ -125,7 +136,7 @@ class InvoiceForm extends Component {
   }
 
   render() {
-    const { save, number } = this.props;
+    const { save, number, settings: { brandColor, logo } } = this.props;
     const {
       total,
       subtotal,
@@ -135,7 +146,7 @@ class InvoiceForm extends Component {
     } = this.state;
     return (
       <Fragment>
-        <Form className={styles.form}>
+        <Form brandcolor={brandColor}>
           <Row gutter={15}>
             <Col span={6}>
               <Input
@@ -155,11 +166,11 @@ class InvoiceForm extends Component {
             </Col>
           </Row>
           <br />
-          <div className={styles.template}>
-            <div className={styles.header}>
+          <Template>
+            <Header brandcolor={brandColor}>
               <Row gutter={15}>
                 <Col span={8}>
-                  <Avatar size="large" className={styles.companyLogo}>C</Avatar>
+                  <CompanyLogo src={`${baseURL}/files/upload/logo/${logo.file.name}`} size="large">C</CompanyLogo>
                   <div>
                     <div>John Doe</div>
                     <div>JHNDOE1234</div>
@@ -177,8 +188,8 @@ class InvoiceForm extends Component {
                   <div>V6B</div>
                 </Col>
               </Row>
-            </div>
-            <div className={styles.content}>
+            </Header>
+            <Content>
               <Row gutter={15}>
                 <Col span={8}>
                   <div>
@@ -212,7 +223,7 @@ class InvoiceForm extends Component {
                   </div>
                 </Col>
               </Row>
-            </div>
+            </Content>
             <EditableTable
               columns={columns}
               currency={details.currency}
@@ -224,7 +235,7 @@ class InvoiceForm extends Component {
             <div>
               <Row gutter={15} type="flex" align="bottom">
                 <Col span={12}>
-                  <div className={styles.terms}>
+                  <Terms>
                     <h5>Invoice Terms</h5>
                     <TextArea
                       name="terms"
@@ -234,10 +245,10 @@ class InvoiceForm extends Component {
                       autosize={true}
                       onChange={this.onInputChange}
                     />
-                  </div>
+                  </Terms>
                 </Col>
                 <Col span={12}>
-                  <div className={styles.summary}>
+                  <Summary brandcolor={brandColor}>
                     <Row gutter={15}>
                       <Col span={12}>Subtotal</Col>
                       <Col span={12}>{subtotal}</Col>
@@ -270,7 +281,7 @@ class InvoiceForm extends Component {
                         );
                       }
                     }) }
-                    <div className={styles.addFeeButton}>
+                    <AddFeeButton>
                       <Button
                         size="small"
                         icon="plus"
@@ -278,138 +289,39 @@ class InvoiceForm extends Component {
                       >
                         Add fee
                       </Button>
-                    </div>
+                    </AddFeeButton>
                     <Row gutter={15}>
                       <Col span={12}>Total</Col>
                       <Col span={12}>{details.currency} {total}</Col>
                     </Row>
-                    <Row gutter={15} className={styles.amountDue}>
+                    <AmountDue gutter={15}>
                       <Col span={12}>Amount Due (EUR)</Col>
                       <Col span={12}>{details.currency} {total}</Col>
-                    </Row>
-                  </div>
+                    </AmountDue>
+                  </Summary>
                 </Col>
               </Row>
             </div>
-            <div className={styles.legal}>
+            <Legal>
               <TextArea
                 name="notes"
                 value={details.notes}
                 autosize={true}
                 onChange={this.onInputChange}
               />
-            </div>
-          </div>
+            </Legal>
+          </Template>
         </Form>
-        <Button
+        <SaveButton
           type="primary"
           icon="save"
-          className={styles.save}
           onClick={save.bind(this, number, this.state)}
         >
           Save
-        </Button>
+        </SaveButton>
       </Fragment>
     );
   }
 }
-
-const styles = {
-  form: css`
-    .ant-table-body {
-      padding: 20px;
-    }
-
-    .ant-table-thead > tr > th {
-      background: transparent;
-      border-top: 3px solid #488f45;
-      border-bottom-width: 0;
-      color: #488f45;
-      font-size: 16px;
-
-      &:first-child,
-      &:last-child {
-        border-radius: 0;
-      }
-    }
-  `,
-  template: css`
-    background-color: #fff;
-    box-shadow: 2px 2px 15px #e8e8e8;
-    margin-bottom: 30px;
-  `,
-  header: css`
-    height: 125px;
-    padding: 20px;
-    background-color: #488f45;
-    color: #fff;
-
-    .ant-row > div {
-      line-height: 1.8;
-    }
-  `,
-  companyLogo: css`
-    display: inline-block;
-    background-color: #fff;
-    color: #000;
-
-    & + div {
-      display: inline-block;
-      margin-left: 20px;
-      vertical-align: middle;
-    }
-  `,
-  content: css`
-    padding: 40px;
-
-    h5 {
-      color: #908c8c;
-      font-size: 14px;
-    }
-
-    textarea {
-      resize: none;
-    }
-  `,
-  terms: css`
-    padding: 37px;
-
-    h5 {
-      color: #908c8c;
-      font-size: 14px;
-    }
-  `,
-  summary: css`
-    padding: 37px;
-
-    .ant-row > div {
-      text-align: right;
-
-      &:first-child {
-        color: #488f45;
-        font-size: 16px;
-        font-weight: 500;
-      }
-    }
-  `,
-  addFeeButton: css`
-    margin: 10px 0;
-
-    button {
-      display: block;
-      margin-left: auto;
-    }
-  `,
-  amountDue: css`
-    margin-top: 50px;
-  `,
-  legal: css`
-    padding: 37px;
-  `,
-  save: css`
-    display: block;
-    margin: 0 auto;
-  `,
-};
 
 export default InvoiceForm;

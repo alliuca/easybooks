@@ -1,10 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Avatar } from 'antd';
 import { Container, ShortInfo } from './user.theme';
 
 const User = ({ withShortInfo }) => (
   <Container>
-    <Avatar size="large" icon="user" />
+    <Link to="/profile">
+      <Avatar size="large" icon="user" />
+    </Link>
     { withShortInfo && (
       <ShortInfo>
         <div>John Doe</div>

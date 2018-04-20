@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { setMessages, clearAllMessages } from 'actions/app';
+import {
+  setMessages,
+  clearAllMessages,
+  fetchSettings,
+} from 'actions/app';
 import {
   fetchInvoice,
   deleteInvoice,
@@ -27,7 +31,8 @@ class Invoice extends Component {
 
   async componentDidMount() {
     const { match: { params: { number } } } = this.props;
-    this.props.fetchInvoice(number);
+    await this.props.fetchSettings();
+    await this.props.fetchInvoice(number);
     this.props.clearAllMessages();
   }
 
@@ -43,7 +48,7 @@ class Invoice extends Component {
   }
 
   save = async (number, data) => {
-    const { history } = this.props;
+    const { history, settings: { brandColor, logo } } = this.props;
     const { details, total, subtotal, status, items, fees } = data;
     await this.props.saveInvoice(number, {
       key: number,
@@ -59,6 +64,10 @@ class Invoice extends Component {
       fees: fees,
       terms: details.terms,
       notes: details.notes,
+      settings: {
+        brandColor,
+        logo: logo.file.name,
+      },
     });
     await this.props.setMessages({
       id: `save${number}`,
@@ -83,7 +92,7 @@ class Invoice extends Component {
   }
 
   render() {
-    const { match: { params: { number } }, invoice } = this.props;
+    const { match: { params: { number } }, invoice, settings } = this.props;
     const { actions } = this.state;
 
     return (
@@ -95,14 +104,14 @@ class Invoice extends Component {
               <Fragment>
                 <h1>New Invoice #{ number }</h1>
                 <Divider />
-                <InvoiceForm number={number} save={this.save} data={{}} />
+                <InvoiceForm number={number} save={this.save} data={{}} settings={settings} />
               </Fragment>
               )
             : (
               <Fragment>
                 <h1>Invoice #{ number }</h1>
                 <Divider />
-                <InvoiceForm number={number} save={this.save} data={invoice} />
+                <InvoiceForm number={number} save={this.save} data={invoice} settings={settings} />
                 <Row>
                   <Col span={12}>
                     <Button
@@ -143,8 +152,9 @@ class Invoice extends Component {
   }
 };
 
-const mapStateToProps = ({ invoices: { current } }) => ({
+const mapStateToProps = ({ invoices: { current }, app: { settings } }) => ({
   invoice: current,
+  settings,
 });
 
 const mapDispatchToProps = {
@@ -154,6 +164,7 @@ const mapDispatchToProps = {
   deleteInvoice,
   saveInvoice,
   downloadInvoicePDF,
+  fetchSettings,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invoice);

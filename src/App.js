@@ -6,6 +6,7 @@ import Home from 'pages/Home';
 import Invoices from 'pages/Invoices';
 import Invoice from 'pages/Invoice';
 import Settings from 'pages/Settings';
+import Profile from 'pages/Profile';
 import Layout from 'components/Layout';
 import MainSider from 'components/MainSider';
 const store = configureStore();
@@ -21,6 +22,7 @@ class App extends Component {
             <Route exact path="/invoices" component={Invoices} />
             <Route path="/invoice/:number" component={Invoice} />
             <Route exact path="/settings" component={Settings} />
+            <Route exact path="/profile" component={Profile} />
           </Layout>
         </Router>
       </Provider>
