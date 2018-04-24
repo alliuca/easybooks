@@ -170,7 +170,7 @@ class InvoiceForm extends Component {
             <Header brandcolor={brandColor}>
               <Row gutter={15}>
                 <Col span={8}>
-                  <CompanyLogo src={`${baseURL}/files/upload/logo/${logo.file.name}`} size="large">C</CompanyLogo>
+                  <CompanyLogo src={logo && `${baseURL}/files/upload/logo/${logo.file.name}`} size="large">C</CompanyLogo>
                   <div>
                     <div>John Doe</div>
                     <div>JHNDOE1234</div>

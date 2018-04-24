@@ -19,11 +19,17 @@ export default (state = initialState, action) => {
     case RESET_CURRENT_INVOICE:
       return { ...state, current: null };
     case FETCH_INVOICE:
-      return { ...state, current: { ...state.current, ...action.payload } };
+      return { ...state, current: action.payload };
     case DELETE_INVOICE:
       return { ...state, all: state.all.filter(invoice => invoice.invoiceNumber !== action.payload.number), current: null };
     case SAVE_INVOICE:
-      const newInvoices = state.all.map(invoice => invoice.key !== action.payload.key ? invoice : { ...invoice, ...action.payload });
+      let newInvoices = state.all;
+      const invoiceIndex = state.all.findIndex(invoice => invoice.key === action.payload.key);
+      if (invoiceIndex < 0) {
+        newInvoices.push(action.payload);
+      } else {
+        newInvoices[invoiceIndex] = action.payload;
+      }
       return { ...state, all: newInvoices, current: null };
     case DOWNLOAD_INVOICE_PDF:
       return { ...state, current: { ...state.current, filepath: action.payload } };

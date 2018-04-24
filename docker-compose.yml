@@ -5,10 +5,5 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - '.:/usr/src/app'
-      - '/usr/src/app/node_modules'
     ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=development
+      - '8080:80'

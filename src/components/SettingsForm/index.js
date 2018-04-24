@@ -7,15 +7,25 @@ import {
   Upload,
   Button,
   Icon,
+  message,
 } from 'antd';
 import { Fields, ColorPicker, Logo } from './settingsform.theme';
 import { baseURL } from 'config';
+const maxFileSize = 51200; // 50kb = 50 * 1024
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 }
+
+const beforeUpload = (file) => {
+  const isLt50k = file.size < maxFileSize;
+  if (!isLt50k) {
+    message.error('Image must be smaller than 50kb');
+  }
+  return isLt50k;
+};
 
 class SettingsForm extends Component {
   state = {
@@ -105,11 +115,14 @@ class SettingsForm extends Component {
                 initialValue: settings.logo,
               })(
                 <Upload
+                  accept=".jpg,.png,.gif"
                   action={`${baseURL}/api/upload`}
+                  beforeUpload={beforeUpload}
                   name="logo"
                   listType="picture-card"
                   onChange={this.handleLogoChange}
                   showUploadList={false}
+                  type="file"
                 >
                   { imageUrl
                   ? (

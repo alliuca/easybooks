@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import {
   setMessages,
   clearAllMessages,
-  fetchSettings,
 } from 'actions/app';
 import {
   fetchInvoice,
@@ -31,7 +30,6 @@ class Invoice extends Component {
 
   async componentDidMount() {
     const { match: { params: { number } } } = this.props;
-    await this.props.fetchSettings();
     await this.props.fetchInvoice(number);
     this.props.clearAllMessages();
   }
@@ -66,7 +64,7 @@ class Invoice extends Component {
       notes: details.notes,
       settings: {
         brandColor,
-        logo: logo.file.name,
+        logo: logo ? logo.file.name : null,
       },
     });
     await this.props.setMessages({
@@ -164,7 +162,6 @@ const mapDispatchToProps = {
   deleteInvoice,
   saveInvoice,
   downloadInvoicePDF,
-  fetchSettings,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invoice);

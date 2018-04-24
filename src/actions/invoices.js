@@ -18,13 +18,16 @@ export const fetchInvoices = () => async dispatch => {
   });
 }
 
-export const fetchInvoice = (number) => async dispatch => {
+export const fetchInvoice = (number) => async (dispatch, getState) => {
   dispatch({
     type: RESET_CURRENT_INVOICE,
   });
 
-  const res = await Api.get(`/invoices/${number}`);
-  const invoice = res.data;
+  let invoice = getState().invoices.all.find(invoice => invoice.invoiceNumber === number);
+  if (!invoice) {
+    const res = await Api.get(`/invoices/${number}`);
+    invoice = res.data;
+  }
 
   dispatch({
     type: FETCH_INVOICE,
