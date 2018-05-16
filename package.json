@@ -24,6 +24,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "babel-plugin-emotion": "^9.1.2",
     "babel-plugin-import": "^1.7.0",
     "react-app-rewired": "^1.5.0",
     "redux-logger": "^3.0.6"
