@@ -3,6 +3,7 @@ import {
   CLEAR_ALL_MESSAGES,
   FETCH_SETTINGS,
   SAVE_SETTINGS,
+  LOGIN,
 } from 'actions/types';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
     brandColor: '#40a9ff',
     logo: null,
   },
+  loggedIn: null,
 };
 
 export default (state = initialState, action) => {
@@ -24,6 +26,8 @@ export default (state = initialState, action) => {
     case FETCH_SETTINGS:
     case SAVE_SETTINGS:
       return { ...state, settings: action.payload }
+    case LOGIN:
+      return { ...state, loggedIn: action.payload }
     default:
       return state;
   }

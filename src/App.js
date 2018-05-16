@@ -7,8 +7,8 @@ import Invoices from 'pages/Invoices';
 import Invoice from 'pages/Invoice';
 import Settings from 'pages/Settings';
 import Profile from 'pages/Profile';
+import SignIn from 'pages/SignIn';
 import Layout from 'components/Layout';
-import MainSider from 'components/MainSider';
 const store = configureStore();
 
 class App extends Component {
@@ -17,12 +17,12 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <Layout>
-            <MainSider />
             <Route exact path="/" component={Home} />
             <Route exact path="/invoices" component={Invoices} />
             <Route path="/invoice/:number" component={Invoice} />
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/login" component={SignIn} />
           </Layout>
         </Router>
       </Provider>
