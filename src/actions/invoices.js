@@ -8,6 +8,12 @@ import {
   DOWNLOAD_INVOICE_PDF,
 } from 'actions/types';
 
+export const resetCurrentInvoice = () => dispatch => {
+  dispatch ({
+    type: RESET_CURRENT_INVOICE,
+  });
+}
+
 export const fetchInvoices = () => async dispatch => {
   const res = await Api.get('/invoices');
   const invoices = res.data;
@@ -19,9 +25,7 @@ export const fetchInvoices = () => async dispatch => {
 }
 
 export const fetchInvoice = (number) => async (dispatch, getState) => {
-  dispatch({
-    type: RESET_CURRENT_INVOICE,
-  });
+  resetCurrentInvoice();
 
   let invoice = getState().invoices.all.find(invoice => invoice.invoiceNumber === number);
   if (!invoice) {

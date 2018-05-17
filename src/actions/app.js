@@ -1,9 +1,11 @@
+import Cookies from 'js-cookie';
 import { Api } from 'config';
 import {
   SET_MESSAGES,
   CLEAR_ALL_MESSAGES,
   FETCH_SETTINGS,
   SAVE_SETTINGS,
+  LOGIN,
 } from 'actions/types';
 
 export const setMessages = (obj, remove = false) => ({
@@ -34,5 +36,18 @@ export const saveSettings = data => async dispatch => {
   dispatch({
     type: SAVE_SETTINGS,
     payload: data,
+  });
+}
+
+export const login = data => async dispatch => {
+  const login = await Api.post('/login', data);
+  const { token, user } = login.data;
+
+  if (token)
+    Cookies.set('EasyBooksToken', token);
+
+  dispatch({
+    type: LOGIN,
+    payload: user ? true : false,
   });
 }

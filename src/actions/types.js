@@ -3,6 +3,7 @@ export const SET_MESSAGES = 'SET_MESSAGES';
 export const CLEAR_ALL_MESSAGES = 'CLEAR_ALL_MESSAGES';
 export const FETCH_SETTINGS = 'FETCH_SETTINGS';
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
+export const LOGIN = 'LOGIN';
 
 // invoices
 export const FETCH_INVOICES = 'FETCH_INVOICES';
