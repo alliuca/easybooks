@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { Api } from 'config';
 import {
   SET_MESSAGES,
@@ -43,7 +44,7 @@ export const login = data => async dispatch => {
   const { token, user } = login.data;
 
   if (token)
-    document.cookie = `EasyBooksToken=${token}`;
+    Cookies.set('EasyBooksToken', token);
 
   dispatch({
     type: LOGIN,

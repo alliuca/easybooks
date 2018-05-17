@@ -1,7 +1,16 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const baseURL = process.env.REACT_APP_API;
 
-export const Api = axios.create({
+const Api = axios.create({
   baseURL: `${baseURL}/api`,
 });
+
+Api.interceptors.request.use((config)=>{
+  const token = Cookies.get('EasyBooksToken');
+  config.headers.Authorization = `Bearer ${encodeURIComponent(token)}`;
+  return config;
+});
+
+export { Api };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form as AntdForm, Icon, Input, Checkbox } from 'antd';
+import { Form as AntdForm, Icon, Input } from 'antd';
 import { Form, LoginButton } from './loginform.theme';
 const FormItem = AntdForm.Item;
 

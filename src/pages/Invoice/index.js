@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import {
   setMessages,
   clearAllMessages,
+  fetchSettings,
 } from 'actions/app';
 import {
+  resetCurrentInvoice,
   fetchInvoice,
   deleteInvoice,
   saveInvoice,
@@ -30,8 +32,13 @@ class Invoice extends Component {
 
   async componentDidMount() {
     const { match: { params: { number } } } = this.props;
+    await this.props.fetchSettings();
     await this.props.fetchInvoice(number);
     this.props.clearAllMessages();
+  }
+
+  componentWillUnmount() {
+    this.props.resetCurrentInvoice();
   }
 
   deleteInvoice = async number => {
@@ -158,6 +165,8 @@ const mapStateToProps = ({ invoices: { current }, app: { settings } }) => ({
 const mapDispatchToProps = {
   setMessages,
   clearAllMessages,
+  resetCurrentInvoice,
+  fetchSettings,
   fetchInvoice,
   deleteInvoice,
   saveInvoice,

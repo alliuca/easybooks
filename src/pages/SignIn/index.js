@@ -5,8 +5,12 @@ import Page from 'layout/Page';
 import LoginForm from 'components/LoginForm';
 
 class SignIn extends Component {
-  handleLogin = (obj) => {
-    this.props.login(obj);
+  handleLogin = async (obj) => {
+    const { location: { state }, history } = this.props;
+    await this.props.login(obj);
+    if (state && state.from)
+      return history.push(state.from.pathname);
+    return history.push('/');
   }
 
   render() {
