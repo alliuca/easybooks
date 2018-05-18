@@ -9,7 +9,7 @@ export const Container = styled(Menu)`
 `;
 
 export const Item = styled(Menu.Item)`
-  &.ant-menu-item {
+  .ant-menu-vertical &.ant-menu-item {
     padding: 0;
 
     & > a {
