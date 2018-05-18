@@ -93,7 +93,7 @@ class Invoice extends Component {
       }
     });
     await this.props.downloadInvoicePDF(number);
-    window.open(`http://localhost:3030/${this.props.invoice.filepath}`)
+    window.open(`${process.env.REACT_APP_API}/${this.props.invoice.filepath}`)
   }
 
   render() {

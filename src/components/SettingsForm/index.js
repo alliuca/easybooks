@@ -11,6 +11,7 @@ import {
 } from 'antd';
 import { Fields, ColorPicker, Logo } from './settingsform.theme';
 import { baseURL } from 'config';
+import Cookies from 'js-cookie';
 const maxFileSize = 51200; // 50kb = 50 * 1024
 
 const getBase64 = (img, callback) => {
@@ -64,6 +65,7 @@ class SettingsForm extends Component {
   }
 
   handleLogoChange = ({ file }) => {
+    console.log('FILE', file);
     if (file.status === 'uploading') {
       this.setState({ loadingLogo: true });
       return;
@@ -123,6 +125,7 @@ class SettingsForm extends Component {
                   onChange={this.handleLogoChange}
                   showUploadList={false}
                   type="file"
+                  headers={{ Authorization: `Bearer ${encodeURIComponent(Cookies.get('EasyBooksToken'))}` }}
                 >
                   { imageUrl
                   ? (

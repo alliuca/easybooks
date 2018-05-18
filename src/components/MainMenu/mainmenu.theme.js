@@ -3,13 +3,16 @@ import { NavLink } from 'react-router-dom';
 import { Menu } from 'antd';
 
 export const Container = styled(Menu)`
-  border-color: #40a9ff;
-  background: #40a9ff;
-  color: #fff;
+  &.ant-menu {
+    border-color: #40a9ff;
+    background: #40a9ff;
+    color: #fff;
+  }
 `;
 
 export const Item = styled(Menu.Item)`
-  .ant-menu-vertical &.ant-menu-item {
+  .ant-menu-vertical > &.ant-menu-item,
+  .ant-menu-vertical > &.ant-menu-item:not(:last-child) {
     padding: 0;
 
     & > a {
