@@ -2,8 +2,8 @@
 
 ### Demo
 
-[easybooks.now.sh](https://easybooks.now.sh)
-demo@easybooks.io:demo@easybooks.io
+[easybooks.now.sh](https://easybooks.now.sh)  
+credentials: demo@easybooks.io:demo@easybooks.io
 
 ### Deployment
 
