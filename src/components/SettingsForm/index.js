@@ -65,7 +65,6 @@ class SettingsForm extends Component {
   }
 
   handleLogoChange = ({ file }) => {
-    console.log('FILE', file);
     if (file.status === 'uploading') {
       this.setState({ loadingLogo: true });
       return;

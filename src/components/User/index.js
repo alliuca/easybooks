@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar } from 'antd';
+import { baseURL } from 'config';
 import { Container, ShortInfo } from './user.theme';
 
-const User = ({ data: { name, website }, withShortInfo }) => (
+const User = ({ data: { logo, name, website }, withShortInfo }) => (
   <Container>
     <Link to="/profile">
-      <Avatar size="large" icon="user" />
+      <Avatar size="large" icon={!logo ? 'user' : null} src={logo ? `${baseURL}/files/upload/logo/${logo.file.name}` : null} />
     </Link>
     { withShortInfo && (
       <ShortInfo>
