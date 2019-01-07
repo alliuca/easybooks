@@ -1,0 +1,12 @@
+{
+  "invoice.form.description": "Descrizione",
+  "invoice.form.hours": "Ore",
+  "invoice.form.amount": "Importo",
+  "invoice.form.billed_to": "Intestazione Fattura",
+  "invoice.form.invoice_number": "Numero Fattura",
+  "invoice.form.invoice_total": "Totale Fattura",
+  "invoice.form.invoice_terms": "Termini Fattura",
+  "invoice.form.subtotal": "Subtotale",
+  "invoice.form.totale": "Totale",
+  "invoice.form.amount_due": "Importo Dovuto ({currencyText})"
+}

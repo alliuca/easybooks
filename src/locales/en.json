@@ -1,0 +1,12 @@
+{
+  "invoice.form.description": "Description",
+  "invoice.form.hours": "Hours",
+  "invoice.form.amount": "Amount",
+  "invoice.form.billed_to": "Billed To:",
+  "invoice.form.invoice_number": "Invoice Number",
+  "invoice.form.invoice_total": "Invoice Total",
+  "invoice.form.invoice_terms": "Invoice Terms",
+  "invoice.form.subtotal": "Subtotal",
+  "invoice.form.totale": "Total",
+  "invoice.form.amount_due": "Amount Due ({currencyText})"
+}

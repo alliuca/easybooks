@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { currencies } from 'config';
 import {
   setMessages,
   clearAllMessages,
@@ -60,7 +61,10 @@ class Invoice extends Component {
       invoiceNumber: number,
       dateOfIssue: details.dateOfIssue,
       client: details.client,
-      currency: details.currency,
+      currency: {
+        value: details.currency.value,
+        symbol: currencies[details.currency.value].symbol
+      },
       billedTo: details.billedTo,
       amount: total,
       subtotal: subtotal,
@@ -97,7 +101,7 @@ class Invoice extends Component {
   }
 
   render() {
-    const { match: { params: { number } }, invoice, settings } = this.props;
+    const { match: { params: { number } }, invoice, settings, profile } = this.props;
     const { actions } = this.state;
 
     return (
@@ -109,14 +113,14 @@ class Invoice extends Component {
               <Fragment>
                 <h1>New Invoice #{ number }</h1>
                 <Divider />
-                <InvoiceForm number={number} save={this.save} data={{}} settings={settings} />
+                <InvoiceForm number={number} save={this.save} data={{}} settings={settings} profile={profile} />
               </Fragment>
               )
             : (
               <Fragment>
                 <h1>Invoice #{ number }</h1>
                 <Divider />
-                <InvoiceForm number={number} save={this.save} data={invoice} settings={settings} />
+                <InvoiceForm number={number} save={this.save} data={invoice} settings={settings} profile={profile} />
                 <Row>
                   <Col span={12}>
                     <Button
@@ -157,9 +161,10 @@ class Invoice extends Component {
   }
 };
 
-const mapStateToProps = ({ invoices: { current }, app: { settings } }) => ({
+const mapStateToProps = ({ invoices: { current }, app: { settings }, profile }) => ({
   invoice: current,
   settings,
+  profile,
 });
 
 const mapDispatchToProps = {

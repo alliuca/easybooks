@@ -1,11 +1,13 @@
 // TODO: Omg, refactor this
 
 import React, { Component, Fragment } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import moment from 'moment-mini';
 import {
   Row,
   Col,
   Input,
+  Select,
   Button,
 } from 'antd';
 import {
@@ -24,28 +26,9 @@ import {
 } from './invoiceform.theme';
 import EditableTable from 'components/EditableTable';
 import EditableCell from 'components/EditableCell';
-import { baseURL } from 'config';
+import { baseURL, currencies } from 'config';
 const { TextArea } = Input;
-
-const columns = [
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    width: '60%',
-  },
-  {
-    title: 'Hours',
-    dataIndex: 'hours',
-    width: '20%',
-    align: 'right',
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'amount',
-    width: '20%',
-    align: 'right',
-  },
-];
+const { Option } = Select;
 
 class InvoiceForm extends Component {
   state = {
@@ -66,6 +49,29 @@ class InvoiceForm extends Component {
       count: 0,
     },
     items: this.props.data.items ? this.props.data.items : [],
+  }
+
+  getColumnsData = () => {
+    const { intl } = this.props;
+    return [
+      {
+        title: intl.formatMessage({ id: 'invoice.form.description' }),
+        dataIndex: 'description',
+        width: '60%',
+      },
+      {
+        title: intl.formatMessage({ id: 'invoice.form.hours' }),
+        dataIndex: 'hours',
+        width: '20%',
+        align: 'right',
+      },
+      {
+        title: intl.formatMessage({ id: 'invoice.form.amount' }),
+        dataIndex: 'amount',
+        width: '20%',
+        align: 'right',
+      },
+    ];
   }
 
   updateTotal = () => {
@@ -139,8 +145,17 @@ class InvoiceForm extends Component {
     });
   }
 
+  onCurrencyChange = (value) => {
+    this.setState({
+      details: {
+        ...this.state.details,
+        currency: { value, symbol: currencies[value].symbol },
+      }
+    });
+  }
+
   render() {
-    const { save, number, settings: { brandColor, logo } } = this.props;
+    const { save, number, settings: { brandColor, logo }, profile } = this.props;
     const {
       total,
       subtotal,
@@ -160,13 +175,10 @@ class InvoiceForm extends Component {
                 onChange={this.onInputChange}
               />
             </Col>
-            <Col span={6}>
-              <Input
-                name="currency"
-                addonBefore="Currency"
-                value={details.currency}
-                onChange={this.onInputChange}
-              />
+            <Col span={3}>
+              <Select defaultValue={'CAD'} value={details.currency.value ? details.currency.value : 'CAD'} onChange={this.onCurrencyChange}>
+                {Object.keys(currencies).map(c => <Option key={c} value={c}>{currencies[c].symbol}</Option>)}
+              </Select>
             </Col>
           </Row>
           <br />
@@ -176,20 +188,20 @@ class InvoiceForm extends Component {
                 <Col span={8}>
                   <CompanyLogo src={logo && `${baseURL}/files/upload/logo/${logo.file.name}`} size="large">C</CompanyLogo>
                   <div>
-                    <div>John Doe</div>
-                    <div>JHNDOE1234</div>
-                    <div>VAT: 0123456789</div>
+                    <div>{profile.name}</div>
+                    <div>{profile.taxCode}</div>
+                    <div>VAT: {profile.vat}</div>
                   </div>
                 </Col>
                 <Col span={8} align="right">
-                  <div>+1 555-555</div>
-                  <div>john@doe.com</div>
-                  <div>doe.com</div>
+                  <div>{profile.phone}</div>
+                  <div>{profile.email}</div>
+                  <div>{profile.website}</div>
                 </Col>
                 <Col span={8} align="right">
-                  <div>102 West Hastings</div>
-                  <div>Vancouver, BC, Canada</div>
-                  <div>V6B</div>
+                  <div>{profile.addressStreet}</div>
+                  <div>{profile.addressCityCountry}</div>
+                  <div>{profile.postalCode}</div>
                 </Col>
               </Row>
             </Header>
@@ -197,7 +209,7 @@ class InvoiceForm extends Component {
               <Row gutter={15}>
                 <Col span={8}>
                   <div>
-                    <h5>Billed To:</h5>
+                    <h5><FormattedMessage id="invoice.form.billed_to" /></h5>
                     <FormItem>
                       <TextArea
                         name="billedTo"
@@ -212,7 +224,7 @@ class InvoiceForm extends Component {
                 </Col>
                 <Col span={8}>
                   <div>
-                    <h5>Invoice Number</h5>
+                    <h5><FormattedMessage id="invoice.form.invoice_number" /></h5>
                     <Input
                       name="invoiceNumber"
                       value={details.invoiceNumber}
@@ -222,15 +234,15 @@ class InvoiceForm extends Component {
                 </Col>
                 <Col span={8} className="text-right">
                   <div>
-                    <h5>Invoice Total</h5>
-                    <span className="text-right">{details.currency} {total}</span>
+                    <h5><FormattedMessage id="invoice.form.invoice_total" /></h5>
+                    <span className="text-right">{currencies[details.currency.value] && currencies[details.currency.value].symbol} {total}</span>
                   </div>
                 </Col>
               </Row>
             </Content>
             <EditableTable
-              columns={columns}
-              currency={details.currency}
+              columns={this.getColumnsData()}
+              currency={currencies[details.currency.value] && currencies[details.currency.value].symbol}
               data={items}
               pagination={false}
               editableCells={['description', 'hours', 'amount']}
@@ -240,7 +252,7 @@ class InvoiceForm extends Component {
               <Row gutter={15} type="flex" align="bottom">
                 <Col span={12}>
                   <Terms>
-                    <h5>Invoice Terms</h5>
+                    <h5><FormattedMessage id="invoice.form.invoice_terms" /></h5>
                     <TextArea
                       name="terms"
                       value={details.terms}
@@ -254,8 +266,8 @@ class InvoiceForm extends Component {
                 <Col span={12}>
                   <Summary brandcolor={brandColor}>
                     <Row gutter={15}>
-                      <Col span={12}>Subtotal</Col>
-                      <Col span={12}>{subtotal}</Col>
+                      <Col span={12}><FormattedMessage id="invoice.form.subtotal" /></Col>
+                      <Col span={12}>{currencies[details.currency.value] && currencies[details.currency.value].symbol} {subtotal}</Col>
                     </Row>
                     { fees.items.map(f => {
                       if (f.editable) {
@@ -268,7 +280,7 @@ class InvoiceForm extends Component {
                               />
                             </Col>
                             <Col span={12}>
-                              {details.currency}&nbsp;
+                              {currencies[details.currency.value] && currencies[details.currency.value].symbol}&nbsp;
                               <EditableCell
                                 value={f.value.toString()}
                                 onChange={this.onCellChange(`fees`, f.key, 'value')}
@@ -295,12 +307,12 @@ class InvoiceForm extends Component {
                       </Button>
                     </AddFeeButton>
                     <Row gutter={15}>
-                      <Col span={12}>Total</Col>
-                      <Col span={12}>{details.currency} {total}</Col>
+                      <Col span={12}><FormattedMessage id="invoice.form.invoice_total" /></Col>
+                      <Col span={12}>{currencies[details.currency.value] && currencies[details.currency.value].symbol} {total}</Col>
                     </Row>
                     <AmountDue gutter={15}>
-                      <Col span={12}>Amount Due (EUR)</Col>
-                      <Col span={12}>{details.currency} {total}</Col>
+                      <Col span={12}><FormattedMessage id="invoice.form.amount_due" values={{ currencyText: details.currency.value }} /></Col>
+                      <Col span={12}>{currencies[details.currency.value] && currencies[details.currency.value].symbol} {total}</Col>
                     </AmountDue>
                   </Summary>
                 </Col>
@@ -328,4 +340,4 @@ class InvoiceForm extends Component {
   }
 }
 
-export default InvoiceForm;
+export default injectIntl(InvoiceForm);

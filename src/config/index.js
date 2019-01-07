@@ -13,4 +13,12 @@ Api.interceptors.request.use((config)=>{
   return config;
 });
 
-export { Api };
+const currencies = {
+  'CAD': { symbol: '$' },
+  'EUR': { symbol: '€' },
+};
+
+export {
+  Api,
+  currencies,
+};
