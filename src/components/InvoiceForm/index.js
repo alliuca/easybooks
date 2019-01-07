@@ -72,17 +72,17 @@ class InvoiceForm extends Component {
     const { items, fees } = this.state;
     const amountsSum = items.reduce((a, b) => {
       if (!a)
-        return parseInt(b.amount, 0);
-      return a + parseInt(b.amount, 10);
+        return parseFloat(b.amount.replace(',',''), 0);
+      return a + parseFloat(b.amount.replace(',',''), 10);
     }, 0);
     const feesSum = fees.items.reduce((a, b) => {
       if (!a)
-        return parseInt(b.value, 10);
-      return a + parseInt(b.value, 10);
+        return parseFloat(b.value, 10);
+      return a + parseFloat(b.value, 10);
     }, 0);
     this.setState({
-      total: amountsSum + feesSum,
-      subtotal: amountsSum,
+      total: (amountsSum + feesSum).toLocaleString('us-EN'),
+      subtotal: amountsSum.toLocaleString('us-EN'),
     });
   }
 
@@ -109,13 +109,17 @@ class InvoiceForm extends Component {
   }
 
   onCellChange = (name, key, input) => {
-    if (input !== 'value')
-      return;
+    // if (input !== 'value')
+    //   return;
     return value => {
       const dataSource = [...this.state[name].items];
       const target = dataSource.find(i => i.key === key);
       if (target) {
-        target.value = value;
+        if (input !== 'value') {
+          target.name = value;
+        } else {
+          target.value = value;
+        }
         this.setState({
           [name]: {
             items: dataSource,
@@ -260,7 +264,7 @@ class InvoiceForm extends Component {
                             <Col span={12}>
                               <EditableCell
                                 value={f.name}
-                                onChange={this.onCellChange('fees', f.key, 'name')}
+                                onChange={this.onCellChange(`fees`, f.key, 'name')}
                               />
                             </Col>
                             <Col span={12}>

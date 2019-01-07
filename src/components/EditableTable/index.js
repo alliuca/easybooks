@@ -14,13 +14,23 @@ class EditableTable extends Component {
             <Fragment>
               <EditableCell
                 value={record.name}
-                onChange={this.onCellChange(record.key, c)}
+                onChange={this.onCellChange(record.key, c, 'name')}
                 style={{ display: 'block', marginBottom: 7, fontSize: '12px' }}
               />
               <EditableCell
                 value={text}
-                onChange={this.onCellChange(record.key, c)}
+                onChange={this.onCellChange(record.key, c, 'value')}
                 style={{ display: 'block' }}
+              />
+            </Fragment>
+          );
+        }
+        if (c === 'amount') {
+          return (
+            <Fragment>
+              € <EditableCell
+                value={text}
+                onChange={this.onCellChange(record.key, c)}
               />
             </Fragment>
           );
@@ -39,12 +49,16 @@ class EditableTable extends Component {
     };
   }
 
-  onCellChange = (key, dataIndex) => {
+  onCellChange = (key, dataIndex, input) => {
     return value => {
       const dataSource = [...this.state.dataSource];
       const target = dataSource.find(item => item.key === key);
       if (target) {
-        target[dataIndex] = value;
+        if (input && input !== 'value') {
+          target['name'] = value;
+        } else {
+          target[dataIndex] = value;
+        }
         this.setState({ dataSource });
         this.props.updateData(dataSource);
       }
