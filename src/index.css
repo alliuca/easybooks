@@ -10,10 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.text-right {
-  text-align: right;
-}
+.text-right { text-align: right; }
 
-.mt30 {
-  margin-top: 30px;
-}
+.mt30 { margin-top: 30px; }
+.mb30 { margin-bottom: 30px; }

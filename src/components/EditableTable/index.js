@@ -49,6 +49,11 @@ class EditableTable extends Component {
     };
   }
 
+  componentDidUpdate({ data }) {
+    if (this.props.data !== data)
+      return this.setState({ ...this.state, dataSource: [] }, () => this.setState({ ...this.state, dataSource: this.props.data }));
+  }
+
   onCellChange = (key, dataIndex, input) => {
     return value => {
       const dataSource = [...this.state.dataSource];

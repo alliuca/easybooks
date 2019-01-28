@@ -31,7 +31,7 @@ class App extends Component {
               <Layout>
                 <ProtectedRoute exact path="/" component={Home} />
                 <ProtectedRoute exact path="/invoices" component={Invoices} />
-                <ProtectedRoute path="/invoice/:number" component={Invoice} />
+                <ProtectedRoute path="/invoice/:number/:locale?" component={Invoice} />
                 <ProtectedRoute exact path="/settings" component={Settings} />
                 <ProtectedRoute exact path="/profile" component={Profile} />
                 <Route exact path="/login" component={SignIn} />

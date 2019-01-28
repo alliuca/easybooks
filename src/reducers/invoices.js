@@ -1,6 +1,7 @@
 import {
   FETCH_INVOICES,
   RESET_CURRENT_INVOICE,
+  FETCH_INVOICE_LOCALES,
   FETCH_INVOICE,
   DELETE_INVOICE,
   SAVE_INVOICE,
@@ -18,8 +19,10 @@ export default (state = initialState, action) => {
       return { ...state, all: action.payload };
     case RESET_CURRENT_INVOICE:
       return { ...state, current: null };
+    case FETCH_INVOICE_LOCALES:
+      return { ...state, current: { ...state.current, locales: action.payload } };
     case FETCH_INVOICE:
-      return { ...state, current: action.payload };
+      return { ...state, current: { ...state.current, ...action.payload } };
     case DELETE_INVOICE:
       return { ...state, all: state.all.filter(invoice => invoice.invoiceNumber !== action.payload.number), current: null };
     case SAVE_INVOICE:

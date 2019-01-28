@@ -36,12 +36,12 @@ class InvoiceForm extends Component {
     subtotal: this.props.data.subtotal,
     details: {
       client: this.props.data.client,
-      currency: this.props.data.currency,
+      currency: this.props.data.currency || { 'CAD': { symbol: '$' } },
       billedTo: this.props.data.billedTo || `Acme Inc.\n150 Main Street\nVancouver, BC, Canada\nV6A`,
       dateOfIssue: moment().format('DD/MM/YYYY'),
       invoiceNumber: this.props.number,
-      terms: this.props.data.terms || `Please pay by bank transfer to:\n\nLending Institution: Acme Bank\nBIC/SWIFT: AB000000\nBank account holder: John Doe`,
-      notes: this.props.data.notes || `Non EEC services given in accordance with the Protectorate's Decree 633/366.\n\nOperation falling under the income tax policy.`,
+      terms: this.props.data.terms || `Please pay by bank transfer to:\n\nLending Institution: Banca Intesa Sanpaolo\nIBAN: IT28D0306953990100000000310\nBIC/SWIFT: BCITITMM\nBank account holder: Luca Allievi`,
+      notes: this.props.data.notes || `Non EEC services given in accordance with the Italian Presidential Decree 633/1972 (section 7/ter)\n\nOperation falling under the preferential income tax policy provided by section 1, c. 111-113 Law 208/2015, with consequent VAT and withholding tax exemption.`,
     },
     status: 'Waiting',
     fees: {
@@ -49,6 +49,27 @@ class InvoiceForm extends Component {
       count: 0,
     },
     items: this.props.data.items ? this.props.data.items : [],
+  }
+
+  componentDidUpdate({ data, locale }) {
+    if ((data.length && data !== this.props.data) || (data.currency && this.props.data.currency.value !== data.currency.value)) {
+      this.setState({
+        ...this.state,
+        details: {
+          ...this.state.details,
+          client: this.props.data.client,
+          currency: this.props.data.currency,
+          billedTo: this.props.data.billedTo,
+          terms: this.props.data.terms,
+          notes: this.props.data.notes,
+        },
+        fees: {
+          items: this.props.data.fees.items,
+          count: this.props.data.fees.length,
+        },
+        items: this.props.data.items,
+      }, () => console.log('NEW STATE', this.state));
+    }
   }
 
   getColumnsData = () => {
