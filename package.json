@@ -27,13 +27,14 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test --env=jsdom",
+    "test": "CI=true react-app-rewired test",
+    "test:watch": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint src",
     "prettier": "prettier \"**/*.+(js|json)\"",
     "flow": "flow",
     "format": "npm run prettier -- --write",
-    "validate": "npm run lint && npm run prettier -- --list-different && npm run flow"
+    "validate": "npm run lint && npm run test && npm run prettier -- --list-different && npm run flow"
   },
   "husky": {
     "hooks": {
