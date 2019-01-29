@@ -3,9 +3,7 @@ import thunk from 'redux-thunk';
 import createReducer from './reducers';
 
 export default function configureStore(initialState = {}) {
-  const middlewares = [
-    thunk,
-  ];
+  const middlewares = [thunk];
 
   if (process.env.NODE_ENV !== 'production') {
     const { createLogger } = require('redux-logger');
@@ -23,30 +21,28 @@ export default function configureStore(initialState = {}) {
     middlewares.push(logger);
   }
 
-  const enhancers = [
-    applyMiddleware(...middlewares),
-  ];
+  const enhancers = [applyMiddleware(...middlewares)];
 
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   const composeEnhancers =
     process.env.NODE_ENV !== 'production' &&
     typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? /* istanbul ignore next */
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : /* istanbul ignore next */
-    compose;
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ /* istanbul ignore next */
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ /* istanbul ignore next */
+      : compose;
 
   const store = createStore(
     createReducer(),
     {
       ...initialState,
     },
-    composeEnhancers(...enhancers),
+    composeEnhancers(...enhancers)
   );
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   if (module.hot) {
     module.hot.accept('./reducers', () => {
-      import('./reducers').then((reducerModule) => {
+      import('./reducers').then(reducerModule => {
         const createReducers = reducerModule.default;
         const nextReducers = createReducers(store.asyncReducers);
 

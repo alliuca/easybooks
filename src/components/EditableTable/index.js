@@ -7,41 +7,37 @@ class EditableTable extends Component {
   constructor(props) {
     super(props);
     this.columns = props.columns;
-    props.editableCells.map(c =>
-      this.columns[this.columns.findIndex(col => col.dataIndex === c)].render = (text, record) => {
-        if (c === 'description') {
-          return (
-            <Fragment>
-              <EditableCell
-                value={record.name}
-                onChange={this.onCellChange(record.key, c, 'name')}
-                style={{ display: 'block', marginBottom: 7, fontSize: '12px' }}
-              />
-              <EditableCell
-                value={text}
-                onChange={this.onCellChange(record.key, c, 'value')}
-                style={{ display: 'block' }}
-              />
-            </Fragment>
-          );
-        }
-        if (c === 'amount') {
-          return (
-            <Fragment>
-              € <EditableCell
-                value={text}
-                onChange={this.onCellChange(record.key, c)}
-              />
-            </Fragment>
-          );
-        }
-        return (
-          <EditableCell
-            value={text}
-            onChange={this.onCellChange(record.key, c)}
-          />
-        )
-      }
+    props.editableCells.map(
+      c =>
+        (this.columns[this.columns.findIndex(col => col.dataIndex === c)].render = (
+          text,
+          record
+        ) => {
+          if (c === 'description') {
+            return (
+              <Fragment>
+                <EditableCell
+                  value={record.name}
+                  onChange={this.onCellChange(record.key, c, 'name')}
+                  style={{ display: 'block', marginBottom: 7, fontSize: '12px' }}
+                />
+                <EditableCell
+                  value={text}
+                  onChange={this.onCellChange(record.key, c, 'value')}
+                  style={{ display: 'block' }}
+                />
+              </Fragment>
+            );
+          }
+          if (c === 'amount') {
+            return (
+              <Fragment>
+                € <EditableCell value={text} onChange={this.onCellChange(record.key, c)} />
+              </Fragment>
+            );
+          }
+          return <EditableCell value={text} onChange={this.onCellChange(record.key, c)} />;
+        })
     );
     this.state = {
       dataSource: props.data,
@@ -51,7 +47,9 @@ class EditableTable extends Component {
 
   componentDidUpdate({ data }) {
     if (this.props.data !== data)
-      return this.setState({ ...this.state, dataSource: [] }, () => this.setState({ ...this.state, dataSource: this.props.data }));
+      return this.setState({ ...this.state, dataSource: [] }, () =>
+        this.setState({ ...this.state, dataSource: this.props.data })
+      );
   }
 
   onCellChange = (key, dataIndex, input) => {
@@ -67,13 +65,13 @@ class EditableTable extends Component {
         this.setState({ dataSource });
         this.props.updateData(dataSource);
       }
-    }
-  }
+    };
+  };
 
   onDelete = key => {
     const dataSource = [...this.state.dataSource];
     this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-  }
+  };
 
   handleAdd = () => {
     const { count, dataSource } = this.state;
@@ -84,22 +82,21 @@ class EditableTable extends Component {
       hours: '0',
       amount: '0',
     };
-    this.setState({
-      dataSource: [...dataSource, newData],
-      count: count + 1,
-    }, () => this.props.updateData(this.state.dataSource));
-  }
+    this.setState(
+      {
+        dataSource: [...dataSource, newData],
+        count: count + 1,
+      },
+      () => this.props.updateData(this.state.dataSource)
+    );
+  };
 
   render() {
     const { dataSource } = this.state;
     const columns = this.columns;
     return (
       <div>
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          pagination={false}
-        />
+        <Table dataSource={dataSource} columns={columns} pagination={false} />
         <AddButton onClick={this.handleAdd}>Add Item</AddButton>
       </div>
     );

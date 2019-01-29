@@ -31,7 +31,8 @@ export const ItemLink = styled(NavLink)`
   transition: inherit;
   color: #fff;
 
-  &:hover, &.active {
+  &:hover,
+  &.active {
     background: #69c0ff;
   }
 `;

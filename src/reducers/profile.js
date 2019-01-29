@@ -1,7 +1,4 @@
-import {
-  FETCH_PROFILE,
-  SAVE_PROFILE,
-} from 'actions/types';
+import { FETCH_PROFILE, SAVE_PROFILE } from 'actions/types';
 
 const initialState = {
   name: 'John Doe',
@@ -19,8 +16,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PROFILE:
     case SAVE_PROFILE:
-      return action.payload
+      return action.payload;
     default:
       return state;
   }
-}
+};

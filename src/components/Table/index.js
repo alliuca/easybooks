@@ -6,12 +6,7 @@ const onChange = (pagination, filters, sorter) => {
 };
 
 const Table = ({ columns, data, ...props }) => (
-  <AntdTable
-    columns={columns}
-    dataSource={data}
-    onChange={onChange}
-    {...props}
-  />
+  <AntdTable columns={columns} dataSource={data} onChange={onChange} {...props} />
 );
 
 export default Table;

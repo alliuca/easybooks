@@ -17,7 +17,7 @@ const columns = [
   },
   {
     title: 'Date of Issue',
-    dataIndex: 'dateOfIssue'
+    dataIndex: 'dateOfIssue',
   },
   {
     title: 'Client',
@@ -43,9 +43,10 @@ class Invoices extends Component {
 
   handleAdd = () => {
     const { history, invoices } = this.props;
-    const currentInvoice = invoices.length > 0 ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10) : 0;
+    const currentInvoice =
+      invoices.length > 0 ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10) : 0;
     history.push(`/invoice/${utils.pad(currentInvoice + 1)}`);
-  }
+  };
 
   render() {
     const { invoices } = this.props;
@@ -57,11 +58,7 @@ class Invoices extends Component {
             <h1>Invoices</h1>
           </Col>
           <Col span={12} className="text-right">
-            <Button
-              type="primary"
-              icon="plus-circle-o"
-              onClick={this.handleAdd}
-            >
+            <Button type="primary" icon="plus-circle-o" onClick={this.handleAdd}>
               Create New Invoice
             </Button>
           </Col>
@@ -80,4 +77,7 @@ const mapDispatchToProps = {
   fetchInvoices,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Invoices);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Invoices);

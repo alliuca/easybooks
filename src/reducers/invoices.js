@@ -24,7 +24,11 @@ export default (state = initialState, action) => {
     case FETCH_INVOICE:
       return { ...state, current: { ...state.current, ...action.payload } };
     case DELETE_INVOICE:
-      return { ...state, all: state.all.filter(invoice => invoice.invoiceNumber !== action.payload.number), current: null };
+      return {
+        ...state,
+        all: state.all.filter(invoice => invoice.invoiceNumber !== action.payload.number),
+        current: null,
+      };
     case SAVE_INVOICE:
       let newInvoices = state.all;
       const invoiceIndex = state.all.findIndex(invoice => invoice.key === action.payload.key);
@@ -39,4 +43,4 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
-}
+};

@@ -21,9 +21,7 @@ export const Form = styled(AntdForm)`
   }
 `;
 
-export const FormItem = styled(AntdFormItem)`
-
-`;
+export const FormItem = styled(AntdFormItem)``;
 
 export const Template = styled('div')`
   background-color: #fff;

@@ -13,11 +13,11 @@ class Page extends Component {
 
     return (
       <PageContext.Provider value={{ setMessages }}>
-        { sider && <MainSider /> }
+        {sider && <MainSider />}
         <Layout>
           <Wrapper>
-            <Messages>{ messages }</Messages>
-            { children }
+            <Messages>{messages}</Messages>
+            {children}
           </Wrapper>
         </Layout>
       </PageContext.Provider>
@@ -37,4 +37,7 @@ const mapDispatchToProps = {
   setMessages,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Page);

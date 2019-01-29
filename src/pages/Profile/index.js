@@ -11,7 +11,7 @@ class Profile extends Component {
     this.props.fetchProfile();
   }
 
-  handleSaveProfile = (obj) => this.props.saveProfile(obj)
+  handleSaveProfile = obj => this.props.saveProfile(obj);
 
   render() {
     const { profile, setMessages } = this.props;
@@ -40,4 +40,7 @@ const mapDispatchToProps = {
   setMessages,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Profile);

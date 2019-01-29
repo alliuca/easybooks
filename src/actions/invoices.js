@@ -10,10 +10,10 @@ import {
 } from 'actions/types';
 
 export const resetCurrentInvoice = () => dispatch => {
-  dispatch ({
+  dispatch({
     type: RESET_CURRENT_INVOICE,
   });
-}
+};
 
 export const fetchInvoices = () => async dispatch => {
   const res = await Api.get('/invoices');
@@ -23,9 +23,9 @@ export const fetchInvoices = () => async dispatch => {
     type: FETCH_INVOICES,
     payload: invoices,
   });
-}
+};
 
-export const fetchInvoiceLocales = (number) => async dispatch => {
+export const fetchInvoiceLocales = number => async dispatch => {
   resetCurrentInvoice();
   const res = await Api.get(`/invoices/${number}`);
   if (res.data.constructor !== Array) {
@@ -39,7 +39,7 @@ export const fetchInvoiceLocales = (number) => async dispatch => {
     type: FETCH_INVOICE_LOCALES,
     payload: res.data,
   });
-}
+};
 
 export const fetchInvoice = (number, locale) => async (dispatch, getState) => {
   let invoice = getState().invoices.all.find(invoice => invoice.invoiceNumber === number);
@@ -52,7 +52,7 @@ export const fetchInvoice = (number, locale) => async (dispatch, getState) => {
     type: FETCH_INVOICE,
     payload: invoice,
   });
-}
+};
 
 export const deleteInvoice = (number, locale) => async dispatch => {
   const res = await Api.delete(`/invoices/${number}/${locale}`);
@@ -63,9 +63,9 @@ export const deleteInvoice = (number, locale) => async dispatch => {
     payload: {
       number,
       msg: deleted,
-    }
+    },
   });
-}
+};
 
 export const saveInvoice = (number, locale, data) => async dispatch => {
   await Api.post(`/invoices/${number}/${locale}`, data);
@@ -74,7 +74,7 @@ export const saveInvoice = (number, locale, data) => async dispatch => {
     type: SAVE_INVOICE,
     payload: data,
   });
-}
+};
 
 export const downloadInvoicePDF = (number, locale) => async dispatch => {
   const res = await Api.get(`/invoices/${number}/${locale}/pdf`);

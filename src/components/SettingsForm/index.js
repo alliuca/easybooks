@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Form,
-  Input,
-  Upload,
-  Button,
-  Icon,
-  message,
-} from 'antd';
+import { Row, Col, Form, Input, Upload, Button, Icon, message } from 'antd';
 import { Fields, ColorPicker, Logo } from './settingsform.theme';
 import { baseURL } from 'config';
 import Cookies from 'js-cookie';
@@ -18,9 +9,9 @@ const getBase64 = (img, callback) => {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
-}
+};
 
-const beforeUpload = (file) => {
+const beforeUpload = file => {
   const isLt50k = file.size < maxFileSize;
   if (!isLt50k) {
     message.error('Image must be smaller than 50kb');
@@ -40,7 +31,7 @@ class SettingsForm extends Component {
     }
     return {
       imageUrl: `${baseURL}/files/upload/logo/${nextProps.settings.logo.file.name}`,
-    }
+    };
   }
 
   handleSubmit = async e => {
@@ -52,17 +43,17 @@ class SettingsForm extends Component {
       type: 'success',
       text: 'Settings has been successfully saved',
     });
-  }
+  };
 
   handleColorChange = (color, e) => {
     this.props.form.setFieldsValue({ brandColor: color.hex });
-  }
+  };
 
   handleColorPickerVisibility = e => {
     this.setState({
       showColorPicker: !this.state.showColorPicker,
     });
-  }
+  };
 
   handleLogoChange = ({ file }) => {
     if (file.status === 'uploading') {
@@ -70,12 +61,14 @@ class SettingsForm extends Component {
       return;
     }
     if (file.status === 'done') {
-      getBase64(file.originFileObj, imageUrl => this.setState({
-        imageUrl,
-        loadingLogo: false,
-      }));
+      getBase64(file.originFileObj, imageUrl =>
+        this.setState({
+          imageUrl,
+          loadingLogo: false,
+        })
+      );
     }
-  }
+  };
 
   render() {
     const { settings, form } = this.props;
@@ -102,12 +95,12 @@ class SettingsForm extends Component {
                   }
                 />
               )}
-              { showColorPicker && (
+              {showColorPicker && (
                 <ColorPicker
                   color={form.getFieldValue('brandColor')}
                   onChange={this.handleColorChange}
                 />
-              ) }
+              )}
             </Col>
           </Row>
           <Row gutter={15}>
@@ -124,27 +117,23 @@ class SettingsForm extends Component {
                   onChange={this.handleLogoChange}
                   showUploadList={false}
                   type="file"
-                  headers={{ Authorization: `Bearer ${encodeURIComponent(Cookies.get('EasyBooksToken'))}` }}
+                  headers={{
+                    Authorization: `Bearer ${encodeURIComponent(Cookies.get('EasyBooksToken'))}`,
+                  }}
                 >
-                  { imageUrl
-                  ? (
+                  {imageUrl ? (
                     <Logo src={imageUrl} alt="" />
-                  )
-                  : (
+                  ) : (
                     <div>
                       <Icon type={this.state.loadingLogo ? 'loading' : 'plus'} />
                     </div>
-                  ) }
+                  )}
                 </Upload>
               )}
             </Col>
           </Row>
         </Fields>
-        <Button
-          type="primary"
-          htmlType="submit"
-          icon="save"
-        >
+        <Button type="primary" htmlType="submit" icon="save">
           Save
         </Button>
       </Form>

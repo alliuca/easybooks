@@ -6,7 +6,7 @@ const FormItem = AntdForm.Item;
 class LoginForm extends Component {
   state = {
     submitting: false,
-  }
+  };
 
   handleSubmit = e => {
     const { form } = this.props;
@@ -24,7 +24,7 @@ class LoginForm extends Component {
     //   type: 'success',
     //   text: 'Profile has been successfully saved',
     // });
-  }
+  };
 
   render() {
     const { form, loggedIn } = this.props;
@@ -34,33 +34,21 @@ class LoginForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
-          { getFieldDecorator('email', {
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your username' }],
-          })(
-            <Input prefix={<Icon type="user" />} placeholder="username" />
-          ) }
+          })(<Input prefix={<Icon type="user" />} placeholder="username" />)}
         </FormItem>
         <FormItem>
-          { getFieldDecorator('password', {
+          {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your password' }],
-          })(
-            <Input prefix={<Icon type="lock" />} type="password" placeholder="password" />
-          ) }
+          })(<Input prefix={<Icon type="lock" />} type="password" placeholder="password" />)}
         </FormItem>
         <FormItem>
-          <LoginButton
-            type="primary"
-            htmlType="submit"
-            loading={submitting}
-          >
+          <LoginButton type="primary" htmlType="submit" loading={submitting}>
             Log in
           </LoginButton>
         </FormItem>
-        { loggedIn === false && (
-          <FormItem>
-            Oooops
-          </FormItem>
-        ) }
+        {loggedIn === false && <FormItem>Oooops</FormItem>}
       </Form>
     );
   }

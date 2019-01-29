@@ -5,22 +5,27 @@ import { Route, Redirect } from 'react-router-dom';
 class ProtectedRoute extends Component {
   isAuthenticated = () => {
     return Cookies.get('EasyBooksToken') || false;
-  }
+  };
 
   render() {
     const { component: WrappedComponent, ...rest } = this.props;
 
     return (
-      <Route {...rest} render={props => (
-        !this.isAuthenticated() ? (
-          <Redirect to={{
-            pathname: '/login',
-            state: { from: props.location }
-          }}/>
-        ) : (
-          <WrappedComponent {...props} />
-        )
-      )} />
+      <Route
+        {...rest}
+        render={props =>
+          !this.isAuthenticated() ? (
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: { from: props.location },
+              }}
+            />
+          ) : (
+            <WrappedComponent {...props} />
+          )
+        }
+      />
     );
   }
 }

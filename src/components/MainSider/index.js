@@ -28,7 +28,12 @@ class MainSider extends Component {
   }
 }
 
-const mapStateToProps = ({ app: { settings: { logo } }, profile: { name, website } }) => ({
+const mapStateToProps = ({
+  app: {
+    settings: { logo },
+  },
+  profile: { name, website },
+}) => ({
   logo,
   name,
   website,
@@ -39,4 +44,7 @@ const mapDispatchToProps = {
   fetchProfile,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainSider);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainSider);

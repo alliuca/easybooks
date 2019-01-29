@@ -7,18 +7,15 @@ const Api = axios.create({
   baseURL: `${baseURL}/api`,
 });
 
-Api.interceptors.request.use((config)=>{
+Api.interceptors.request.use(config => {
   const token = Cookies.get('EasyBooksToken');
   config.headers.Authorization = `Bearer ${encodeURIComponent(token)}`;
   return config;
 });
 
 const currencies = {
-  'CAD': { symbol: '$' },
-  'EUR': { symbol: '€' },
+  CAD: { symbol: '$' },
+  EUR: { symbol: '€' },
 };
 
-export {
-  Api,
-  currencies,
-};
+export { Api, currencies };

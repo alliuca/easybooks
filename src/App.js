@@ -28,14 +28,14 @@ class App extends Component {
       <Provider store={store}>
         <IntlProvider locale={'en'} messages={messages['en']}>
           <Router>
-              <Layout>
-                <ProtectedRoute exact path="/" component={Home} />
-                <ProtectedRoute exact path="/invoices" component={Invoices} />
-                <ProtectedRoute path="/invoice/:number/:locale?" component={Invoice} />
-                <ProtectedRoute exact path="/settings" component={Settings} />
-                <ProtectedRoute exact path="/profile" component={Profile} />
-                <Route exact path="/login" component={SignIn} />
-              </Layout>
+            <Layout>
+              <ProtectedRoute exact path="/" component={Home} />
+              <ProtectedRoute exact path="/invoices" component={Invoices} />
+              <ProtectedRoute path="/invoice/:number/:locale?" component={Invoice} />
+              <ProtectedRoute exact path="/settings" component={Settings} />
+              <ProtectedRoute exact path="/profile" component={Profile} />
+              <Route exact path="/login" component={SignIn} />
+            </Layout>
           </Router>
         </IntlProvider>
       </Provider>

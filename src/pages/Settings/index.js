@@ -10,7 +10,7 @@ class Settings extends Component {
     this.props.fetchSettings();
   }
 
-  handleSaveSettings = (obj) => this.props.saveSettings(obj)
+  handleSaveSettings = obj => this.props.saveSettings(obj);
 
   render() {
     const { settings, setMessages } = this.props;
@@ -39,4 +39,7 @@ const mapDispatchToProps = {
   setMessages,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Settings);

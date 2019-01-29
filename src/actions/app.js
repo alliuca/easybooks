@@ -13,7 +13,7 @@ export const setMessages = (obj, remove = false) => ({
   payload: {
     obj,
     remove,
-  }
+  },
 });
 
 export const clearAllMessages = () => ({
@@ -28,7 +28,7 @@ export const fetchSettings = () => async dispatch => {
     type: FETCH_SETTINGS,
     payload: settings,
   });
-}
+};
 
 export const saveSettings = data => async dispatch => {
   await Api.post('/settings', data);
@@ -37,17 +37,16 @@ export const saveSettings = data => async dispatch => {
     type: SAVE_SETTINGS,
     payload: data,
   });
-}
+};
 
 export const login = data => async dispatch => {
   const login = await Api.post('/login', data);
   const { token, user } = login.data;
 
-  if (token)
-    Cookies.set('EasyBooksToken', token);
+  if (token) Cookies.set('EasyBooksToken', token);
 
   dispatch({
     type: LOGIN,
     payload: user ? true : false,
   });
-}
+};

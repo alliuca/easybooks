@@ -1,11 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { currencies } from 'config';
-import {
-  setMessages,
-  clearAllMessages,
-  fetchSettings,
-} from 'actions/app';
+import { setMessages, clearAllMessages, fetchSettings } from 'actions/app';
 import {
   resetCurrentInvoice,
   fetchInvoiceLocales,
@@ -14,18 +10,7 @@ import {
   saveInvoice,
   downloadInvoicePDF,
 } from 'actions/invoices';
-import {
-  Divider,
-  Row,
-  Col,
-  Button,
-  Popconfirm,
-  Tabs,
-  Icon,
-  Input,
-  Popover,
-  Modal,
-} from 'antd';
+import { Row, Col, Button, Popconfirm, Tabs, Input, Modal } from 'antd';
 import Page from 'layout/Page';
 import Spinner from 'components/Spinner';
 import InvoiceForm from 'components/InvoiceForm';
@@ -35,18 +20,22 @@ const { TabPane } = Tabs;
 class Invoice extends Component {
   state = {
     actions: {
-      pdf: { loading: false }
+      pdf: { loading: false },
     },
     addLocaleModalVisible: false,
     localLocales: [],
-  }
+  };
 
   async componentDidMount() {
-    const { history, match: { params: { number, locale } } } = this.props;
+    const {
+      history,
+      match: {
+        params: { number, locale },
+      },
+    } = this.props;
     await this.props.fetchSettings();
     await this.props.fetchInvoiceLocales(number);
-    if (!locale)
-      history.replace(`${number}/${this.props.invoice.locales[0]}`);
+    if (!locale) history.replace(`${number}/${this.props.invoice.locales[0]}`);
     await this.props.fetchInvoice(number, locale);
     this.props.clearAllMessages();
   }
@@ -61,39 +50,49 @@ class Invoice extends Component {
     this.props.resetCurrentInvoice();
   }
 
-  onLocaleChange = (locale) => {
-    const { history, match: { params: { number } } } = this.props;
+  onLocaleChange = locale => {
+    const {
+      history,
+      match: {
+        params: { number },
+      },
+    } = this.props;
     history.push(`/invoice/${number}/${locale}`);
-  }
+  };
 
   onLocaleEdit = (e, action) => {
     if (action === 'add') {
       this.setState({ addLocaleModalVisible: true });
     }
-  }
+  };
 
-  add = (locale) => {
+  add = locale => {
     console.log('asd', locale);
     const { invoice } = this.props;
     const locales = invoice.locales;
     console.log('locales', locales);
     this.setState({ localLocales: [...this.state.localLocales, locale] });
-  }
+  };
 
   handleOk = () => {
-    const locale = this.localeInput.input.value
+    const locale = this.localeInput.input.value;
     this.setState({ addLocaleModalVisible: false });
     if (locale) {
       this.add(locale);
     }
-  }
+  };
 
-  onLocaleInputChange = (e) => {
+  onLocaleInputChange = e => {
     console.log(e.target.value);
-  }
+  };
 
   deleteInvoice = async number => {
-    const { history, match: { params: { locale } } } = this.props;
+    const {
+      history,
+      match: {
+        params: { locale },
+      },
+    } = this.props;
     this.props.deleteInvoice(number, locale.toUpperCase());
     this.props.setMessages({
       id: `delete${number}`,
@@ -101,10 +100,16 @@ class Invoice extends Component {
       text: `Invoice #${number} has been deleted`,
     });
     history.push('/invoices');
-  }
+  };
 
   save = async (number, data) => {
-    const { history, match: { params: { locale } }, settings: { brandColor, logo } } = this.props;
+    const {
+      history,
+      match: {
+        params: { locale },
+      },
+      settings: { brandColor, logo },
+    } = this.props;
     const { details, total, subtotal, status, items, fees } = data;
     await this.props.saveInvoice(number, locale.toUpperCase(), {
       key: number,
@@ -113,7 +118,7 @@ class Invoice extends Component {
       client: details.client,
       currency: {
         value: details.currency.value,
-        symbol: currencies[details.currency.value].symbol
+        symbol: currencies[details.currency.value].symbol,
       },
       billedTo: details.billedTo,
       amount: total,
@@ -134,7 +139,7 @@ class Invoice extends Component {
       text: `Invoice #${number} has been successfully saved`,
     });
     history.push('/invoices');
-  }
+  };
 
   downloadPDF = async (number, locale) => {
     const { actions } = this.state;
@@ -143,40 +148,48 @@ class Invoice extends Component {
         ...actions,
         pdf: {
           loading: false,
-        }
-      }
+        },
+      },
     });
     await this.props.downloadInvoicePDF(number, locale);
-    window.open(`${process.env.REACT_APP_API}/${this.props.invoice.filepath}`)
-  }
+    window.open(`${process.env.REACT_APP_API}/${this.props.invoice.filepath}`);
+  };
 
   render() {
-    const { match: { params: { number, locale } }, invoice, settings, profile } = this.props;
+    const {
+      match: {
+        params: { number, locale },
+      },
+      invoice,
+      settings,
+      profile,
+    } = this.props;
     const { actions, localLocales } = this.state;
-    console.log('invoice', invoice)
+    console.log('invoice', invoice);
 
     return (
       <Page>
-        { invoice && (invoice.message || invoice.key) ? (
+        {invoice && (invoice.message || invoice.key) ? (
           <Fragment>
-          <Modal
-            visible={this.state.addLocaleModalVisible}
-            width={280}
-            okText="Add Locale"
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-          >
-            <br />
-            <Input
-              ref={i => { this.localeInput = i }}
-              name="new-locale"
-              placeholder="Locale code (e.g. en for English)"
-            />
-          </Modal>
-          { !invoice.key
-            ? (
+            <Modal
+              visible={this.state.addLocaleModalVisible}
+              width={280}
+              okText="Add Locale"
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+            >
+              <br />
+              <Input
+                ref={i => {
+                  this.localeInput = i;
+                }}
+                name="new-locale"
+                placeholder="Locale code (e.g. en for English)"
+              />
+            </Modal>
+            {!invoice.key ? (
               <Fragment>
-                <h1>New Invoice #{ number }</h1>
+                <h1>New Invoice #{number}</h1>
                 <Tabs
                   onChange={this.onLocaleChange}
                   activeKey={invoice.locales[0]}
@@ -186,17 +199,27 @@ class Invoice extends Component {
                   {[...invoice.locales, ...localLocales].map(locale => (
                     <TabPane
                       key={locale.toLowerCase()}
-                      tab={<span><MyIcon type={`icon-locale-${locale.toLowerCase()}`} /></span>}
+                      tab={
+                        <span>
+                          <MyIcon type={`icon-locale-${locale.toLowerCase()}`} />
+                        </span>
+                      }
                       closable={true}
                     />
                   ))}
                 </Tabs>
-                <InvoiceForm number={number} save={this.save} data={{}} locale={'en'} settings={settings} profile={profile} />
+                <InvoiceForm
+                  number={number}
+                  save={this.save}
+                  data={{}}
+                  locale={'en'}
+                  settings={settings}
+                  profile={profile}
+                />
               </Fragment>
-              )
-            : (
+            ) : (
               <Fragment>
-                <h1>Invoice #{ number }</h1>
+                <h1>Invoice #{number}</h1>
                 <Tabs
                   onChange={this.onLocaleChange}
                   activeKey={locale}
@@ -221,12 +244,23 @@ class Invoice extends Component {
                   {[...invoice.locales, ...localLocales].map(locale => (
                     <TabPane
                       key={locale}
-                      tab={<span><MyIcon type={`icon-locale-${locale.toLowerCase()}`} /></span>}
+                      tab={
+                        <span>
+                          <MyIcon type={`icon-locale-${locale.toLowerCase()}`} />
+                        </span>
+                      }
                       closable={true}
                     />
                   ))}
                 </Tabs>
-                <InvoiceForm number={number} save={this.save} data={invoice} locale={locale} settings={settings} profile={profile} />
+                <InvoiceForm
+                  number={number}
+                  save={this.save}
+                  data={invoice}
+                  locale={locale}
+                  settings={settings}
+                  profile={profile}
+                />
                 <Row>
                   <Col span={12}>
                     <Button
@@ -234,9 +268,13 @@ class Invoice extends Component {
                       icon="download"
                       className="mt30 mt15"
                       loading={actions.pdf.loading}
-                      onClick={this.downloadPDF.bind(this, invoice.invoiceNumber, locale.toLowerCase())}
+                      onClick={this.downloadPDF.bind(
+                        this,
+                        invoice.invoiceNumber,
+                        locale.toLowerCase()
+                      )}
                     >
-                      { actions.pdf.loading ? 'Getting it...' : 'Download .PDF' }
+                      {actions.pdf.loading ? 'Getting it...' : 'Download .PDF'}
                     </Button>
                   </Col>
                   <Col span={12} className="text-right">
@@ -247,25 +285,22 @@ class Invoice extends Component {
                       okText="Yes"
                       cancelText="No"
                     >
-                      <Button
-                        type="danger"
-                        icon="delete"
-                        className="mt30 mb30"
-                      >
+                      <Button type="danger" icon="delete" className="mt30 mb30">
                         Delete
                       </Button>
                     </Popconfirm>
                   </Col>
                 </Row>
               </Fragment>
-            )
-          }
+            )}
           </Fragment>
-        ) : <Spinner /> }
+        ) : (
+          <Spinner />
+        )}
       </Page>
     );
   }
-};
+}
 
 const mapStateToProps = ({ invoices: { current }, app: { settings }, profile }) => ({
   invoice: current,
@@ -285,4 +320,7 @@ const mapDispatchToProps = {
   downloadInvoicePDF,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Invoice);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Invoice);
