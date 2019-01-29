@@ -1,4 +1,4 @@
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Form as AntdForm, Button } from 'antd';
 
 export const Form = styled(AntdForm)`

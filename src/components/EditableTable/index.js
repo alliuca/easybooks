@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Table } from 'antd';
 import { AddButton } from './editabletable.theme';
 import EditableCell from 'components/EditableCell';
@@ -15,7 +15,7 @@ class EditableTable extends Component {
         ) => {
           if (c === 'description') {
             return (
-              <Fragment>
+              <>
                 <EditableCell
                   value={record.name}
                   onChange={this.onCellChange(record.key, c, 'name')}
@@ -26,14 +26,14 @@ class EditableTable extends Component {
                   onChange={this.onCellChange(record.key, c, 'value')}
                   style={{ display: 'block' }}
                 />
-              </Fragment>
+              </>
             );
           }
           if (c === 'amount') {
             return (
-              <Fragment>
+              <>
                 € <EditableCell value={text} onChange={this.onCellChange(record.key, c)} />
-              </Fragment>
+              </>
             );
           }
           return <EditableCell value={text} onChange={this.onCellChange(record.key, c)} />;

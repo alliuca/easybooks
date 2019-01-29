@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { currencies } from 'config';
 import { setMessages, clearAllMessages, fetchSettings } from 'actions/app';
@@ -170,7 +170,7 @@ class Invoice extends Component {
     return (
       <Page>
         {invoice && (invoice.message || invoice.key) ? (
-          <Fragment>
+          <>
             <Modal
               visible={this.state.addLocaleModalVisible}
               width={280}
@@ -188,7 +188,7 @@ class Invoice extends Component {
               />
             </Modal>
             {!invoice.key ? (
-              <Fragment>
+              <>
                 <h1>New Invoice #{number}</h1>
                 <Tabs
                   onChange={this.onLocaleChange}
@@ -216,9 +216,9 @@ class Invoice extends Component {
                   settings={settings}
                   profile={profile}
                 />
-              </Fragment>
+              </>
             ) : (
-              <Fragment>
+              <>
                 <h1>Invoice #{number}</h1>
                 <Tabs
                   onChange={this.onLocaleChange}
@@ -291,9 +291,9 @@ class Invoice extends Component {
                     </Popconfirm>
                   </Col>
                 </Row>
-              </Fragment>
+              </>
             )}
-          </Fragment>
+          </>
         ) : (
           <Spinner />
         )}

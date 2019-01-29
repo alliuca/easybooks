@@ -1,4 +1,4 @@
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 export const Fields = styled('div')`
   margin-bottom: 30px;

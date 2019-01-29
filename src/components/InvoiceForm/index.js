@@ -1,6 +1,6 @@
 // TODO: Omg, refactor this
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import moment from 'moment-mini';
 import { Row, Col, Input, Select, Button } from 'antd';
@@ -193,7 +193,7 @@ class InvoiceForm extends Component {
     } = this.props;
     const { total, subtotal, details, fees, items } = this.state;
     return (
-      <Fragment>
+      <>
         <Form brandcolor={brandColor}>
           <Row gutter={15}>
             <Col span={6}>
@@ -406,7 +406,7 @@ class InvoiceForm extends Component {
         <SaveButton type="primary" icon="save" onClick={save.bind(this, number, this.state)}>
           Save
         </SaveButton>
-      </Fragment>
+      </>
     );
   }
 }
