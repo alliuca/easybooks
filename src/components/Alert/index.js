@@ -5,20 +5,20 @@ import { PageContext } from 'layout/Page';
 class Alert extends Component {
   state = {
     visible: true,
-  }
+  };
 
-  handleClose = (setMessages) => {
+  handleClose = setMessages => {
     const { data } = this.props;
     this.setState({ visible: false });
-      setMessages(data, true);
-  }
+    setMessages(data, true);
+  };
 
   render() {
     const { data } = this.props;
     const { visible } = this.state;
     return (
       <PageContext.Consumer>
-        { ({ setMessages }) => {
+        {({ setMessages }) => {
           if (visible) {
             return (
               <AntdAlert
@@ -32,7 +32,7 @@ class Alert extends Component {
           } else {
             return null;
           }
-        } }
+        }}
       </PageContext.Consumer>
     );
   }
