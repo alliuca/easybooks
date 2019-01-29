@@ -1,13 +1,9 @@
-const { injectBabelPlugin } = require('react-app-rewired');
+const { override, fixBabelImports, addBabelPlugin } = require('customize-cra');
 
-module.exports = function override(config, env) {
-  config = injectBabelPlugin(
-    ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
-    config
-  );
-  config = injectBabelPlugin(
-    ['emotion', { sourceMap: env === 'development' ? true : false }],
-    config
-  );
-  return config;
-};
+module.exports = override(
+  fixBabelImports('import', {
+    libraryName: 'antd',
+    style: 'css',
+  }),
+  addBabelPlugin(['emotion', { sourceMap: process.env.NODE_ENV === 'development' ? true : false }])
+);

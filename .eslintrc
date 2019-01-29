@@ -1,3 +1,8 @@
 {
-  "extends": ["react-app", "eslint-config-prettier"]
+  "plugins": ["flowtype-errors"],
+  "extends": ["react-app", "eslint-config-prettier"],
+  "rules": {
+    "flowtype-errors/show-errors": 2,
+    "flowtype-errors/show-warnings": 1
+  }
 }

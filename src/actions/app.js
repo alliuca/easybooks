@@ -1,5 +1,7 @@
+// @flow
 import Cookies from 'js-cookie';
 import { Api } from 'config';
+import type { Dispatch } from 'config/flowtypes';
 import {
   SET_MESSAGES,
   CLEAR_ALL_MESSAGES,
@@ -8,7 +10,11 @@ import {
   LOGIN,
 } from 'actions/types';
 
-export const setMessages = (obj, remove = false) => ({
+export type SetMessages = { type: SET_MESSAGES, payload: { obj: Object, remove: boolean } };
+export type ClearAllMessages = { type: CLEAR_ALL_MESSAGES };
+export type Action = SetMessages | ClearAllMessages;
+
+export const setMessages = (obj: Object, remove: boolean = false): SetMessages => ({
   type: SET_MESSAGES,
   payload: {
     obj,
@@ -16,11 +22,11 @@ export const setMessages = (obj, remove = false) => ({
   },
 });
 
-export const clearAllMessages = () => ({
+export const clearAllMessages = (): ClearAllMessages => ({
   type: CLEAR_ALL_MESSAGES,
 });
 
-export const fetchSettings = () => async dispatch => {
+export const fetchSettings = () => async (dispatch: Dispatch) => {
   const res = await Api.get('/settings');
   const settings = res.data;
 
@@ -30,7 +36,7 @@ export const fetchSettings = () => async dispatch => {
   });
 };
 
-export const saveSettings = data => async dispatch => {
+export const saveSettings = (data: Object) => async (dispatch: Dispatch) => {
   await Api.post('/settings', data);
 
   dispatch({
@@ -39,7 +45,7 @@ export const saveSettings = data => async dispatch => {
   });
 };
 
-export const login = data => async dispatch => {
+export const login = (data: Object) => async (dispatch: Dispatch) => {
   const login = await Api.post('/login', data);
   const { token, user } = login.data;
 
