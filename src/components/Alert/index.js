@@ -10,7 +10,7 @@ class Alert extends Component {
   handleClose = (setMessages) => {
     const { data } = this.props;
     this.setState({ visible: false });
-    setMessages(data, true);
+      setMessages(data, true);
   }
 
   render() {
