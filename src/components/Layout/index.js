@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+// @flow
+import * as React from 'react';
 import { Container } from './layout.theme';
 
-class Layout extends Component {
-  render() {
-    const { children } = this.props;
+type Props = {
+  children?: React.Node,
+};
 
-    return <Container>{children}</Container>;
-  }
-}
+const Layout = (props: Props) => <Container>{props.children}</Container>;
 
 export default Layout;
