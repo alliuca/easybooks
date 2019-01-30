@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Alert as AntdAlert } from 'antd';
 import type { Action } from 'actions/app';
-import { PageContext } from 'layout/Page';
+import { PageContext } from 'layout/Page/context';
 
 type State = {
   visible: boolean,

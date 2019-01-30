@@ -1,11 +1,11 @@
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setMessages } from 'actions/app';
 import { Layout } from 'antd';
 import { Wrapper } from './page.theme';
 import MainSider from 'components/MainSider';
 import Messages from 'components/Messages';
-export const PageContext = createContext();
+import { PageContext } from './context';
 
 class Page extends Component {
   render() {
