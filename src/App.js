@@ -1,10 +1,11 @@
+// @flow
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import configureStore from './store';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { addLocaleData, IntlProvider } from 'react-intl';
-import enLocaleData from 'react-intl/locale-data/en';
-import itLocaleData from 'react-intl/locale-data/it';
+import enLocaleData from 'react-intl/locale-data/en'; // eslint-disable-line
+import itLocaleData from 'react-intl/locale-data/it'; // eslint-disable-line
 import enMessages from 'locales/en.json';
 import itMessages from 'locales/it.json';
 import ProtectedRoute from 'pages/ProtectedRoute';
@@ -22,7 +23,7 @@ const messages = {
   it: itMessages,
 };
 
-class App extends Component {
+class App extends Component<{}> {
   render() {
     return (
       <Provider store={store}>
