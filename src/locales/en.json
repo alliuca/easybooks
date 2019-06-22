@@ -1,4 +1,6 @@
 {
+  "invoices.title": "Invoices",
+  "invoices.create_new": "Create New Invoice",
   "invoice.form.description": "Description",
   "invoice.form.hours": "Hours",
   "invoice.form.amount": "Amount",

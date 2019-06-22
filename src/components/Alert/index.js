@@ -1,27 +1,13 @@
-// @flow
 import React, { Component } from 'react';
 import { Alert as AntdAlert } from 'antd';
-import type { Action } from 'actions/app';
 import { PageContext } from 'layout/Page/context';
 
-type State = {
-  visible: boolean,
-};
-
-type Props = {
-  data: {
-    id: string,
-    text: string,
-    type: string,
-  },
-};
-
-class Alert extends Component<Props, State> {
+class Alert extends Component {
   state = {
     visible: true,
   };
 
-  handleClose = (setMessages: (data: $PropertyType<Props, 'data'>, remove: boolean) => Action) => {
+  handleClose = setMessages => {
     const { data } = this.props;
     this.setState({ visible: false });
     setMessages(data, true);

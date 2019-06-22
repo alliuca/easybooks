@@ -1,4 +1,6 @@
 {
+  "invoices.title": "Fatture",
+  "invoices.create_new": "Crea Nuova Fattura",
   "invoice.form.description": "Descrizione",
   "invoice.form.hours": "Ore",
   "invoice.form.amount": "Importo",

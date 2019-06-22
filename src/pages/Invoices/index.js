@@ -1,12 +1,12 @@
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import { Row, Col, Button } from 'antd';
 import utils from 'utils';
 import { fetchInvoices } from 'actions/invoices';
 import Page from 'layout/Page';
 import Table from 'components/Table';
-export const InvoicesContext = createContext();
 
 const columns = [
   {
@@ -55,11 +55,13 @@ class Invoices extends Component {
       <Page>
         <Row gutter={15}>
           <Col span={12}>
-            <h1>Invoices</h1>
+            <h1>
+              <FormattedMessage id="invoices.title" />
+            </h1>
           </Col>
           <Col span={12} className="text-right">
             <Button type="primary" icon="plus-circle-o" onClick={this.handleAdd}>
-              Create New Invoice
+              <FormattedMessage id="invoices.create_new" />
             </Button>
           </Col>
         </Row>

@@ -22,4 +22,4 @@ yarn-error.log*
 
 now.json
 .vscode
-flow-typed
+.history
