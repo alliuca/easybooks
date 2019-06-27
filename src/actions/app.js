@@ -30,7 +30,7 @@ export const fetchSettings = () => async dispatch => {
   });
 };
 
-export const saveSettings = (data: Object) => async dispatch => {
+export const saveSettings = data => async dispatch => {
   await Api.post('/settings', data);
 
   dispatch({
