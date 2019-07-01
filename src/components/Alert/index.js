@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert as AntdAlert } from 'antd';
-import { PageContext } from 'layout/Page/context';
+import { Consumer } from 'layout/Page/context';
 
 class Alert extends Component {
   state = {
@@ -17,7 +17,7 @@ class Alert extends Component {
     const { data } = this.props;
     const { visible } = this.state;
     return (
-      <PageContext.Consumer>
+      <Consumer>
         {({ setMessages }) => {
           if (visible) {
             return (
@@ -33,7 +33,7 @@ class Alert extends Component {
             return null;
           }
         }}
-      </PageContext.Consumer>
+      </Consumer>
     );
   }
 }

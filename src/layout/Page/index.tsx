@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setMessages } from 'actions/app';
+import { Message, setMessages } from 'actions/app';
+import { RootState } from 'reducers';
 import { Layout } from 'antd';
 import { Wrapper } from './page.theme';
 import MainSider from 'components/MainSider';
 import Messages from 'components/Messages';
-import { PageContext } from './context';
+import { Provider } from './context';
 
-class Page extends Component {
+interface Props {
+  children: string | React.Component;
+  messages: Message[];
+  setMessages: typeof setMessages;
+  sider: boolean;
+}
+
+class Page extends Component<Props> {
   render() {
-    const { children, messages, setMessages, sider } = this.props;
+    const { children, messages, setMessages, sider = true } = this.props;
 
     return (
-      <PageContext.Provider value={{ setMessages }}>
+      <Provider value={{ setMessages }}>
         {sider && <MainSider />}
         <Layout>
           <Wrapper>
@@ -20,16 +28,12 @@ class Page extends Component {
             {children}
           </Wrapper>
         </Layout>
-      </PageContext.Provider>
+      </Provider>
     );
   }
 }
 
-Page.defaultProps = {
-  sider: true,
-};
-
-const mapStateToProps = ({ app: { messages } }) => ({
+const mapStateToProps = ({ app: { messages } }: RootState) => ({
   messages,
 });
 

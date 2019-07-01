@@ -5,9 +5,7 @@ import Alert from './';
 jest.mock('layout/Page/context', () => {
   const setMessages = jest.fn();
   return {
-    PageContext: {
-      Consumer: props => props.children({ setMessages }),
-    },
+    Consumer: props => props.children({ setMessages }),
   };
 });
 
