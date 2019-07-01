@@ -1,12 +1,14 @@
-import {
-  SET_MESSAGES,
-  CLEAR_ALL_MESSAGES,
-  FETCH_SETTINGS,
-  SAVE_SETTINGS,
-  LOGIN,
-} from 'actions/types';
+import { Message, SettingsData, Action } from 'actions/app';
+import { ActionTypes } from 'actions/types';
+const { SET_MESSAGES, CLEAR_ALL_MESSAGES, FETCH_SETTINGS, SAVE_SETTINGS, LOGIN } = ActionTypes;
 
-const initialState = {
+export interface AppState {
+  messages: [];
+  settings: SettingsData;
+  loggedIn: boolean | null;
+}
+
+const initialState: AppState = {
   messages: [],
   settings: {
     brandColor: '#40a9ff',
@@ -15,12 +17,12 @@ const initialState = {
   loggedIn: null,
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: Action) => {
   switch (action.type) {
     case SET_MESSAGES:
       const { messages } = state;
       const newMessages = action.payload.remove
-        ? messages.filter(message => message.id !== action.payload.obj.id)
+        ? messages.filter((message: Message) => message.id !== action.payload.obj.id)
         : [...messages, action.payload.obj];
       return { ...state, messages: newMessages };
     case CLEAR_ALL_MESSAGES:
