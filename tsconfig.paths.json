@@ -4,7 +4,9 @@
     "paths": {
       "actions/*": ["src/actions/*"],
       "config": ["src/config"],
-      "components/*": ["src/components/*"]
+      "components/*": ["src/components/*"],
+      "reducers": ["src/reducers"],
+      "reducers/*": ["src/reducers/*"]
     }
   }
 }
