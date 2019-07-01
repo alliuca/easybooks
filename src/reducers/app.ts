@@ -3,7 +3,7 @@ import { ActionTypes } from 'actions/types';
 const { SET_MESSAGES, CLEAR_ALL_MESSAGES, FETCH_SETTINGS, SAVE_SETTINGS, LOGIN } = ActionTypes;
 
 export interface AppState {
-  messages: [];
+  messages: Message[];
   settings: SettingsData;
   loggedIn: boolean | null;
 }
@@ -17,7 +17,7 @@ const initialState: AppState = {
   loggedIn: null,
 };
 
-export default (state = initialState, action: Action) => {
+export default (state = initialState, action: Action): AppState => {
   switch (action.type) {
     case SET_MESSAGES:
       const { messages } = state;
