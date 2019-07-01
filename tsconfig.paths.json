@@ -5,6 +5,7 @@
       "actions/*": ["src/actions/*"],
       "config": ["src/config"],
       "components/*": ["src/components/*"],
+      "layout/*": ["src/layout/*"],
       "reducers": ["src/reducers"],
       "reducers/*": ["src/reducers/*"]
     }

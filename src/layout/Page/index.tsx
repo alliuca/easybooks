@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Message, setMessages } from 'actions/app';
 import { RootState } from 'reducers';
-import { Layout } from 'antd';
+import { Layout } from 'antd/lib';
 import { Wrapper } from './page.theme';
 import MainSider from 'components/MainSider';
 import Messages from 'components/Messages';
