@@ -1,4 +1,6 @@
-import {
+import { Invoice, Locale, Action } from 'actions/invoices';
+import { ActionTypes } from 'actions/types';
+const {
   FETCH_INVOICES,
   RESET_CURRENT_INVOICE,
   FETCH_INVOICE_LOCALES,
@@ -6,20 +8,26 @@ import {
   DELETE_INVOICE,
   SAVE_INVOICE,
   DOWNLOAD_INVOICE_PDF,
-} from 'actions/types';
+} = ActionTypes;
 
-const initialState = {
+export interface InvoicesState {
+  all: Invoice[];
+  current: Invoice | null;
+}
+
+const initialState: InvoicesState = {
   all: [],
   current: null,
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: Action): InvoicesState => {
   switch (action.type) {
     case FETCH_INVOICES:
       return { ...state, all: action.payload };
     case RESET_CURRENT_INVOICE:
       return { ...state, current: null };
     case FETCH_INVOICE_LOCALES:
+      if (!state.current) return state;
       return { ...state, current: { ...state.current, locales: action.payload } };
     case FETCH_INVOICE:
       return { ...state, current: { ...state.current, ...action.payload } };
@@ -39,6 +47,7 @@ export default (state = initialState, action) => {
       }
       return { ...state, all: newInvoices, current: null };
     case DOWNLOAD_INVOICE_PDF:
+      if (!state.current) return state;
       return { ...state, current: { ...state.current, filepath: action.payload } };
     default:
       return state;

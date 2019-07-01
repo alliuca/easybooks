@@ -9,10 +9,10 @@ import Messages from 'components/Messages';
 import { Provider } from './context';
 
 interface Props {
-  children: string | React.Component;
+  children: string | React.ReactNode;
   messages: Message[];
   setMessages: typeof setMessages;
-  sider: boolean;
+  sider?: boolean;
 }
 
 class Page extends Component<Props> {

@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { Row, Col, Button } from 'antd';
+import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
-import { fetchInvoices } from 'actions/invoices';
+import { Invoice, fetchInvoices } from 'actions/invoices';
+import { RootState } from 'reducers';
 import Page from 'layout/Page';
 import Table from 'components/Table';
 
-const columns = [
+interface Props extends RouteComponentProps {
+  fetchInvoices: () => Promise<void>;
+  invoices: Invoice[];
+}
+
+interface InvoicesColumnProps extends ColumnProps<Invoice> {}
+
+const columns: InvoicesColumnProps[] = [
   {
     title: 'Number',
     dataIndex: 'invoiceNumber',
-    sorter: (a, b) => a.invoiceNumber - b.invoiceNumber,
-    render: text => <Link to={`/invoice/${text}`}>{text}</Link>,
+    sorter: (a, b) => parseInt(a.invoiceNumber) - parseInt(b.invoiceNumber),
+    render: (text: string) => <Link to={`/invoice/${text}`}>{text}</Link>,
   },
   {
     title: 'Date of Issue',
@@ -27,7 +36,7 @@ const columns = [
   {
     title: 'Amount',
     dataIndex: 'amount',
-    sorter: (a, b) => a.amount - b.amount,
+    sorter: (a, b) => parseInt(a.amount) - parseInt(b.amount),
   },
   {
     title: 'Status',
@@ -36,7 +45,7 @@ const columns = [
   },
 ];
 
-class Invoices extends Component {
+class Invoices extends Component<Props> {
   componentDidMount() {
     this.props.fetchInvoices();
   }
@@ -71,7 +80,7 @@ class Invoices extends Component {
   }
 }
 
-const mapStateToProps = ({ invoices: { all } }) => ({
+const mapStateToProps = ({ invoices: { all } }: RootState) => ({
   invoices: all,
 });
 
