@@ -9,6 +9,7 @@ import { RootState } from 'reducers';
 import Page from 'layout/Page';
 import Table from 'components/Table';
 import Text from 'components/Text';
+import Tag from 'components/Tag';
 
 interface Props extends RouteComponentProps {
   fetchInvoices: () => Promise<void>;
@@ -42,6 +43,7 @@ const columns: InvoicesColumnProps[] = [
     title: 'Status',
     dataIndex: 'status',
     sorter: (a, b) => a.status.length - b.status.length,
+    render: status => <Tag color={status}>{status}</Tag>,
   },
 ];
 
