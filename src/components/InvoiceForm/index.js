@@ -1,7 +1,7 @@
 // TODO: Omg, refactor this
 
 import React, { Component } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import moment from 'moment-mini';
 import { Row, Col, Input, Select, Button } from 'antd';
 import {
@@ -20,6 +20,7 @@ import {
 } from './invoiceform.theme';
 import EditableTable from 'components/EditableTable';
 import EditableCell from 'components/EditableCell';
+import Text from 'components/Text';
 import { baseURL, currencies } from 'config';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -251,9 +252,7 @@ class InvoiceForm extends Component {
               <Row gutter={15}>
                 <Col span={8}>
                   <div>
-                    <h5>
-                      <FormattedMessage id="invoice.form.billed_to" />
-                    </h5>
+                    <Text as="h5" intl="invoice.form.billed_to" />
                     <FormItem>
                       <TextArea
                         name="billedTo"
@@ -268,9 +267,7 @@ class InvoiceForm extends Component {
                 </Col>
                 <Col span={8}>
                   <div>
-                    <h5>
-                      <FormattedMessage id="invoice.form.invoice_number" />
-                    </h5>
+                    <Text as="h5" intl="invoice.form.invoice_number" />
                     <Input
                       name="invoiceNumber"
                       value={details.invoiceNumber}
@@ -280,9 +277,7 @@ class InvoiceForm extends Component {
                 </Col>
                 <Col span={8} className="text-right">
                   <div>
-                    <h5>
-                      <FormattedMessage id="invoice.form.invoice_total" />
-                    </h5>
+                    <Text as="h5" intl="invoice.form.invoice_total" />
                     <span className="text-right">
                       {currencies[details.currency.value] &&
                         currencies[details.currency.value].symbol}{' '}
@@ -306,9 +301,7 @@ class InvoiceForm extends Component {
               <Row gutter={15} type="flex" align="bottom">
                 <Col span={12}>
                   <Terms>
-                    <h5>
-                      <FormattedMessage id="invoice.form.invoice_terms" />
-                    </h5>
+                    <Text as="h5" intl="invoice.form.invoice_terms" />
                     <TextArea
                       name="terms"
                       value={details.terms}
@@ -323,7 +316,7 @@ class InvoiceForm extends Component {
                   <Summary brandcolor={brandColor}>
                     <Row gutter={15}>
                       <Col span={12}>
-                        <FormattedMessage id="invoice.form.subtotal" />
+                        <Text intl="invoice.form.subtotal" />
                       </Col>
                       <Col span={12}>
                         {currencies[details.currency.value] &&
@@ -368,7 +361,7 @@ class InvoiceForm extends Component {
                     </AddFeeButton>
                     <Row gutter={15}>
                       <Col span={12}>
-                        <FormattedMessage id="invoice.form.invoice_total" />
+                        <Text intl="invoice.form.invoice_total" />
                       </Col>
                       <Col span={12}>
                         {currencies[details.currency.value] &&
@@ -378,8 +371,8 @@ class InvoiceForm extends Component {
                     </Row>
                     <AmountDue gutter={15}>
                       <Col span={12}>
-                        <FormattedMessage
-                          id="invoice.form.amount_due"
+                        <Text
+                          intl="invoice.form.amount_due"
                           values={{ currencyText: details.currency.value }}
                         />
                       </Col>

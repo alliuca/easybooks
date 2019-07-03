@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
 import { Row, Col, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
@@ -9,6 +8,7 @@ import { Invoice, fetchInvoices } from 'actions/invoices';
 import { RootState } from 'reducers';
 import Page from 'layout/Page';
 import Table from 'components/Table';
+import Text from 'components/Text';
 
 interface Props extends RouteComponentProps {
   fetchInvoices: () => Promise<void>;
@@ -64,13 +64,11 @@ class Invoices extends Component<Props> {
       <Page>
         <Row gutter={15}>
           <Col span={12}>
-            <h1>
-              <FormattedMessage id="invoices.title" />
-            </h1>
+            <Text as="h1" intl="invoices.title" />
           </Col>
           <Col span={12} className="text-right">
             <Button type="primary" icon="plus-circle-o" onClick={this.handleAdd}>
-              <FormattedMessage id="invoices.create_new" />
+              <Text intl="invoices.create_new" />
             </Button>
           </Col>
         </Row>
