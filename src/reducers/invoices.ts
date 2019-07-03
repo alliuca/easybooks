@@ -27,7 +27,7 @@ export default (state = initialState, action: Action): InvoicesState => {
     case RESET_CURRENT_INVOICE:
       return { ...state, current: null };
     case FETCH_INVOICE_LOCALES:
-      if (!state.current) return state;
+      // @ts-ignore
       return { ...state, current: { ...state.current, locales: action.payload } };
     case FETCH_INVOICE:
       return { ...state, current: { ...state.current, ...action.payload } };
@@ -47,7 +47,7 @@ export default (state = initialState, action: Action): InvoicesState => {
       }
       return { ...state, all: newInvoices, current: null };
     case DOWNLOAD_INVOICE_PDF:
-      if (!state.current) return state;
+      // @ts-ignore
       return { ...state, current: { ...state.current, filepath: action.payload } };
     default:
       return state;
