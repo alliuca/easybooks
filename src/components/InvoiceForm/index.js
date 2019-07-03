@@ -420,7 +420,7 @@ class InvoiceForm extends Component {
           </Template>
         </Form>
         <SaveButton type="primary" icon="save" onClick={save.bind(this, number, this.state)}>
-          Save
+          <Text intl="save" />
         </SaveButton>
       </>
     );
