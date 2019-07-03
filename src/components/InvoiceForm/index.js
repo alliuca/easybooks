@@ -21,7 +21,7 @@ import {
 import EditableTable from 'components/EditableTable';
 import EditableCell from 'components/EditableCell';
 import Text from 'components/Text';
-import { baseURL, currencies } from 'config';
+import { baseURL, currencies, statuses } from 'config';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -32,6 +32,7 @@ class InvoiceForm extends Component {
     details: {
       client: this.props.data.client,
       currency: this.props.data.currency || { CAD: { symbol: '$' } },
+      status: this.props.data.status || 'Waiting',
       billedTo:
         this.props.data.billedTo || `Acme Inc.\n150 Main Street\nVancouver, BC, Canada\nV6A`,
       dateOfIssue: moment().format('DD/MM/YYYY'),
@@ -43,7 +44,6 @@ class InvoiceForm extends Component {
         this.props.data.notes ||
         `Non EEC services given in accordance with the Italian Presidential Decree 633/1972 (section 7/ter)\n\nOperation falling under the preferential income tax policy provided by section 1, c. 111-113 Law 208/2015, with consequent VAT and withholding tax exemption.`,
     },
-    status: 'Waiting',
     fees: {
       items: this.props.data.fees ? this.props.data.fees.items : [],
       count: 0,
@@ -62,6 +62,7 @@ class InvoiceForm extends Component {
           details: {
             ...this.state.details,
             client: this.props.data.client,
+            status: this.props.data.status,
             currency: this.props.data.currency,
             billedTo: this.props.data.billedTo,
             terms: this.props.data.terms,
@@ -185,6 +186,15 @@ class InvoiceForm extends Component {
     });
   };
 
+  onStatusChange = value => {
+    this.setState({
+      details: {
+        ...this.state.details,
+        status: value,
+      },
+    });
+  };
+
   render() {
     const {
       save,
@@ -214,6 +224,19 @@ class InvoiceForm extends Component {
                 {Object.keys(currencies).map(c => (
                   <Option key={c} value={c}>
                     {currencies[c].symbol}
+                  </Option>
+                ))}
+              </Select>
+            </Col>
+            <Col span={3}>
+              <Select
+                defaultValue={'Waiting'}
+                value={details.status}
+                onChange={this.onStatusChange}
+              >
+                {statuses.map(s => (
+                  <Option key={s} value={s}>
+                    {s}
                   </Option>
                 ))}
               </Select>

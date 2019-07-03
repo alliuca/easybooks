@@ -110,7 +110,7 @@ class Invoice extends Component {
       },
       settings: { brandColor, logo },
     } = this.props;
-    const { details, total, subtotal, status, items, fees } = data;
+    const { details, total, subtotal, items, fees } = data;
     await this.props.saveInvoice(number, locale.toUpperCase(), {
       key: number,
       invoiceNumber: number,
@@ -123,7 +123,7 @@ class Invoice extends Component {
       billedTo: details.billedTo,
       amount: total,
       subtotal: subtotal,
-      status: status,
+      status: details.status,
       items: items,
       fees: fees,
       terms: details.terms,

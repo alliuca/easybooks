@@ -18,4 +18,6 @@ const currencies = {
   EUR: { symbol: '€' },
 };
 
-export { Api, currencies };
+const statuses = ['Paid', 'Waiting'];
+
+export { Api, currencies, statuses };

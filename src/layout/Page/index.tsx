@@ -1,3 +1,6 @@
+/* TODO: Fix invoice saving logic so that when you change the status
+   (or client or currency) it will apply the changes to all localized
+   invoices (not just EN or IT) */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Message, setMessages } from 'actions/app';

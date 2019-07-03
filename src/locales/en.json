@@ -1,4 +1,5 @@
 {
+  "save": "Save",
   "invoices.title": "Invoices",
   "invoices.create_new": "Create New Invoice",
   "invoice.form.description": "Description",
