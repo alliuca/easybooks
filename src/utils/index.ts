@@ -1,5 +1,5 @@
 export default {
-  pad: (str, size = 5) => {
+  pad: (str: string | number, size = 5) => {
     var s = String(str);
     while (s.length < (size || 2)) {
       s = '0' + s;

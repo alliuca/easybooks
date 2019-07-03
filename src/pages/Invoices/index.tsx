@@ -52,8 +52,9 @@ class Invoices extends Component<Props> {
 
   handleAdd = () => {
     const { history, invoices } = this.props;
-    const currentInvoice =
-      invoices.length > 0 ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10) : 0;
+    const currentInvoice = invoices.length
+      ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10)
+      : 0;
     history.push(`/invoice/${utils.pad(currentInvoice + 1)}`);
   };
 
