@@ -28,4 +28,5 @@ export default {
   addressStreet: 'Nome via / numero civico',
   addressCityCountry: 'Città / Paese',
   postalCode: 'Codice Postale',
+  brandColor: 'Brand Color',
 };

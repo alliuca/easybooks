@@ -13,7 +13,7 @@ interface Props extends InjectedFormProps<Profile>, ReactIntl.InjectedIntlProps 
   save: Function;
 }
 
-class ProfileForm<T> extends Component<Props> {
+class ProfileForm extends Component<Props> {
   render() {
     const { intl, data, onInputChange, fieldGroupComponent } = this.props;
     const FormFieldGroup = fieldGroupComponent;

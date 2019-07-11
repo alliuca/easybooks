@@ -28,4 +28,5 @@ export default {
   addressStreet: 'Street name / number',
   addressCityCountry: 'City / Country',
   postalCode: 'Postal Code',
+  brandColor: 'Brand Color',
 };

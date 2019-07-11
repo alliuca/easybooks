@@ -1,17 +1,23 @@
 import React, { PureComponent } from 'react';
 import { Subtract } from 'utility-types';
+import { ColorResult } from 'react-color';
 import { Text, Button } from 'components';
 import { Row, Col } from 'components/Grid';
 import Form, { FormItem, FormFieldGroup } from './form.theme';
 
-type SelectValue = string | number | object;
+type Value = string | number | object | boolean;
+
+type FormState = Pick<State, 'showColorPicker'>;
 
 // https://medium.com/@jrwebdev/react-higher-order-component-patterns-in-typescript-42278f7590fb
 // https://www.pluralsight.com/guides/higher-order-composition-typescript-react
 export interface InjectedProps<T> {
   data: T;
+  formState: FormState;
   onInputChange: () => {};
-  onSelectChange: (key: string, value: SelectValue) => {};
+  onSelectChange: (key: string, value: Value) => {};
+  onColorChange: (key: string, color: Value) => {};
+  onInputEdit: (key: keyof FormState, value: Value) => {};
   itemComponent: typeof FormItem;
   fieldGroupComponent: typeof FormFieldGroup;
 }
@@ -25,6 +31,7 @@ export interface State {
   data: {};
   isSaving: boolean;
   saved: boolean;
+  showColorPicker: boolean;
 }
 
 const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.ComponentType<P>) => {
@@ -33,6 +40,7 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       data: this.props.initialData,
       isSaving: false,
       saved: false,
+      showColorPicker: false,
     };
 
     componentDidUpdate(prevProps: Props) {
@@ -44,21 +52,43 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       }
     }
 
-    onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      this.setState({
-        data: {
-          ...this.state.data,
-          [e.currentTarget.name]: e.currentTarget.value,
-        },
-      });
-    };
-
-    onSelectChange = (key: string, value: SelectValue) => {
+    updateData = (key: string, value: Value) => {
       this.setState({
         data: {
           ...this.state.data,
           [key]: value,
         },
+      });
+    };
+
+    onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      // this.setState({
+      //   data: {
+      //     ...this.state.data,
+      //     [e.currentTarget.name]: e.currentTarget.value,
+      //   },
+      // });
+      this.updateData(e.currentTarget.name, e.currentTarget.value);
+    };
+
+    onSelectChange = (key: string, value: Value) => {
+      // this.setState({
+      //   data: {
+      //     ...this.state.data,
+      //     [key]: value,
+      //   },
+      // });
+      this.updateData(key, value);
+    };
+
+    onColorChange = (key: string, color: ColorResult) => {
+      this.updateData(key, color);
+    };
+
+    onInputEdit = (key: keyof FormState, value: FormState[keyof FormState]) => {
+      this.setState({
+        ...this.state,
+        [key]: value,
       });
     };
 
@@ -69,17 +99,19 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
     };
 
     render() {
-      const { data, isSaving, saved } = this.state;
+      const { data, isSaving, saved, showColorPicker } = this.state;
 
       return (
         <Form>
           <fieldset disabled={isSaving}>
             <WrappedComponent
               {...(this.props as (P & Props))}
-              // key={this.props.initialData !== this.state.data}
               data={data}
+              formState={{ showColorPicker }}
               onInputChange={this.onInputChange}
               onSelectChange={this.onSelectChange}
+              onColorChange={this.onColorChange}
+              onInputEdit={this.onInputEdit}
               itemComponent={FormItem}
               fieldGroupComponent={FormFieldGroup}
             />
