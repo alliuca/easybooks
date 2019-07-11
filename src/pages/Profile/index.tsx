@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Divider } from 'antd';
+import { PageContext } from 'providers/Page/context';
 import { setMessages } from 'actions/app';
 import { Profile as ProfileProps, fetchProfile, saveProfile } from 'actions/profile';
 import { RootState } from 'reducers';
@@ -15,21 +16,27 @@ interface Props {
 }
 
 class Profile extends Component<Props> {
+  static contextType = PageContext;
+
   componentDidMount() {
     this.props.fetchProfile();
   }
 
   save = async (data: ProfileProps, options: { stay: boolean }) => {
     await this.props.saveProfile(data);
-    await this.props.setMessages({
-      id: 'save_profile',
-      type: 'success',
-      text: 'Profile has been successfully saved',
-    });
+
+    if (!options.stay) {
+      await this.props.setMessages({
+        id: 'save_profile',
+        type: 'success',
+        text: 'Profile has been successfully saved',
+      });
+      this.context.goTo(`/invoices`);
+    }
   };
 
   render() {
-    const { profile, setMessages } = this.props;
+    const { profile } = this.props;
 
     return (
       <Layout>
