@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import { Avatar, Row, Button as AntdButton } from 'antd';
+import { Avatar, Row } from 'antd';
 import { SettingsData } from 'actions/app';
 import Button from 'components/Button';
 import EditableTable from 'components/EditableTable';

@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Route } from 'react-router-dom';
 import { Container } from './layout.theme';
-import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { Message, setMessages } from 'actions/app';
-import { RootState } from 'reducers';
+import { Message } from 'actions/app';
 import { Layout } from 'antd/lib';
 import { Wrapper } from './layout.theme';
 import MainSider from 'components/MainSider';
@@ -19,7 +15,7 @@ interface Props {
 
 class LayoutComponent extends PureComponent<Props> {
   static contextType = PageContext;
-  
+
   render() {
     const { children, sider = true } = this.props;
     const { messages } = this.context;
@@ -36,6 +32,6 @@ class LayoutComponent extends PureComponent<Props> {
       </Container>
     );
   }
-};
+}
 
 export default LayoutComponent;

@@ -35,19 +35,6 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       saved: false,
     };
 
-    // static getDerivedStateFromProps = (props: Props, state: State) => {
-    //   console.log('test');
-    //   if (props.initialData !== state.data) {
-    //     console.log('change');
-    //     return {
-    //       data: props.initialData,
-    //       isSaving: false,
-    //       saved: false,
-    //     };
-    //   }
-    //   return null;
-    // };
-
     componentDidUpdate(prevProps: Props) {
       if (prevProps.initialData !== this.props.initialData) {
         this.setState({

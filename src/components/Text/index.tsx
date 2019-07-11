@@ -1,7 +1,7 @@
-import React, { HTMLAttributes } from 'react';
+import React from 'react';
 import { FormattedNumber, FormattedMessage } from 'react-intl';
 import { createText } from './text.theme';
-import localeStrings from 'locales/en.json';
+import localeStrings from 'locales/en.ts';
 
 interface Props {
   as?: string;

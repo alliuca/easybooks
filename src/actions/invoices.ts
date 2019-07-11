@@ -74,11 +74,6 @@ export interface Invoice {
   pdfPath: string;
 }
 
-// export interface InvoiceTemp extends Invoice {
-//   isSaving?: boolean;
-//   saved?: boolean;
-// }
-
 export type InvoiceGlobals = Pick<Invoice, 'client' | 'currency' | 'status'>;
 
 export type Action =
@@ -86,7 +81,6 @@ export type Action =
   | FetchInvoicesAction
   | FetchInvoiceAction
   | DeleteInvoiceAction
-  // | SaveInvoiceRequestAction
   | SaveInvoiceAction
   | DownloadInvoicePDFAction;
 
@@ -120,11 +114,6 @@ export interface SaveInvoiceAction {
   type: ActionTypes.SAVE_INVOICE;
   payload: Invoice;
 }
-
-// export interface SaveInvoiceRequestAction {
-//   type: ActionTypes.SAVE_INVOICE_REQUEST;
-//   payload: { locale: Invoice['locale']; isSaving: boolean };
-// }
 
 export interface DownloadInvoicePDFAction {
   type: ActionTypes.DOWNLOAD_INVOICE_PDF;
@@ -160,27 +149,6 @@ export const fetchInvoice = (number: string) => async (dispatch: Dispatch) => {
   });
 };
 
-// export const fetchInvoice = (number: string, locale: string) => async (
-//   dispatch: Dispatch,
-//   getState: Function
-// ) => {
-//   // If all invoices were fetched before, just try and find the specified one
-//   let invoice = getState().invoices.all.find(
-//     (invoice: Invoice) => invoice.invoiceNumber === number
-//   );
-
-//   // If nothing was found, make a network request to fetch it
-//   if (!invoice) {
-//     const res = await Api.get(`/invoices/${number}/${locale}`);
-//     invoice = res.data;
-//   }
-
-//   dispatch<FetchInvoiceAction>({
-//     type: FETCH_INVOICE,
-//     payload: invoice,
-//   });
-// };
-
 export const deleteInvoice = (number: string, locale: string) => async (dispatch: Dispatch) => {
   const res = await Api.delete(`/invoices/${number}/${locale}`);
   const deleted = res.data;
@@ -200,11 +168,6 @@ export const saveInvoice = (
   globals: InvoiceGlobals,
   data: Subtract<Invoice, InvoiceGlobals>
 ) => async (dispatch: Dispatch, getState: Function) => {
-  // dispatch<SaveInvoiceRequestAction>({
-  //   type: SAVE_INVOICE_REQUEST,
-  //   payload: { locale: data.locale, isSaving: true },
-  // });
-
   await utils.stall();
 
   // Make a save call for each locale (cause globals like client, status, etc might have changed)

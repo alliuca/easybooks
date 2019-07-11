@@ -132,7 +132,6 @@ class Invoice extends PureComponent<Props> {
               locales={locales ? Object.keys(locales) : [Locale.EN]}
             />
             <InvoiceForm
-              // key={(current && (current.isSaving || current.saved) && current.key) || locale}
               initialData={locales ? locales[locale] : defaultInvoice}
               save={this.save}
               settings={settings}

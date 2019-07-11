@@ -1,4 +1,3 @@
-// profile
 export enum ActionTypes {
   // app
   SET_MESSAGES = 'SET_MESSAGES',

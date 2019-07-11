@@ -1,4 +1,3 @@
-import { UploadFile } from 'antd/lib/upload/interface';
 import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { Api } from 'config';
@@ -10,11 +9,6 @@ export interface Message {
   type: string;
   text: string;
 }
-
-// export interface Logo {
-//   file: UploadFile;
-//   fileList: UploadFile[];
-// }
 
 export interface SettingsData {
   brandColor: string;

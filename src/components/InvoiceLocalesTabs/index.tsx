@@ -1,7 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import { TabsProps } from 'antd/lib/tabs'
-import { Locale } from 'actions/invoices';
+import { TabsProps } from 'antd/lib/tabs';
 import MyIcon from 'components/Icon';
 const { TabPane } = Tabs;
 

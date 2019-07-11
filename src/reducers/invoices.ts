@@ -5,7 +5,6 @@ const {
   RESET_CURRENT_INVOICE,
   FETCH_INVOICE,
   DELETE_INVOICE,
-  SAVE_INVOICE_REQUEST,
   SAVE_INVOICE,
   DOWNLOAD_INVOICE_PDF,
 } = ActionTypes;
@@ -54,10 +53,6 @@ export default (state = initialState, action: Action): InvoicesState => {
         all: state.all.filter(invoice => invoice.invoiceNumber !== action.payload.number),
         current: null,
       };
-    // case SAVE_INVOICE_REQUEST: {
-    //   const { locale, isSaving } = action.payload;
-    //   return updateStateObject(state, 'current', locale, { isSaving });
-    // }
     case SAVE_INVOICE:
       let newInvoices = [...state.all];
       const invoiceIndex = newInvoices.findIndex(invoice => invoice.key === action.payload.key);
@@ -68,11 +63,7 @@ export default (state = initialState, action: Action): InvoicesState => {
         newInvoices[invoiceIndex] = action.payload;
       }
 
-      // const { locale, isSaving, saved } = action.payload;
-      // const current = updateStateObject(state, 'current', locale, { isSaving, saved });
-
       return { ...state, all: newInvoices };
-    // return { ...state, all: newInvoices, ...current };
     case DOWNLOAD_INVOICE_PDF: {
       const { locale, pdfPath } = action.payload;
       return updateStateObject(state, 'current', locale, { pdfPath });

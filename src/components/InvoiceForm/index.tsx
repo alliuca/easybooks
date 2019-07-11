@@ -14,7 +14,6 @@ import {
   AddFeeButton,
   AmountDue,
   Legal,
-  SaveButton,
 } from './invoiceform.theme';
 import { Text } from 'components';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
@@ -28,7 +27,6 @@ const { TextArea } = Input;
 interface Props extends InjectedFormProps<Invoice>, ReactIntl.InjectedIntlProps {
   settings: AppState['settings'];
   profile: ProfileState;
-  save: Function;
 }
 
 const currencyOptions = (Object.keys(currencies) as Array<keyof typeof CurrencyValues>).map(k => {
@@ -84,7 +82,6 @@ class InvoiceForm extends PureComponent<Props> {
       fieldGroupComponent,
       settings: { brandColor, logo },
       profile,
-      save,
     } = this.props;
     const data: Invoice = this.props.data;
     const FormFieldGroup = fieldGroupComponent;
@@ -104,19 +101,6 @@ class InvoiceForm extends PureComponent<Props> {
             </FormFieldGroup>
           </Col>
           <Col span={5} push={9}>
-            {/* <Select
-              defaultValue={keys[0]}
-              value={data.currency.value ? data.currency.value : CurrencyValues.CAD}
-              // onChange={this.onCurrencyChange}
-            >
-              {(keys as Array<keyof typeof CurrencyValues>).map(c => {
-                return (
-                  <Option key={c} value={c}>
-                    {currencies[c].symbol}
-                  </Option>
-                );
-              })}
-            </Select> */}
             <FormFieldGroup>
               {labels.currency}
               <Select
@@ -196,9 +180,6 @@ class InvoiceForm extends PureComponent<Props> {
               <Col span={8} className="text-right">
                 <Text as="h5" intl="invoice.form.invoice_total" />
                 <Text value={parseFloat(data.amount)} currency={data.currency.value} />
-                {/* <Text textAlign="right">
-                  {currencies[data.currency.value as CurrencyValues].symbol} {data.amount}
-                </Text> */}
               </Col>
             </Row>
           </Content>
@@ -291,23 +272,6 @@ class InvoiceForm extends PureComponent<Props> {
             <TextArea name="notes" value={data.notes} autosize={true} onChange={onInputChange} />
           </Legal>
         </Template>
-        {/* <Row gutter={15} type="flex" justify="center">
-          <Col>
-            <SaveButton type="primary" icon="save" onClick={save.bind(this, data)}>
-              <Text intl="save" />
-            </SaveButton>
-          </Col>
-          <Col>
-            <SaveButton
-              type="primary"
-              icon={data.saved ? 'tick' : 'save'}
-              loading={data.isSaving}
-              onClick={save.bind(this, data, { stay: true })}
-            >
-              <Text intl="save_and_stay" />
-            </SaveButton>
-          </Col>
-        </Row> */}
       </>
     );
   }
