@@ -18,7 +18,7 @@ class ProfileForm<T> extends Component<Props> {
     const { intl, data, onInputChange, fieldGroupComponent } = this.props;
     const FormFieldGroup = fieldGroupComponent;
     const labels = {
-      client: intl.formatMessage({ id: 'client' }),
+      name: intl.formatMessage({ id: 'name' }),
       website: intl.formatMessage({ id: 'website' }),
       taxCode: intl.formatMessage({ id: 'taxCode' }),
       vat: intl.formatMessage({ id: 'vat' }),
@@ -34,7 +34,7 @@ class ProfileForm<T> extends Component<Props> {
         <Row gutter={15}>
           <Col span={7}>
             <FormFieldGroup>
-              {labels.client}
+              {labels.name}
               <Input id="name" name="name" value={data.name} onChange={onInputChange} />
             </FormFieldGroup>
           </Col>

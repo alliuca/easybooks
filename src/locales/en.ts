@@ -19,6 +19,7 @@ export default {
   'invoice.form.fees.add_fee': 'Add fee',
   'invoice.form.totale': 'Total',
   'invoice.form.amount_due': 'Amount Due ({currencyText})',
+  name: 'Name',
   website: 'Website',
   taxCode: 'Tax Code',
   vat: 'VAT',

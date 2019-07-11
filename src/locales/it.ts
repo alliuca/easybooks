@@ -19,6 +19,7 @@ export default {
   'invoice.form.fees.add_fee': 'Aggiungi Imposta',
   'invoice.form.totale': 'Totale',
   'invoice.form.amount_due': 'Importo Dovuto ({currencyText})',
+  name: 'Nome',
   website: 'Website',
   taxCode: 'Codice Fiscale',
   vat: 'VAT',
