@@ -1,5 +1,11 @@
 {
+  "client": "Client",
+  "currency": "Currency",
+  "status": "Status",
   "save": "Save",
+  "save_and_stay": "Save & Stay",
+  "invoice": "Invoice #{number}",
+  "invoice.new": "New Invoice #{number}",
   "invoices.title": "Invoices",
   "invoices.create_new": "Create New Invoice",
   "invoice.form.description": "Description",
@@ -10,6 +16,8 @@
   "invoice.form.invoice_total": "Invoice Total",
   "invoice.form.invoice_terms": "Invoice Terms",
   "invoice.form.subtotal": "Subtotal",
+  "invoice.form.fees.add_fee": "Add fee",
   "invoice.form.totale": "Total",
-  "invoice.form.amount_due": "Amount Due ({currencyText})"
+  "invoice.form.amount_due": "Amount Due ({currencyText})",
+  "website": "Website"
 }

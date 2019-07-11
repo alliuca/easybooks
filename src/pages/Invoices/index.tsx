@@ -4,9 +4,10 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
+import { PageContext } from 'providers/Page/context';
 import { Invoice, fetchInvoices } from 'actions/invoices';
 import { RootState } from 'reducers';
-import Page from 'layout/Page';
+import Layout from 'components/Layout';
 import Table from 'components/Table';
 import Text from 'components/Text';
 import Tag from 'components/Tag';
@@ -23,7 +24,9 @@ const columns: InvoicesColumnProps[] = [
     title: 'Number',
     dataIndex: 'invoiceNumber',
     sorter: (a, b) => parseInt(a.invoiceNumber) - parseInt(b.invoiceNumber),
-    render: (text: string) => <Link to={`/invoice/${text}`}>{text}</Link>,
+    render: (number: string, invoice: Invoice) => (
+      <Link to={`/invoice/${number}/${invoice.locale}`}>{number}</Link>
+    ),
   },
   {
     title: 'Date of Issue',
@@ -48,23 +51,25 @@ const columns: InvoicesColumnProps[] = [
 ];
 
 class Invoices extends Component<Props> {
+  static contextType = PageContext;
+
   componentDidMount() {
     this.props.fetchInvoices();
   }
 
   handleAdd = () => {
-    const { history, invoices } = this.props;
+    const { invoices } = this.props;
     const currentInvoice = invoices.length
       ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10)
       : 0;
-    history.push(`/invoice/${utils.pad(currentInvoice + 1)}`);
+    this.context.goTo(`/invoice/${utils.pad(currentInvoice + 1)}`);
   };
 
   render() {
     const { invoices } = this.props;
 
     return (
-      <Page>
+      <Layout>
         <Row gutter={15}>
           <Col span={12}>
             <Text as="h1" intl="invoices.title" />
@@ -75,8 +80,8 @@ class Invoices extends Component<Props> {
             </Button>
           </Col>
         </Row>
-        <Table columns={columns} data={invoices} />
-      </Page>
+        <Table columns={columns} dataSource={invoices} />
+      </Layout>
     );
   }
 }

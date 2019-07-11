@@ -1,6 +1,10 @@
-import { FETCH_PROFILE, SAVE_PROFILE } from 'actions/types';
+import { Profile, Action } from 'actions/profile';
+import { ActionTypes } from 'actions/types';
+const { FETCH_PROFILE, SAVE_PROFILE } = ActionTypes;
 
-const initialState = {
+export interface ProfileState extends Profile {}
+
+const initialState: ProfileState = {
   name: 'John Doe',
   website: 'doe.com',
   taxCode: 'JHNDOE1234',
@@ -12,7 +16,7 @@ const initialState = {
   postalCode: 'V6B',
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: Action) => {
   switch (action.type) {
     case FETCH_PROFILE:
     case SAVE_PROFILE:

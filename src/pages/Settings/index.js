@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSettings, saveSettings, setMessages } from 'actions/app';
 import { Divider } from 'antd';
-import Page from 'layout/Page';
+import Layout from 'components/Layout';
 import SettingsForm from 'components/SettingsForm';
 
 class Settings extends Component {
@@ -16,7 +16,7 @@ class Settings extends Component {
     const { settings, setMessages } = this.props;
 
     return (
-      <Page>
+      <Layout>
         <h1>Settings</h1>
         <Divider />
         <SettingsForm
@@ -24,7 +24,7 @@ class Settings extends Component {
           saveSettings={this.handleSaveSettings}
           setMessages={setMessages}
         />
-      </Page>
+      </Layout>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert as AntdAlert } from 'antd';
-import { Consumer } from 'layout/Page/context';
+import { Consumer } from 'providers/Page/context';
 
 class Alert extends Component {
   state = {

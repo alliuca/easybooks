@@ -18,6 +18,7 @@ import MyIcon from 'components/Icon';
 const { TabPane } = Tabs;
 
 class Invoice extends Component {
+  // static whyDidYouRender = true;
   state = {
     actions: {
       pdf: { loading: false },
@@ -33,14 +34,26 @@ class Invoice extends Component {
         params: { number, locale },
       },
     } = this.props;
-    await this.props.fetchSettings();
+
+    // Fetch locales and navigate to the first localized invoice, default to EN
     await this.props.fetchInvoiceLocales(number);
+
     if (!locale) history.replace(`${number}/${this.props.invoice.locales[0]}`);
+
+    // Fetch invoice with number and locale (if any exist)
     await this.props.fetchInvoice(number, locale);
+
     this.props.clearAllMessages();
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (this.props.match.url === nextProps.match.url && this.props.invoice === nextProps.invoice)
+      return false;
+    return true;
+  }
+
   componentDidUpdate(prevProps) {
+    console.log('DID UPDATE WITH', this.props, prevProps);
     if (this.props.match.url !== prevProps.match.url) {
       this.props.fetchInvoice(this.props.match.params.number, this.props.match.params.locale);
     }
@@ -111,26 +124,31 @@ class Invoice extends Component {
       settings: { brandColor, logo },
     } = this.props;
     const { details, total, subtotal, items, fees } = data;
-    await this.props.saveInvoice(number, locale.toUpperCase(), {
-      key: number,
-      invoiceNumber: number,
-      dateOfIssue: details.dateOfIssue,
+    // certain values must be saved for all locales
+    const globals = {
       client: details.client,
       currency: {
         value: details.currency.value,
         symbol: currencies[details.currency.value].symbol,
       },
+      status: details.status,
+    };
+
+    // rest of the values will be saved for the specified locale
+    await this.props.saveInvoice(number, locale.toUpperCase(), globals, {
+      key: number,
+      invoiceNumber: number,
+      dateOfIssue: details.dateOfIssue,
       billedTo: details.billedTo,
       amount: total,
       subtotal: subtotal,
-      status: details.status,
       items: items,
       fees: fees,
       terms: details.terms,
       notes: details.notes,
       settings: {
         brandColor,
-        logo: logo ? logo.file.name : null,
+        logo,
       },
     });
     await this.props.setMessages({
@@ -156,6 +174,7 @@ class Invoice extends Component {
   };
 
   render() {
+    console.log('RENDER');
     const {
       match: {
         params: { number, locale },
@@ -165,7 +184,6 @@ class Invoice extends Component {
       profile,
     } = this.props;
     const { actions, localLocales } = this.state;
-    console.log('invoice', invoice);
 
     return (
       <Page>
@@ -220,6 +238,7 @@ class Invoice extends Component {
             ) : (
               <>
                 <h1>Invoice #{number}</h1>
+                {console.log('DATA', invoice)}
                 <Tabs
                   onChange={this.onLocaleChange}
                   activeKey={locale}
@@ -253,12 +272,15 @@ class Invoice extends Component {
                     />
                   ))}
                 </Tabs>
+                {console.log('locale', locale)}
+                {console.log('invoice', invoice)}
                 <InvoiceForm
+                  key={locale}
                   number={number}
                   save={this.save}
                   data={invoice}
                   locale={locale}
-                  settings={settings}
+                  settings={invoice.settings}
                   profile={profile}
                 />
                 <Row>
@@ -302,9 +324,15 @@ class Invoice extends Component {
   }
 }
 
-const mapStateToProps = ({ invoices: { current }, app: { settings }, profile }) => ({
+const mapStateToProps = ({
+  invoices: { current },
+  app: {
+    settings: { brandColor, logo },
+  },
+  profile,
+}) => ({
   invoice: current,
-  settings,
+  settings: { brandColor, logo: logo ? logo.file.name : null },
   profile,
 });
 

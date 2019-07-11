@@ -1,6 +1,6 @@
 import React from 'react';
-import Page from 'layout/Page';
+import Layout from 'components/Layout';
 
-const Home: React.FunctionComponent = () => <Page>Content</Page>;
+const Home: React.FunctionComponent = () => <Layout>Content</Layout>;
 
 export default Home;

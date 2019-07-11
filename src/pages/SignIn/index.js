@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from 'actions/app';
-import Page from 'layout/Page';
+import Layout from 'components/Layout';
 import LoginForm from 'components/LoginForm';
 
 class SignIn extends Component {
@@ -19,9 +19,9 @@ class SignIn extends Component {
     const { loggedIn } = this.props;
 
     return (
-      <Page sider={false}>
+      <Layout sider={false}>
         <LoginForm login={this.handleLogin} loggedIn={loggedIn} />
-      </Page>
+      </Layout>
     );
   }
 }

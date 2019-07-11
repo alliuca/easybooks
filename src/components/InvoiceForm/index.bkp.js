@@ -1,5 +1,4 @@
 // TODO: Omg, refactor this
-
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
 import moment from 'moment-mini';
@@ -26,6 +25,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 class InvoiceForm extends Component {
+  static whyDidYouRender = false;
   state = {
     total: this.props.data.amount,
     subtotal: this.props.data.subtotal,
@@ -51,10 +51,17 @@ class InvoiceForm extends Component {
     items: this.props.data.items ? this.props.data.items : [],
   };
 
+  // shouldComponentUpdate(nextProps) {
+  //   if (this.props.data === nextProps.data) return false;
+  //   return true;
+  // }
+
   componentDidUpdate({ data, locale }) {
+    // console.log('UPDATE');
     if (
-      (data.length && data !== this.props.data) ||
-      (data.currency && this.props.data.currency.value !== data.currency.value)
+      // data !== this.props.data ||
+      data.currency &&
+      this.props.data.currency.value !== data.currency.value
     ) {
       this.setState(
         {
@@ -203,6 +210,7 @@ class InvoiceForm extends Component {
       profile,
     } = this.props;
     const { total, subtotal, details, fees, items } = this.state;
+    console.log('this.state', this.state);
     return (
       <>
         <Form brandcolor={brandColor}>
@@ -247,10 +255,7 @@ class InvoiceForm extends Component {
             <Header brandcolor={brandColor}>
               <Row gutter={15}>
                 <Col span={8}>
-                  <CompanyLogo
-                    src={logo && `${baseURL}/files/upload/logo/${logo.file.name}`}
-                    size="large"
-                  >
+                  <CompanyLogo src={logo && `${baseURL}/files/upload/logo/${logo}`} size="large">
                     C
                   </CompanyLogo>
                   <div>

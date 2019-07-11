@@ -11,12 +11,14 @@ export interface Message {
   text: string;
 }
 
+// export interface Logo {
+//   file: UploadFile;
+//   fileList: UploadFile[];
+// }
+
 export interface SettingsData {
   brandColor: string;
-  logo: {
-    file: UploadFile;
-    fileList: UploadFile[];
-  } | null;
+  logo: string;
 }
 
 export interface LoginData {
@@ -35,7 +37,10 @@ export interface ClearAllMessagesAction {
 
 export interface FetchSettingsAction {
   type: ActionTypes.FETCH_SETTINGS;
-  payload: SettingsData;
+  payload: {
+    brandColor: SettingsData['brandColor'];
+    logo: string;
+  };
 }
 
 export interface SaveSettingsAction {
@@ -69,7 +74,7 @@ export const clearAllMessages = (): ClearAllMessagesAction => ({
 
 export const fetchSettings = () => async (dispatch: Dispatch) => {
   const res = await Api.get<SettingsData>('/settings');
-  const settings: SettingsData = res.data;
+  const settings = res.data;
 
   dispatch<FetchSettingsAction>({
     type: FETCH_SETTINGS,
@@ -88,7 +93,6 @@ export const saveSettings = (data: SettingsData) => async (dispatch: Dispatch) =
 
 export const login = (data: LoginData) => async (dispatch: Dispatch) => {
   const login = await Api.post('/login', data);
-  console.log(login.data);
   const { token, user } = login.data;
 
   if (token) Cookies.set('EasyBooksToken', token);

@@ -3,36 +3,29 @@
    invoices (not just EN or IT) */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { Message, setMessages } from 'actions/app';
 import { RootState } from 'reducers';
-import { Layout } from 'antd/lib';
-import { Wrapper } from './page.theme';
-import MainSider from 'components/MainSider';
-import Messages from 'components/Messages';
 import { Provider } from './context';
 
-interface Props {
+export interface Props extends RouteComponentProps {
   children: string | React.ReactNode;
   messages: Message[];
   setMessages: typeof setMessages;
   sider?: boolean;
+  goTo: Function;
 }
 
 class Page extends Component<Props> {
-  render() {
-    const { children, messages, setMessages, sider = true } = this.props;
+  goTo = (path: string) => {
+    const { history } = this.props;
+    history.push(path);
+  };
 
-    return (
-      <Provider value={{ setMessages }}>
-        {sider && <MainSider />}
-        <Layout>
-          <Wrapper>
-            <Messages>{messages}</Messages>
-            {children}
-          </Wrapper>
-        </Layout>
-      </Provider>
-    );
+  render() {
+    const { children, messages, setMessages } = this.props;
+
+    return <Provider value={{ messages, setMessages, goTo: this.goTo }}>{children}</Provider>;
   }
 }
 
@@ -44,7 +37,9 @@ const mapDispatchToProps = {
   setMessages,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Page);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Page)
+);

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from 'react-testing-library';
 import Alert from './';
 
-jest.mock('layout/Page/context', () => {
+jest.mock('providers/Page/context', () => {
   const setMessages = jest.fn();
   return {
     Consumer: props => props.children({ setMessages }),

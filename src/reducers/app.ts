@@ -12,7 +12,7 @@ const initialState: AppState = {
   messages: [],
   settings: {
     brandColor: '#40a9ff',
-    logo: null,
+    logo: '',
   },
   loggedIn: null,
 };
