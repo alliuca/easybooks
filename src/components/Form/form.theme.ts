@@ -25,6 +25,7 @@ export const FormFields = styled('div')`
 
   ${FormFieldGroup} {
     input,
+    > span,
     > div {
       flex-basis: 50%;
     }
