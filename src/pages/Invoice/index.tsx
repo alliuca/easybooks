@@ -10,6 +10,7 @@ import {
   saveInvoice,
   resetCurrentInvoice,
   downloadInvoicePDF,
+  deleteInvoice,
 } from 'actions/invoices';
 import { AppState } from 'reducers/app';
 import { InvoicesState } from 'reducers/invoices';
@@ -35,6 +36,7 @@ interface Props {
   saveInvoice: Function;
   resetCurrentInvoice: Function;
   downloadInvoicePDF: Function;
+  deleteInvoice: Function;
 }
 
 class Invoice extends PureComponent<Props> {
@@ -102,6 +104,23 @@ class Invoice extends PureComponent<Props> {
     }
   };
 
+  deleteInvoice = async (number: InvoiceProps['invoiceNumber']) => {
+    const {
+      match: {
+        params: { locale },
+      },
+    } = this.props;
+
+    await this.props.deleteInvoice(number, locale);
+
+    await this.props.setMessages({
+      id: `delete${number}`,
+      type: 'success',
+      text: `Invoice #${number} has been deleted`,
+    });
+    this.context.goTo(`/invoices`);
+  };
+
   render() {
     const {
       match: {
@@ -138,7 +157,11 @@ class Invoice extends PureComponent<Props> {
               settings={settings}
               profile={profile}
             />
-            <InvoiceActions invoice={current} downloadPDF={this.downloadPDF} />
+            <InvoiceActions
+              invoice={current}
+              downloadPDF={this.downloadPDF}
+              deleteInvoice={this.deleteInvoice}
+            />
           </>
         ) : (
           <Spinner />
@@ -168,6 +191,7 @@ const mapDispatchToProps = {
   saveInvoice,
   resetCurrentInvoice,
   downloadInvoicePDF,
+  deleteInvoice,
 };
 
 export default connect(

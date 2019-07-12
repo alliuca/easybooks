@@ -6,11 +6,13 @@ import { Invoice, Locale } from 'actions/invoices';
 
 enum InvoiceAction {
   pdf = 'pdf',
+  delete = 'delete',
 }
 
 export interface Props {
   invoice: Invoice | null;
   downloadPDF: Function;
+  deleteInvoice: Function;
 }
 
 export interface State {
@@ -23,6 +25,7 @@ class InvoiceActions extends Component<Props, State> {
   state = {
     actions: {
       pdf: { loading: false },
+      delete: { loading: false },
     },
   };
 
@@ -31,11 +34,21 @@ class InvoiceActions extends Component<Props, State> {
     const { actions } = this.state;
 
     let newActions = { ...actions };
-    newActions = { ...newActions.pdf, pdf: { loading: true } };
+    newActions['pdf'].loading = true;
     this.setState({ actions: newActions });
     await downloadPDF(number, locale);
-    newActions = { ...newActions.pdf, pdf: { loading: false } };
+    newActions['pdf'].loading = false;
     this.setState({ actions: newActions });
+  };
+
+  deleteInvoice = async (number: Invoice['invoiceNumber'], locale: keyof typeof Locale) => {
+    const { deleteInvoice } = this.props;
+    const { actions } = this.state;
+
+    let newActions = { ...actions };
+    newActions['delete'].loading = true;
+    this.setState({ actions: newActions });
+    await deleteInvoice(number, locale);
   };
 
   render() {
@@ -60,12 +73,17 @@ class InvoiceActions extends Component<Props, State> {
             <Col>
               <Popconfirm
                 title="Are you sure you want to delete this invoice?"
-                // onConfirm={this.deleteInvoice.bind(this, invoice.invoiceNumber)}
+                onConfirm={this.deleteInvoice.bind(this, invoice.invoiceNumber, invoice.locale)}
                 onCancel={() => {}}
                 okText="Yes"
                 cancelText="No"
               >
-                <Button type="danger" icon="delete" className="mt30 mb30">
+                <Button
+                  type="danger"
+                  loading={actions.delete.loading}
+                  icon="delete"
+                  className="mt30 mb30"
+                >
                   Delete
                 </Button>
               </Popconfirm>

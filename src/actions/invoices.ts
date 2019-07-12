@@ -152,6 +152,8 @@ export const fetchInvoice = (number: string) => async (dispatch: Dispatch) => {
 };
 
 export const deleteInvoice = (number: string, locale: string) => async (dispatch: Dispatch) => {
+  await utils.stall();
+
   const res = await Api.delete(`/invoices/${number}/${locale}`);
   const deleted = res.data;
 
