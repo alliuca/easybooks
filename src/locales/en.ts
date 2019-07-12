@@ -31,6 +31,8 @@ export default {
   addressCityCountry: 'City / Country',
   postalCode: 'Postal Code',
   brandColor: 'Brand Color',
+  language: 'Language',
   profile: 'Profile',
   settings: 'Settings',
+  'messages.settings_success': 'Settings have been successfully saved',
 };

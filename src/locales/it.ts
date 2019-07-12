@@ -30,7 +30,9 @@ export default {
   addressStreet: 'Nome via / numero civico',
   addressCityCountry: 'Città / Paese',
   postalCode: 'Codice Postale',
-  brandColor: 'Brand Color',
+  brandColor: 'Colore Brand',
+  language: 'Lingua',
   profile: 'Profilo',
   settings: 'Impostazioni',
+  'messages.settings_success': 'Le Impostazioni sono state salvate correttamente',
 };

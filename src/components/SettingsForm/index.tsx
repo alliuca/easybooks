@@ -10,6 +10,7 @@ import { Button } from 'components';
 import { FormFields } from 'components/Form/form.theme';
 import { Row, Col } from 'components/Grid';
 import Upload from 'components/Upload';
+import Select from 'components/Select';
 import { ColorPicker, Logo } from './settingsform.theme';
 
 interface Props extends InjectedFormProps<SettingsData>, ReactIntl.InjectedIntlProps {
@@ -22,6 +23,17 @@ interface State {
   loadingLogo: boolean;
 }
 
+const localeOptions = [
+  {
+    value: 'en-GB',
+    label: 'English',
+  },
+  {
+    value: 'it',
+    label: 'Italiano',
+  },
+];
+
 const getBase64 = (img: File, callback: (readerResult: FileReader['result']) => void) => {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
@@ -33,15 +45,6 @@ class SettingsForm extends Component<Props, State> {
     showColorPicker: false,
     loadingLogo: false,
   };
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (!nextProps.settings.logo || nextProps.settings.logo.file.name === prevState.imageUrl) {
-  //     return null;
-  //   }
-  //   return {
-  //     imageUrl: `${baseURL}/files/upload/logo/${nextProps.settings.logo.file.name}`,
-  //   };
-  // }
 
   handleLogoChange: UploadProps['onChange'] = ({ file }) => {
     if (file.status === 'uploading') {
@@ -64,6 +67,7 @@ class SettingsForm extends Component<Props, State> {
       data,
       formState,
       onInputChange,
+      onSelectChange,
       onColorChange,
       onInputEdit,
       fieldGroupComponent,
@@ -72,10 +76,23 @@ class SettingsForm extends Component<Props, State> {
     const FormFieldGroup = fieldGroupComponent;
     const labels = {
       brandColor: intl.formatMessage({ id: 'brandColor' }),
+      language: intl.formatMessage({ id: 'language' }),
     };
 
     return (
       <FormFields>
+        <Row gutter={15}>
+          <Col span={7}>
+            <FormFieldGroup>
+              {labels.language}
+              <Select
+                value={data.locale}
+                options={localeOptions}
+                onChange={value => onSelectChange('locale', value)}
+              />
+            </FormFieldGroup>
+          </Col>
+        </Row>
         <Row gutter={15}>
           <Col span={7}>
             <FormFieldGroup>

@@ -28,10 +28,21 @@ const messages = {
 // }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { locale: store.getState().app.settings.locale };
+    store.subscribe(() => {
+      const locale = store.getState().app.settings.locale;
+      if (locale !== this.state.locale) this.setState({ locale });
+    });
+  }
+
   render() {
+    const { locale } = this.state;
+
     return (
       <Provider store={store}>
-        <IntlProvider locale={'en-GB'} messages={messages['en']}>
+        <IntlProvider locale={locale} key={locale} messages={messages[locale.substr(0, 2)]}>
           <Router>
             <Page>
               <ProtectedRoute exact path="/" component={Home} />

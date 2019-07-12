@@ -7,12 +7,13 @@ const { FETCH_SETTINGS, SET_MESSAGES, CLEAR_ALL_MESSAGES, SAVE_SETTINGS, LOGIN }
 export interface Message {
   id: string;
   type: string;
-  text: string;
+  text: string | JSX.Element;
 }
 
 export interface SettingsData {
   brandColor: string;
   logo: string;
+  locale: string;
 }
 
 export interface LoginData {
@@ -31,10 +32,7 @@ export interface ClearAllMessagesAction {
 
 export interface FetchSettingsAction {
   type: ActionTypes.FETCH_SETTINGS;
-  payload: {
-    brandColor: SettingsData['brandColor'];
-    logo: string;
-  };
+  payload: SettingsData;
 }
 
 export interface SaveSettingsAction {

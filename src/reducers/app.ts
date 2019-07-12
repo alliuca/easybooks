@@ -13,6 +13,7 @@ const initialState: AppState = {
   settings: {
     brandColor: '#40a9ff',
     logo: '',
+    locale: 'en-GB',
   },
   loggedIn: null,
 };
