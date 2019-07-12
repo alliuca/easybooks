@@ -81,7 +81,7 @@ class Invoice extends PureComponent<Props> {
       await this.props.setMessages({
         id: `save${number}`,
         type: 'success',
-        text: `Invoice #${number} has been successfully saved`,
+        text: <Text intl="messages.invoice_saved_success" values={{ number }} />,
       });
       this.context.goTo(`/invoices`);
     }
@@ -116,7 +116,7 @@ class Invoice extends PureComponent<Props> {
     await this.props.setMessages({
       id: `delete${number}`,
       type: 'success',
-      text: `Invoice #${number} has been deleted`,
+      text: <Text intl="messages.invoice_deleted_success" values={{ number }} />,
     });
     this.context.goTo(`/invoices`);
   };

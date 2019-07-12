@@ -34,5 +34,8 @@ export default {
   language: 'Lingua',
   profile: 'Profilo',
   settings: 'Impostazioni',
-  'messages.settings_success': 'Le Impostazioni sono state salvate correttamente',
+  'messages.settings_saved_success': 'Le Impostazioni sono state salvate correttamente',
+  'messages.invoice_saved_success': 'Fattura #{number} è stata salvata correttamente',
+  'messages.invoice_deleted_success': 'Fattura #{number} è stata cancellata',
+  'messages.profile_saved_success': 'Le informazioni del profilo sono state salvate correttamente',
 };

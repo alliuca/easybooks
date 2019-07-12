@@ -34,5 +34,8 @@ export default {
   language: 'Language',
   profile: 'Profile',
   settings: 'Settings',
-  'messages.settings_success': 'Settings have been successfully saved',
+  'messages.settings_saved_success': 'Settings have been successfully saved',
+  'messages.invoice_saved_success': 'Invoice #{number} has been successfully saved',
+  'messages.invoice_deleted_success': 'Invoice #{number} has been deleted',
+  'messages.profile_saved_success': 'Profile has been successfully saved',
 };

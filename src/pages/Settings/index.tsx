@@ -30,7 +30,7 @@ class Settings extends Component<Props> {
       await this.props.setMessages({
         id: 'save_settings',
         type: 'success',
-        text: 'Settings have been successfully saved',
+        text: <Text intl="messages.settings_saved_success" />,
       });
       this.context.goTo(`/invoices`);
     }

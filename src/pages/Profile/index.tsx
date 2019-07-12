@@ -30,7 +30,7 @@ class Profile extends Component<Props> {
       await this.props.setMessages({
         id: 'save_profile',
         type: 'success',
-        text: 'Profile has been successfully saved',
+        text: <Text intl="messages.profile_saved_success" />,
       });
       this.context.goTo(`/invoices`);
     }
