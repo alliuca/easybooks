@@ -202,10 +202,10 @@ export const downloadInvoicePDF = (number: string, locale: keyof typeof Locale) 
   getState: Function
 ) => {
   let pdfPath = getState().invoices.current.locales[locale].pdfPath;
-  if (!pdfPath) {
-    const res = await Api.get(`/invoices/${number}/${locale}/pdf`);
-    pdfPath = res.data;
-  }
+  // if (!pdfPath) {
+  const res = await Api.get(`/invoices/${number}/${locale}/pdf`);
+  pdfPath = res.data;
+  // }
 
   await utils.stall();
 
