@@ -32,7 +32,7 @@ class ProfileForm extends Component<Props> {
     return (
       <FormFields>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.name}
               <Input id="name" name="name" value={data.name} onChange={onInputChange} />
@@ -40,7 +40,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.website}
               <Input id="website" name="website" value={data.website} onChange={onInputChange} />
@@ -48,7 +48,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.taxCode}
               <Input id="taxCode" name="taxCode" value={data.taxCode} onChange={onInputChange} />
@@ -56,7 +56,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.vat}
               <Input id="vat" name="vat" value={data.vat} onChange={onInputChange} />
@@ -64,7 +64,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.phone}
               <Input id="phone" name="phone" value={data.phone} onChange={onInputChange} />
@@ -72,7 +72,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.email}
               <Input id="email" name="email" value={data.email} onChange={onInputChange} />
@@ -80,7 +80,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.addressStreet}
               <Input
@@ -93,7 +93,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.addressCityCountry}
               <Input
@@ -106,7 +106,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={7}>
+          <Col span={9}>
             <FormFieldGroup>
               {labels.postalCode}
               <Input

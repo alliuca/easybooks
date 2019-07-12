@@ -19,6 +19,8 @@ export const FormFieldGroup = styled('label')`
 `;
 
 export const FormFields = styled('div')`
+  margin-bottom: 30px;
+
   ${Row}:not(:last-child) {
     margin-bottom: 10px;
   }
