@@ -31,7 +31,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <IntlProvider locale={'en'} messages={messages['en']}>
+        <IntlProvider locale={'en-GB'} messages={messages['en']}>
           <Router>
             <Page>
               <ProtectedRoute exact path="/" component={Home} />
