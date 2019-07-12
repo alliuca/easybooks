@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Divider } from 'antd';
 import { PageContext } from 'providers/Page/context';
 import { setMessages } from 'actions/app';
 import { Profile as ProfileProps, fetchProfile, saveProfile } from 'actions/profile';
 import { RootState } from 'reducers';
+import { Text } from 'components';
 import Layout from 'components/Layout';
+import Header from 'components/Header';
 import ProfileForm from 'components/ProfileForm';
 
 interface Props {
@@ -40,8 +41,7 @@ class Profile extends Component<Props> {
 
     return (
       <Layout>
-        <h1>Profile</h1>
-        <Divider />
+        <Header left={<Text as="h1" intl="profile" />} />
         <ProfileForm initialData={profile} save={this.save} />
       </Layout>
     );

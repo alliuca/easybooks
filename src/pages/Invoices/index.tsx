@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
 import { PageContext } from 'providers/Page/context';
 import { Invoice, fetchInvoices } from 'actions/invoices';
 import { RootState } from 'reducers';
 import Layout from 'components/Layout';
+import Header from 'components/Header';
 import Table from 'components/Table';
 import Text from 'components/Text';
 import Tag from 'components/Tag';
@@ -70,16 +71,14 @@ class Invoices extends Component<Props> {
 
     return (
       <Layout>
-        <Row gutter={15}>
-          <Col span={12}>
-            <Text as="h1" intl="invoices.title" />
-          </Col>
-          <Col span={12} className="text-right">
+        <Header
+          left={<Text as="h1" intl="invoices.title" />}
+          right={
             <Button type="primary" icon="plus-circle-o" onClick={this.handleAdd}>
               <Text intl="invoices.create_new" />
             </Button>
-          </Col>
-        </Row>
+          }
+        />
         <Table columns={columns} dataSource={invoices} />
       </Layout>
     );

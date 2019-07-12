@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchSettings, saveSettings, setMessages } from 'actions/app';
-import { Divider } from 'antd';
 import { PageContext } from 'providers/Page/context';
 import { RootState } from 'reducers';
 import { SettingsData } from 'actions/app';
+import { Text } from 'components';
 import Layout from 'components/Layout';
+import Header from 'components/Header';
 import SettingsForm from 'components/SettingsForm';
 
 interface Props {
@@ -40,8 +41,7 @@ class Settings extends Component<Props> {
 
     return (
       <Layout>
-        <h1>Settings</h1>
-        <Divider />
+        <Header left={<Text as="h1" intl="settings" />} />
         <SettingsForm initialData={settings} save={this.save} />
       </Layout>
     );

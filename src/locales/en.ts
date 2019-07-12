@@ -29,4 +29,6 @@ export default {
   addressCityCountry: 'City / Country',
   postalCode: 'Postal Code',
   brandColor: 'Brand Color',
+  profile: 'Profile',
+  settings: 'Settings',
 };
