@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { Currency, Status } from 'actions/invoices';
 
 export const baseURL = process.env.REACT_APP_API;
+export const uploadURL = `${baseURL}/files/upload`;
 
 const Api = axios.create({
   baseURL: `${baseURL}/api`,

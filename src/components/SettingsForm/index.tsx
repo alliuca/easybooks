@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import { Input, Upload, Icon, message } from 'antd';
-import Cookies from 'js-cookie';
-import { baseURL } from 'config';
+import { Input, Icon } from 'antd';
+import { UploadProps, UploadFile } from 'antd/lib/upload/interface';
+import { uploadURL } from 'config';
 import { Intl } from 'config/types';
 import { SettingsData } from 'actions/app';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import { Button } from 'components';
 import { FormFields } from 'components/Form/form.theme';
 import { Row, Col } from 'components/Grid';
+import Upload from 'components/Upload';
 import { ColorPicker, Logo } from './settingsform.theme';
-const maxFileSize = 51200; // 50kb = 50 * 1024
 
 interface Props extends InjectedFormProps<SettingsData>, ReactIntl.InjectedIntlProps {
   intl: Intl;
@@ -18,21 +18,17 @@ interface Props extends InjectedFormProps<SettingsData>, ReactIntl.InjectedIntlP
   save: Function;
 }
 
-// const getBase64 = (img, callback) => {
-//   const reader = new FileReader();
-//   reader.addEventListener('load', () => callback(reader.result));
-//   reader.readAsDataURL(img);
-// };
+interface State {
+  loadingLogo: boolean;
+}
 
-// const beforeUpload = file => {
-//   const isLt50k = file.size < maxFileSize;
-//   if (!isLt50k) {
-//     message.error('Image must be smaller than 50kb');
-//   }
-//   return isLt50k;
-// };
+const getBase64 = (img: File, callback: (readerResult: FileReader['result']) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
 
-class SettingsForm extends Component<Props> {
+class SettingsForm extends Component<Props, State> {
   state = {
     showColorPicker: false,
     loadingLogo: false,
@@ -47,26 +43,20 @@ class SettingsForm extends Component<Props> {
   //   };
   // }
 
-  handleColorPickerVisibility = () => {
-    this.setState({
-      showColorPicker: !this.state.showColorPicker,
-    });
+  handleLogoChange: UploadProps['onChange'] = ({ file }) => {
+    if (file.status === 'uploading') {
+      this.setState({ loadingLogo: true });
+      return;
+    }
+    if (file.status === 'done' && file.originFileObj) {
+      getBase64(file.originFileObj, imageURL => {
+        this.setState({
+          loadingLogo: false,
+        });
+      });
+      this.props.onUploadChange('logo', file.name);
+    }
   };
-
-  // handleLogoChange = ({ file }) => {
-  //   if (file.status === 'uploading') {
-  //     this.setState({ loadingLogo: true });
-  //     return;
-  //   }
-  //   if (file.status === 'done') {
-  //     getBase64(file.originFileObj, imageUrl =>
-  //       this.setState({
-  //         imageUrl,
-  //         loadingLogo: false,
-  //       })
-  //     );
-  //   }
-  // };
 
   render() {
     const {
@@ -78,7 +68,7 @@ class SettingsForm extends Component<Props> {
       onInputEdit,
       fieldGroupComponent,
     } = this.props;
-    // const { showColorPicker, imageUrl } = this.state;
+    const { loadingLogo } = this.state;
     const FormFieldGroup = fieldGroupComponent;
     const labels = {
       brandColor: intl.formatMessage({ id: 'brandColor' }),
@@ -112,33 +102,17 @@ class SettingsForm extends Component<Props> {
             )}
           </Col>
         </Row>
-        {/* <Row gutter={15}>
+        <Row gutter={15}>
           <Col span={6}>
-            <FormFieldGroup>
-              <Upload
-                accept=".jpg,.png,.gif"
-                action={`${baseURL}/api/upload`}
-                beforeUpload={beforeUpload}
-                name="logo"
-                listType="picture-card"
-                onChange={this.handleLogoChange}
-                showUploadList={false}
-                type="file"
-                headers={{
-                  Authorization: `Bearer ${encodeURIComponent(Cookies.get('EasyBooksToken'))}`,
-                }}
-              >
-                {imageUrl ? (
-                  <Logo src={imageUrl} alt="" />
-                ) : (
-                  <div>
-                    <Icon type={this.state.loadingLogo ? 'loading' : 'plus'} />
-                  </div>
-                )}
-              </Upload>
-            </FormFieldGroup>
+            <Upload name="logo" listType="picture-card" onChange={this.handleLogoChange}>
+              {data.logo ? (
+                <Logo src={`${uploadURL}/logo/${data.logo}`} alt="Company Logo" />
+              ) : (
+                <Icon type={loadingLogo ? 'loading' : 'plus'} />
+              )}
+            </Upload>
           </Col>
-        </Row> */}
+        </Row>
       </FormFields>
     );
   }

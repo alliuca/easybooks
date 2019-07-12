@@ -31,7 +31,7 @@ export const fetchProfile = () => async (dispatch: Dispatch) => {
   const res = await Api.get('/profile');
   const profile = res.data;
 
-  dispatch({
+  dispatch<FetchProfileAction>({
     type: FETCH_PROFILE,
     payload: profile,
   });
@@ -40,7 +40,7 @@ export const fetchProfile = () => async (dispatch: Dispatch) => {
 export const saveProfile = (data: Profile) => async (dispatch: Dispatch) => {
   await Api.post('/profile', data);
 
-  dispatch({
+  dispatch<SaveProfileAction>({
     type: SAVE_PROFILE,
     payload: data,
   });

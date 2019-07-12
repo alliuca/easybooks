@@ -18,6 +18,7 @@ export interface InjectedProps<T> {
   onSelectChange: (key: string, value: Value) => {};
   onColorChange: (key: string, color: Value) => {};
   onInputEdit: (key: keyof FormState, value: Value) => {};
+  onUploadChange: (key: string, value: Value) => {};
   itemComponent: typeof FormItem;
   fieldGroupComponent: typeof FormFieldGroup;
 }
@@ -92,10 +93,14 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       });
     };
 
+    onUploadChange = (key: string, value: string) => {
+      this.updateData(key, value);
+    };
+
     save = async (options: { stay: boolean }) => {
       this.setState({ isSaving: true });
       await this.props.save(this.state.data, options);
-      this.setState({ isSaving: false, saved: true });
+      if (options.stay) this.setState({ isSaving: false, saved: true });
     };
 
     render() {
@@ -112,6 +117,7 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
               onSelectChange={this.onSelectChange}
               onColorChange={this.onColorChange}
               onInputEdit={this.onInputEdit}
+              onUploadChange={this.onUploadChange}
               itemComponent={FormItem}
               fieldGroupComponent={FormFieldGroup}
             />
