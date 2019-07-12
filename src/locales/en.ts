@@ -4,6 +4,7 @@ export default {
   status: 'Status',
   save: 'Save',
   save_and_stay: 'Save & Stay',
+  delete: 'Delete',
   invoice: 'Invoice #{number}',
   'invoice.new': 'New Invoice #{number}',
   'invoices.title': 'Invoices',
@@ -38,4 +39,6 @@ export default {
   'messages.invoice_saved_success': 'Invoice #{number} has been successfully saved',
   'messages.invoice_deleted_success': 'Invoice #{number} has been deleted',
   'messages.profile_saved_success': 'Profile has been successfully saved',
+  'pdf.loading': 'Getting it...',
+  'pdf.download': 'Download .PDF',
 };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Popconfirm } from 'antd';
-import { Button } from 'components';
+import { Button, Text } from 'components';
 import { Row, Col } from 'components/Grid';
 import { Invoice, Locale } from 'actions/invoices';
 
@@ -67,7 +67,7 @@ class InvoiceActions extends Component<Props, State> {
                 loading={actions.pdf.loading}
                 onClick={this.downloadPDF.bind(this, invoice.invoiceNumber, invoice.locale)}
               >
-                {actions.pdf.loading ? 'Getting it...' : 'Download .PDF'}
+                {actions.pdf.loading ? <Text intl="pdf.loading" /> : <Text intl="pdf.download" />}
               </Button>
             </Col>
             <Col>
@@ -84,7 +84,7 @@ class InvoiceActions extends Component<Props, State> {
                   icon="delete"
                   className="mt30 mb30"
                 >
-                  Delete
+                  <Text intl="delete" />
                 </Button>
               </Popconfirm>
             </Col>
