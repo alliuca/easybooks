@@ -19,6 +19,7 @@ import { Text } from 'components';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import Select from 'components/Select';
 import { Row, Col } from 'components/Grid';
+import Currency from 'components/Currency';
 import { EditableTableColumnProps } from 'components/EditableTable';
 import { AppState } from 'reducers/app';
 import { ProfileState } from 'reducers/profile';
@@ -69,7 +70,7 @@ class InvoiceForm extends PureComponent<Props> {
         dataIndex: 'amount',
         width: '20%',
         align: 'right',
-        render: text => <Text value={parseFloat(text)} currency={currency.value} />,
+        render: text => <Currency value={parseFloat(text)} currency={currency.value} />,
       },
     ];
   };
@@ -179,7 +180,7 @@ class InvoiceForm extends PureComponent<Props> {
               </Col>
               <Col span={8} className="text-right">
                 <Text as="h5" intl="invoice.form.invoice_total" />
-                <Text value={parseFloat(data.amount)} currency={data.currency.value} />
+                <Currency value={parseFloat(data.amount)} currency={data.currency.value} />
               </Col>
             </Row>
           </Content>
@@ -211,7 +212,7 @@ class InvoiceForm extends PureComponent<Props> {
                     <Text intl="invoice.form.subtotal" />
                   </Col>
                   <Col span={12}>
-                    <Text value={parseFloat(data.subtotal)} currency={data.currency.value} />
+                    <Currency value={parseFloat(data.subtotal)} currency={data.currency.value} />
                   </Col>
                 </Row>
                 {data.fees.items.map(f => {
@@ -226,7 +227,7 @@ class InvoiceForm extends PureComponent<Props> {
                           /> */}
                         </Col>
                         <Col span={12}>
-                          <Text value={parseFloat(f.value)} currency={data.currency.value} />
+                          <Currency value={parseFloat(f.value)} currency={data.currency.value} />
                           {/* <EditableCell
                             value={f.value.toString()}
                             onChange={this.onCellChange(`fees`, f.key, 'value')}
@@ -251,7 +252,7 @@ class InvoiceForm extends PureComponent<Props> {
                     <Text intl="invoice.form.invoice_total" />
                   </Col>
                   <Col span={12}>
-                    <Text value={parseFloat(data.subtotal)} currency={data.currency.value} />
+                    <Currency value={parseFloat(data.amount)} currency={data.currency.value} />
                   </Col>
                 </Row>
                 <AmountDue gutter={15}>
@@ -262,7 +263,7 @@ class InvoiceForm extends PureComponent<Props> {
                     />
                   </Col>
                   <Col span={12}>
-                    <Text value={parseFloat(data.subtotal)} currency={data.currency.value} />
+                    <Currency value={parseFloat(data.amount)} currency={data.currency.value} />
                   </Col>
                 </AmountDue>
               </Summary>

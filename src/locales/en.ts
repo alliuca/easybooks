@@ -8,6 +8,8 @@ export default {
   'invoice.new': 'New Invoice #{number}',
   'invoices.title': 'Invoices',
   'invoices.create_new': 'Create New Invoice',
+  'invoice.number': 'Number',
+  'invoice.date_of_issue': 'Date of issue',
   'invoice.form.description': 'Description',
   'invoice.form.hours': 'Hours',
   'invoice.form.amount': 'Amount',

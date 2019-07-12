@@ -2,6 +2,7 @@ import { Api } from 'config';
 import { Dispatch } from 'redux';
 import { Subtract } from 'utility-types';
 import utils from 'utils';
+import { InvoicesState } from 'reducers/invoices';
 import { ActionTypes } from 'actions/types';
 import { SettingsData } from 'actions/app';
 const {
@@ -45,7 +46,7 @@ export interface Invoice {
   dateOfIssue: string;
   client: string;
   currency: {
-    value: string;
+    value: keyof typeof CurrencyValues;
     symbol: string;
   };
   billedTo: string;
@@ -113,6 +114,7 @@ export interface DeleteInvoiceAction {
 export interface SaveInvoiceAction {
   type: ActionTypes.SAVE_INVOICE;
   payload: Invoice;
+  current: InvoicesState['current'];
 }
 
 export interface DownloadInvoicePDFAction {
@@ -173,18 +175,23 @@ export const saveInvoice = (
   // Make a save call for each locale (cause globals like client, status, etc might have changed)
   // TODO: I'm sure I'll come up with a better solution that involves API restructuring
   const current = getState().invoices.current;
-  if (current && current.key) {
-    const locales = Object.keys(getState().invoices.current.locales);
-    (locales as Array<keyof typeof Locale>).map(async l => {
-      await Api.post(`/invoices/${number}/${l}`, l === locale ? { ...globals, ...data } : globals);
+  let locales = { ...current.locales };
+  if (current && !current.error && locales) {
+    (Object.keys(locales) as Array<keyof typeof Locale>).map(async l => {
+      const newData = l === locale ? { ...globals, ...data } : { ...locales[l], ...globals };
+      await Api.post(`/invoices/${number}/${l}`, newData);
+      locales[l] = newData;
     });
   } else {
+    const newData = { ...globals, ...data };
     await Api.post(`/invoices/${number}/${locale}`, { ...globals, ...data });
+    locales[locale] = newData;
   }
 
   dispatch<SaveInvoiceAction>({
     type: SAVE_INVOICE,
     payload: { ...data, ...globals },
+    current: { locales },
   });
 };
 

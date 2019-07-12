@@ -8,6 +8,8 @@ export default {
   'invoice.new': 'Nuova Fattura #{number}',
   'invoices.title': 'Fatture',
   'invoices.create_new': 'Crea Nuova Fattura',
+  'invoice.number': 'Numero',
+  'invoice.date_of_issue': 'Data di emissione',
   'invoice.form.description': 'Descrizione',
   'invoice.form.hours': 'Ore',
   'invoice.form.amount': 'Importo',

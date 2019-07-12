@@ -1,5 +1,5 @@
 import moment from 'moment-mini';
-import { Locale } from 'actions/invoices';
+import { Locale, CurrencyValues } from 'actions/invoices';
 
 export default {
   locales: {
@@ -10,7 +10,7 @@ export default {
         .utc()
         .format(),
       client: 'Acme Inc.',
-      currency: { value: 'CAD', symbol: '$' },
+      currency: { value: CurrencyValues.CAD, symbol: '$' },
       billedTo: 'Acme Inc.\n150 Main Street\nVancouver, BC, Canada\nV6A',
       amount: '0',
       subtotal: '0',

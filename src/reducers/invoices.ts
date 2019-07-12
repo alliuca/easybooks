@@ -63,7 +63,7 @@ export default (state = initialState, action: Action): InvoicesState => {
         newInvoices[invoiceIndex] = action.payload;
       }
 
-      return { ...state, all: newInvoices };
+      return { ...state, all: newInvoices, current: action.current };
     case DOWNLOAD_INVOICE_PDF: {
       const { locale, pdfPath } = action.payload;
       return updateStateObject(state, 'current', locale, { pdfPath });

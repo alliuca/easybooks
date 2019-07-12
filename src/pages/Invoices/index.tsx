@@ -5,6 +5,7 @@ import { Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
 import { PageContext } from 'providers/Page/context';
+import { Locale } from 'actions/invoices';
 import { Invoice, fetchInvoices } from 'actions/invoices';
 import { RootState } from 'reducers';
 import Layout from 'components/Layout';
@@ -12,6 +13,7 @@ import Header from 'components/Header';
 import Table from 'components/Table';
 import Text from 'components/Text';
 import Tag from 'components/Tag';
+import Currency from 'components/Currency';
 
 interface Props extends RouteComponentProps {
   fetchInvoices: () => Promise<void>;
@@ -22,7 +24,7 @@ interface InvoicesColumnProps extends ColumnProps<Invoice> {}
 
 const columns: InvoicesColumnProps[] = [
   {
-    title: 'Number',
+    title: <Text intl="invoice.number" />,
     dataIndex: 'invoiceNumber',
     sorter: (a, b) => parseInt(a.invoiceNumber) - parseInt(b.invoiceNumber),
     render: (number: string, invoice: Invoice) => (
@@ -30,21 +32,25 @@ const columns: InvoicesColumnProps[] = [
     ),
   },
   {
-    title: 'Date of Issue',
+    title: <Text intl="invoice.date_of_issue" />,
     dataIndex: 'dateOfIssue',
+    render: (date: Date) => <Text type="date" value={date} />,
   },
   {
-    title: 'Client',
+    title: <Text intl="client" />,
     dataIndex: 'client',
     sorter: (a, b) => a.client.length - b.client.length,
   },
   {
-    title: 'Amount',
+    title: <Text intl="invoice.form.amount" />,
     dataIndex: 'amount',
     sorter: (a, b) => parseInt(a.amount) - parseInt(b.amount),
+    render: (amount: number, invoice: Invoice) => (
+      <Currency value={parseFloat(invoice.amount)} currency={invoice.currency.value} />
+    ),
   },
   {
-    title: 'Status',
+    title: <Text intl="status" />,
     dataIndex: 'status',
     sorter: (a, b) => a.status.length - b.status.length,
     render: status => <Tag color={status}>{status}</Tag>,
@@ -63,7 +69,7 @@ class Invoices extends Component<Props> {
     const currentInvoice = invoices.length
       ? parseInt(invoices[invoices.length - 1].invoiceNumber, 10)
       : 0;
-    this.context.goTo(`/invoice/${utils.pad(currentInvoice + 1)}`);
+    this.context.goTo(`/invoice/${utils.pad(currentInvoice + 1)}/${Locale.EN}`);
   };
 
   render() {
