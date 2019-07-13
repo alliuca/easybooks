@@ -187,7 +187,9 @@ class InvoiceForm extends PureComponent<Props> {
           <ItemsTable
             brandColor={brandColor}
             columns={this.getColumnsData()}
+            dataSourceKey="items"
             dataSource={data.items}
+            onChange={onInputChange}
             // editableCells={['description', 'hours', 'amount']}
             // updateData={this.updateData}
           />

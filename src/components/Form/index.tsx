@@ -29,7 +29,9 @@ export interface Props {
 }
 
 export interface State {
-  data: {};
+  data: {
+    [key: string]: string;
+  };
   isSaving: boolean;
   saved: boolean;
   showColorPicker: boolean;
@@ -54,15 +56,63 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
     }
 
     updateData = (key: string, value: Value) => {
+      const keys = key.split('.');
+      // let computedValue = { ...this.state };
+      // for (let i = 0; i < keys.length; i++) {
+      //   computedValue = {
+      //     ...computedValue,
+      //     data: {
+      //       ...this.state.data,
+      //       [keys[i]]: {
+      //         ...this.state.data[keys[i]],
+
+      //       }
+      //     }
+      //   }
+      // }
+
+      // let newValue = { ...this.state };
+      // newValue[keys[0]][keys[1]][keys[2]] = value;
+
+      // computedValue = { [{ hours: '66.75' }, { hours: '2.75 }] }
+      // computedValue = {  }
+
+      let computedValue = value;
+
+      const targetKey = keys[0];
+      console.log('keys', keys);
+      if (keys.length > 1 && this.state.data && this.state.data.hasOwnProperty(targetKey)) {
+        // @ts-ignore
+        let newItems = this.state.data[targetKey];
+        console.log(newItems);
+        newItems[keys[1]] = {
+          ...newItems[keys[1]],
+          [keys[2]]: value,
+        };
+        console.log(newItems);
+        computedValue = newItems;
+      }
+      console.log(keys[0]);
+
       this.setState({
         data: {
           ...this.state.data,
-          [key]: value,
+          [keys[0]]: computedValue,
+          /*
+          items: [{
+            ...
+            hours: '45',
+          }, {
+            ...
+            hourse: '2.75'
+          }]
+          */
         },
       });
     };
 
     onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('asd', e.currentTarget);
       // this.setState({
       //   data: {
       //     ...this.state.data,
@@ -70,6 +120,10 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       //   },
       // });
       this.updateData(e.currentTarget.name, e.currentTarget.value);
+      // items[0].hours
+      // newItems = { ...items };
+      // newItems[0] = { ...newItems[0], hours: value }
+      // setState({ data: { ...this.state.data, [key]: newItems } })
     };
 
     onSelectChange = (key: string, value: Value) => {
