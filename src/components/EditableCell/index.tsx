@@ -12,19 +12,19 @@ interface Props extends ReactIntl.InjectedIntlProps {
   currency: string;
   align: 'left' | 'center' | 'right';
   name: string;
-  onCellChange: Function;
+  onCellChange: (target: { name: string; value: number }) => void;
 }
 
 class EditableCell extends Component<Props> {
   onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    this.props.onCellChange({ name, value });
+    this.props.onCellChange({ name, value: parseFloat(value) });
   };
 
-  onNumberChange = (value: number | undefined) => {
-    const { name } = this.props;
-    this.props.onCellChange({ name, value });
-  };
+  // onNumberChange = (value: number | undefined) => {
+  //   const { name } = this.props;
+  //   this.props.onCellChange({ name, value });
+  // };
 
   renderCell = () => {
     const { record, dataIndex, number, currency, name, align } = this.props;
@@ -36,7 +36,7 @@ class EditableCell extends Component<Props> {
           <InputNumber
             name={name}
             value={parseFloat(value)}
-            onChange={this.onNumberChange}
+            onChange={this.props.onCellChange}
             currency={currency}
             align={align}
           />

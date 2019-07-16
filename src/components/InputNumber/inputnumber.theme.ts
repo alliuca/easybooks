@@ -3,7 +3,7 @@ import { css } from '@emotion/core';
 import { InputNumber as AntdInputNumber } from 'antd';
 import { Props } from './index';
 
-export const InputNumber = styled(AntdInputNumber)<Props>(
+export const InputNumber = styled(AntdInputNumber)<{ align: Props['align'] }>(
   ({ align }) => css`
     width: 100%;
 

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Input } from 'antd';
 import { baseURL, currencies, statuses } from 'config';
 import { Invoice, CurrencyValues } from 'actions/invoices';
 import {
@@ -18,6 +17,8 @@ import { Text } from 'components';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import Select from 'components/Select';
 import TextArea from 'components/TextArea';
+import Input from 'components/Input';
+import InputNumber from 'components/InputNumber';
 import { Row, Col } from 'components/Grid';
 import Currency from 'components/Currency';
 import { EditableTableColumnProps } from 'components/EditableTable';
@@ -223,42 +224,47 @@ class InvoiceForm extends PureComponent<Props> {
             <Col span={12}>
               <Summary brandColor={brandColor}>
                 <Row gutter={15}>
-                  <Col span={12}>
+                  <Col span={13}>
                     <Text intl="invoice.form.subtotal" />
                   </Col>
-                  <Col span={12}>
+                  <Col span={11}>
                     <Currency value={parseFloat(data.subtotal)} currency={data.currency.value} />
                   </Col>
                 </Row>
-                {data.fees.items.map(f => {
-                  if (f.editable) {
-                    return (
-                      <Row key={f.key} gutter={15}>
-                        <Col span={12}>
-                          <Text>{f.name}</Text>
-                          {/* <EditableCell
-                            value={f.name}
-                            onChange={this.onCellChange(`fees`, f.key, 'name')}
-                          /> */}
-                        </Col>
-                        <Col span={12}>
-                          <Currency value={parseFloat(f.value)} currency={data.currency.value} />
-                          {/* <EditableCell
-                            value={f.value.toString()}
-                            onChange={this.onCellChange(`fees`, f.key, 'value')}
-                          /> */}
-                        </Col>
-                      </Row>
-                    );
-                  } else {
-                    return (
-                      <Row key={f.key} gutter={15}>
-                        <Col span={12}>{f.name}</Col>
-                        <Col span={12}>{f.value}</Col>
-                      </Row>
-                    );
-                  }
-                })}
+                {data.fees.items.map((f, index) => (
+                  <Row key={f.key} gutter={15}>
+                    <Col span={13}>
+                      {f.editable ? (
+                        <Input
+                          id={`fees.items[${index}].name`}
+                          name={`fees.items[${index}].name`}
+                          value={f.name}
+                          onChange={onInputChange}
+                          align="right"
+                        />
+                      ) : (
+                        f.name
+                      )}
+                    </Col>
+                    <Col span={11}>
+                      {f.editable ? (
+                        <InputNumber
+                          name={name}
+                          value={parseFloat(f.value)}
+                          onChange={onInputChange}
+                          currency={data.currency.symbol}
+                          align="right"
+                        />
+                      ) : (
+                        f.value
+                      )}
+                      {/* <EditableCell
+                        value={f.value.toString()}
+                        onChange={this.onCellChange(`fees`, f.key, 'value')}
+                      /> */}
+                    </Col>
+                  </Row>
+                ))}
                 <AddFeeButton size="small" icon="plus" onClick={() => {}}>
                   <Text intl="invoice.form.fees.add_fee" />
                 </AddFeeButton>

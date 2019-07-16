@@ -4,9 +4,14 @@ import { InputNumberProps } from 'antd/lib/input-number';
 import { CurrencyValues } from 'actions/invoices';
 import InputNumber from './inputnumber.theme';
 
-export interface Props extends InputNumberProps, ReactIntl.InjectedIntlProps {
+type ToOmit = 'name' | 'value' | 'onChange';
+
+export interface Props extends Omit<InputNumberProps, ToOmit>, ReactIntl.InjectedIntlProps {
+  name: string;
+  value: number | undefined;
+  onChange: (target: { name: string; value: number }) => void;
   currency?: string;
-  align: 'left' | 'center' | 'right';
+  align?: 'left' | 'center' | 'right';
 }
 
 class InputNumberComponent extends PureComponent<Props> {
@@ -28,7 +33,7 @@ class InputNumberComponent extends PureComponent<Props> {
   }
 
   render() {
-    const { currency, onChange } = this.props;
+    const { name, currency, onChange, align = 'left' } = this.props;
     const { decimal, currencyIdx } = this.getLocaleParts();
 
     return (
@@ -40,7 +45,14 @@ class InputNumberComponent extends PureComponent<Props> {
             : undefined
         }
         decimalSeparator={decimal}
-        onChange={onChange}
+        onChange={
+          onChange
+            ? value => {
+                if (value) onChange({ name, value });
+              }
+            : undefined
+        }
+        align={align}
       />
     );
   }

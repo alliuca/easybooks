@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subtract } from 'utility-types';
 import { injectIntl } from 'react-intl';
+import _set from 'lodash/set';
 import { Text, Button } from 'components';
 import { Row, Col } from 'components/Grid';
 import Form, { FormItem, FormFieldGroup } from './form.theme';
@@ -60,50 +61,18 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       }
     }
 
-    // updateData = (
-    //   state: { [key: string]: any },
-    //   callback?: () => void
-    // ) => {
-
-    // }
-
-    // this.updateData({ total: 'test', amount: 'test' })
-
-    // updateData = (key: string, value: Value, callback?: Function) => {
     updateData = (state: { [key: string]: any }, callback?: () => void) => {
-      let newState = {};
+      let newData = { ...this.state.data };
 
       Object.keys(state).forEach(key => {
-        const keys = key.split('.');
-        let computedValue = state[key];
-
-        // TODO: Currently just works for three levels
-        // e.g. items.0.hours
-        const targetKey = keys[0];
-        if (keys.length > 1 && this.state.data && this.state.data.hasOwnProperty(targetKey)) {
-          let newItems = this.state.data[targetKey];
-          newItems[keys[1]] = {
-            ...newItems[keys[1]],
-            [keys[2]]: state[key],
-          };
-          computedValue = newItems;
-        }
-
-        newState = { ...newState, [keys[0]]: computedValue };
+        newData = _set(newData, key, state[key]);
       });
 
-      this.setState(
-        {
-          data: {
-            ...this.state.data,
-            ...newState,
-          },
-        },
-        () => callback && callback()
-      );
+      this.setState({ data: newData }, () => callback && callback());
     };
 
     onInputChange = (target: InputTarget, callback: () => void) => {
+      console.log('target', target);
       let { name, value } = target;
       this.updateData({ [name]: value }, callback);
     };
