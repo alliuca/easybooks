@@ -94,7 +94,6 @@ class InvoiceForm extends PureComponent<Props> {
     const {
       intl,
       onInputChange,
-      onSelectChange,
       fieldGroupComponent,
       settings: { brandColor, logo },
       profile,
@@ -123,9 +122,12 @@ class InvoiceForm extends PureComponent<Props> {
                 value={data.currency.value}
                 options={currencyOptions}
                 onChange={value =>
-                  onSelectChange('currency', {
-                    value,
-                    symbol: currencies[value as CurrencyValues].symbol,
+                  onInputChange({
+                    name: 'currency',
+                    value: {
+                      value,
+                      symbol: currencies[value as CurrencyValues].symbol,
+                    },
                   })
                 }
               />
@@ -138,7 +140,7 @@ class InvoiceForm extends PureComponent<Props> {
               {labels.status}
               <Select
                 value={data.status}
-                onChange={value => onSelectChange('status', value)}
+                onChange={value => onInputChange({ name: 'status', value })}
                 options={statusOptions}
               />
             </FormFieldGroup>

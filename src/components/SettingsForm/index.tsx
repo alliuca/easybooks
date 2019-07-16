@@ -51,26 +51,17 @@ class SettingsForm extends Component<Props, State> {
       return;
     }
     if (file.status === 'done' && file.originFileObj) {
-      getBase64(file.originFileObj, imageURL => {
+      getBase64(file.originFileObj, () => {
         this.setState({
           loadingLogo: false,
         });
       });
-      this.props.onUploadChange('logo', file.name);
+      this.props.onInputChange({ name: 'logo', value: file.name });
     }
   };
 
   render() {
-    const {
-      intl,
-      data,
-      formState,
-      onInputChange,
-      onSelectChange,
-      onColorChange,
-      onInputEdit,
-      fieldGroupComponent,
-    } = this.props;
+    const { intl, data, formState, onInputChange, onInputEdit, fieldGroupComponent } = this.props;
     const { loadingLogo } = this.state;
     const FormFieldGroup = fieldGroupComponent;
     const labels = {
@@ -87,7 +78,7 @@ class SettingsForm extends Component<Props, State> {
               <Select
                 value={data.locale}
                 options={localeOptions}
-                onChange={value => onSelectChange('locale', value)}
+                onChange={value => onInputChange({ name: 'locale', value })}
               />
             </FormFieldGroup>
           </Col>
@@ -113,7 +104,7 @@ class SettingsForm extends Component<Props, State> {
             {formState.showColorPicker && (
               <ColorPicker
                 color={data.brandColor}
-                onChange={color => onColorChange('brandColor', color.hex)}
+                onChange={color => onInputChange({ name: 'brandColor', value: color.hex })}
               />
             )}
           </Col>
