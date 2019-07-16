@@ -73,7 +73,6 @@ class InvoiceForm extends PureComponent<Props> {
         editable: true,
         number: true,
         currency: currency.symbol,
-        // render: text => <Currency value={parseFloat(text)} currency={currency.value} />,
       },
     ];
   };
