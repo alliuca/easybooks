@@ -17,12 +17,12 @@ import {
 import { Text } from 'components';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import Select from 'components/Select';
+import TextArea from 'components/TextArea';
 import { Row, Col } from 'components/Grid';
 import Currency from 'components/Currency';
 import { EditableTableColumnProps } from 'components/EditableTable';
 import { AppState } from 'reducers/app';
 import { ProfileState } from 'reducers/profile';
-const { TextArea } = Input;
 
 interface Props extends InjectedFormProps<Invoice>, ReactIntl.InjectedIntlProps {
   settings: AppState['settings'];
@@ -185,7 +185,7 @@ class InvoiceForm extends PureComponent<Props> {
                     rows={5}
                     cols={10}
                     autosize={true}
-                    // onChange={onInputChange}
+                    onChange={onInputChange}
                   />
                 </FormFieldGroup>
               </Col>
@@ -216,7 +216,7 @@ class InvoiceForm extends PureComponent<Props> {
                   rows={6}
                   cols={15}
                   autosize={true}
-                  // onChange={onInputChange}
+                  onChange={onInputChange}
                 />
               </Terms>
             </Col>
@@ -285,12 +285,7 @@ class InvoiceForm extends PureComponent<Props> {
             </Col>
           </Row>
           <Legal>
-            <TextArea
-              name="notes"
-              value={data.notes}
-              autosize={true}
-              // onChange={onInputChange}
-            />
+            <TextArea name="notes" value={data.notes} autosize={true} onChange={onInputChange} />
           </Legal>
         </Template>
       </>

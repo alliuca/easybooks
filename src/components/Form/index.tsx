@@ -96,6 +96,7 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
     //   { type, callback }: { type: string; callback: () => void }
     // ) => {
     onInputChange = (target: { name: string; value: any }, callback: () => void) => {
+      console.log('target', target);
       let { name, value } = target;
       // if (type === 'number') {
       // console.log('value', value);
