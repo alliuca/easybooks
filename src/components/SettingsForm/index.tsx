@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import { Input, Icon } from 'antd';
 import { UploadProps, UploadFile } from 'antd/lib/upload/interface';
 import { uploadURL } from 'config';
@@ -13,7 +12,7 @@ import Upload from 'components/Upload';
 import Select from 'components/Select';
 import { ColorPicker, Logo } from './settingsform.theme';
 
-interface Props extends InjectedFormProps<SettingsData>, ReactIntl.InjectedIntlProps {
+interface Props extends InjectedFormProps<SettingsData> {
   intl: Intl;
   data: SettingsData;
   save: Function;
@@ -135,4 +134,4 @@ class SettingsForm extends Component<Props, State> {
   }
 }
 
-export default injectIntl(withForm<SettingsData, Props>(SettingsForm));
+export default withForm<SettingsData, Props>(SettingsForm);

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { injectIntl } from 'react-intl';
 import { Input } from 'antd';
 import { baseURL, currencies, statuses } from 'config';
 import { Invoice, CurrencyValues } from 'actions/invoices';
@@ -64,15 +63,32 @@ class InvoiceForm extends PureComponent<Props> {
         width: '20%',
         align: 'right',
         editable: true,
+        number: true,
       },
       {
         title: intl.formatMessage({ id: 'invoice.form.amount' }),
         dataIndex: 'amount',
         width: '20%',
         align: 'right',
-        render: text => <Currency value={parseFloat(text)} currency={currency.value} />,
+        editable: true,
+        number: true,
+        currency: currency.symbol,
+        // render: text => <Currency value={parseFloat(text)} currency={currency.value} />,
       },
     ];
+  };
+
+  onItemChange = (target: { name: string; value: any }) => {
+    this.props.onInputChange(target, this.updateTotal);
+  };
+
+  updateTotal = () => {
+    const { items } = this.props.data;
+    const amountsSum = items.reduce((a, item) => {
+      // if (!a) return parseFloat(item.amount);
+      return a + parseFloat(item.amount);
+    }, 0);
+    console.log('amountsSum', amountsSum);
   };
 
   render() {
@@ -170,7 +186,7 @@ class InvoiceForm extends PureComponent<Props> {
                     rows={5}
                     cols={10}
                     autosize={true}
-                    onChange={onInputChange}
+                    // onChange={onInputChange}
                   />
                 </FormFieldGroup>
               </Col>
@@ -189,9 +205,7 @@ class InvoiceForm extends PureComponent<Props> {
             columns={this.getColumnsData()}
             dataSourceKey="items"
             dataSource={data.items}
-            onChange={onInputChange}
-            // editableCells={['description', 'hours', 'amount']}
-            // updateData={this.updateData}
+            onCellChange={this.onItemChange}
           />
           <Row gutter={15} type="flex" align="bottom">
             <Col span={12}>
@@ -203,7 +217,7 @@ class InvoiceForm extends PureComponent<Props> {
                   rows={6}
                   cols={15}
                   autosize={true}
-                  onChange={onInputChange}
+                  // onChange={onInputChange}
                 />
               </Terms>
             </Col>
@@ -272,7 +286,12 @@ class InvoiceForm extends PureComponent<Props> {
             </Col>
           </Row>
           <Legal>
-            <TextArea name="notes" value={data.notes} autosize={true} onChange={onInputChange} />
+            <TextArea
+              name="notes"
+              value={data.notes}
+              autosize={true}
+              // onChange={onInputChange}
+            />
           </Legal>
         </Template>
       </>
@@ -280,4 +299,4 @@ class InvoiceForm extends PureComponent<Props> {
   }
 }
 
-export default injectIntl(withForm<Invoice, Props>(InvoiceForm));
+export default withForm<Invoice, Props>(InvoiceForm);

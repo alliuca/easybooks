@@ -1,121 +1,129 @@
-import React, { Component, createRef } from 'react';
-// import Input from 'components/Input';
-import { Input } from 'antd';
-import { Cell } from 'components/Table/table.theme';
-import { Container, CellIcon } from './editablecell.theme';
+import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
+import { Cell, Input, Prefix } from './editablecell.theme';
+import InputNumber from 'components/InputNumber';
 
-interface Props {
-  value: string;
+interface Props extends ReactIntl.InjectedIntlProps {
   record: { [key: string]: string };
   dataIndex: string;
   title: string;
+  editable: boolean;
+  number: boolean;
+  currency: string;
   align: 'left' | 'center' | 'right';
   name: string;
-  onChange: Function;
+  onCellChange: Function;
 }
 
 class EditableCell extends Component<Props> {
-  private input?: HTMLInputElement;
-
-  state = {
-    // value: this.props.record[this.props.dataIndex],
-    // editable: false,
-    editing: false,
-  };
-
-  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // this.setState({
-    //   value: e.currentTarget.value,
-    // });
-    console.log(this.props);
-    this.props.onChange(e);
-  };
-
-  toggleEdit = () => {
-    const editing = !this.state.editing;
-    this.setState({ editing }, () => {
-      if (this.state.editing && this.input) this.input.focus();
-    });
-  };
-
-  save = (e: React.SyntheticEvent<HTMLInputElement>) => {
-    this.toggleEdit();
-    // send data to form
-  };
-
-  // handleChange = e => {
-  //   const value = e.target.value;
-  //   this.setState({ value });
+  // onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { currency } = this.props;
+  //   this.props.onCellChange(e, currency ? { type: 'number' } : {});
   // };
 
-  // check = () => {
-  //   this.setState({ editable: false });
-  //   if (this.props.onChange) {
-  //     this.props.onChange(this.state.value);
+  onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+    this.props.onCellChange({ name, value });
+  };
+
+  onNumberChange = (value: number | undefined) => {
+    const { name } = this.props;
+    this.props.onCellChange({ name, value });
+  };
+
+  // renderCurrencyAffix = (value: any) => {
+  //   const { intl, record, dataIndex, currency } = this.props;
+  //   const numberFormat = new Intl.NumberFormat(intl.locale, {
+  //     minimumFractionDigits: 0,
+  //   });
+  //   const currencyFormat = new Intl.NumberFormat(intl.locale, {
+  //     style: 'currency',
+  //     currency,
+  //     minimumFractionDigits: 0,
+  //   });
+  //   const number = record[dataIndex];
+  //   const formattedCurrency = currencyFormat.format(parseFloat(number));
+  //   const formattedNumber = numberFormat.format(parseFloat(number));
+  //   const symbol = formattedCurrency.replace(formattedNumber, '').trim();
+
+  //   if (formattedCurrency.indexOf(formattedNumber) > 0) {
+  //     const prefix = (
+  //       <Prefix>
+  //         {symbol}
+  //         <span>{value}</span>
+  //       </Prefix>
+  //     );
+  //     return { type: 'prefix', value: prefix };
+  //   } else {
+  //     return { type: 'suffix', value: symbol };
   //   }
   // };
 
-  // edit = () => {
-  //   this.setState({ editable: true });
-  // };
-
   renderCell = () => {
-    const { dataIndex, align, children } = this.props;
-    const { editing } = this.state;
+    const { intl, record, dataIndex, number, currency, name, align, children } = this.props;
+    console.log('record', record);
+    // const affix = currency ? this.renderCurrencyAffix(record[dataIndex]) : null;
+    // console.log(affix);
+
+    // if (currency) {
+    //   var numberFormat = new Intl.NumberFormat(undefined, {
+    //     style: 'currency',
+    //     currency,
+    //     minimumFractionDigits: 0,
+    //     useGrouping: false,
+    //   });
+    //   const formatted = numberFormat.format(parseFloat('1440.65'));
+    //   const symbol = formatted.replace('1440.65', '');
+    //   if (formatted.indexOf('1440.65') > 0) {
+    //     prefix = <div>{symbol}</div>;
+    //   } else {
+    //     suffix = symbol;
+    //   }
+    // }
+
+    // const value = currency
+    //   ? intl.formatNumber(parseFloat(record[dataIndex]), {
+    //       minimumFractionDigits: 0,
+    //       useGrouping: false,
+    //     })
+    //   : record[dataIndex];
+    const value = record[dataIndex];
 
     return (
-      <Input
-        ref={node => {
-          if (node) this.input = node.input;
-        }}
-        name={this.props.name}
-        value={this.props.record[this.props.dataIndex]}
-        onChange={this.onChange}
-        // onBlur={this.save}
-        style={{ textAlign: align }}
-      />
+      <>
+        {number ? (
+          <InputNumber
+            name={name}
+            value={parseFloat(value)}
+            onChange={this.onNumberChange}
+            currency={currency}
+            align={align}
+          />
+        ) : (
+          <Input name={name} value={value} onChange={this.onTextChange} align={align} />
+        )}
+        {/* {affix && affix.type === 'prefix' ? affix.value : null} */}
+      </>
     );
 
-    // return editing ? (
-    //   <Input
-    //     ref={node => {
-    //       if (node) this.input = node.input;
-    //     }}
-    //     name={this.props.name}
-    //     value={this.props.record[this.props.dataIndex]}
-    //     onChange={this.onChange}
-    //     onBlur={this.save}
-    //     style={{ textAlign: align }}
-    //   />
-    // ) : (
-    //   <Cell editable onClick={this.toggleEdit}>
-    //     {children}
-    //   </Cell>
+    // return (
+    //   <>
+    //     <Input
+    //       name={name}
+    //       value={value}
+    //       onChange={this.onChange}
+    //       align={align}
+    //       suffix={affix && affix.type === 'suffix' ? affix.value : null}
+    //     />
+    //     {affix && affix.type === 'prefix' ? affix.value : null}
+    //   </>
     // );
   };
 
   render() {
-    const { record, dataIndex, title, onChange, children, ...rest } = this.props;
-
-    return <td {...rest}>{this.renderCell()}</td>;
-
-    // const { value, editable } = this.state;
-    // return (
-    //   <Container style={this.props.style || {}}>
-    //     {editable ? (
-    //       <div>
-    //         <Input value={value} onChange={this.handleChange} onPressEnter={this.check} />
-    //         <CellIcon type="check" onClick={this.check} />
-    //       </div>
-    //     ) : (
-    //       <div>
-    //         {value || ' '}
-    //         <CellIcon type="edit" onClick={this.edit} />
-    //       </div>
-    //     )}
-    //   </Container>
-    // );
+    const { record, dataIndex, title, editable, onCellChange, children, ...rest } = this.props;
+    return <Cell {...rest}>{editable ? this.renderCell() : children}</Cell>;
   }
 }
 
-export default EditableCell;
+export default injectIntl(EditableCell);

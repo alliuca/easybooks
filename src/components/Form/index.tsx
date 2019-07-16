@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Subtract } from 'utility-types';
 import { ColorResult } from 'react-color';
+import { injectIntl } from 'react-intl';
+import utils from 'utils';
 import { Text, Button } from 'components';
 import { Row, Col } from 'components/Grid';
 import Form, { FormItem, FormFieldGroup } from './form.theme';
@@ -14,7 +16,11 @@ type FormState = Pick<State, 'showColorPicker'>;
 export interface InjectedProps<T> {
   data: T;
   formState: FormState;
-  onInputChange: () => {};
+  // onInputChange: (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   { type, callback }?: { type?: string; callback?: Function }
+  // ) => {};
+  onInputChange: any;
   onSelectChange: (key: string, value: Value) => {};
   onColorChange: (key: string, color: Value) => {};
   onInputEdit: (key: keyof FormState, value: Value) => {};
@@ -23,7 +29,7 @@ export interface InjectedProps<T> {
   fieldGroupComponent: typeof FormFieldGroup;
 }
 
-export interface Props {
+export interface Props extends ReactIntl.InjectedIntlProps {
   initialData: {};
   save: Function;
 }
@@ -38,7 +44,7 @@ export interface State {
 }
 
 const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.ComponentType<P>) => {
-  return class extends PureComponent<Props & Subtract<P, InjectedProps<T>>, State> {
+  class Component extends PureComponent<Props & Subtract<P, InjectedProps<T>>, State> {
     state = {
       data: this.props.initialData,
       isSaving: false,
@@ -55,28 +61,8 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       }
     }
 
-    updateData = (key: string, value: Value) => {
+    updateData = (key: string, value: Value, callback?: Function) => {
       const keys = key.split('.');
-      // let computedValue = { ...this.state };
-      // for (let i = 0; i < keys.length; i++) {
-      //   computedValue = {
-      //     ...computedValue,
-      //     data: {
-      //       ...this.state.data,
-      //       [keys[i]]: {
-      //         ...this.state.data[keys[i]],
-
-      //       }
-      //     }
-      //   }
-      // }
-
-      // let newValue = { ...this.state };
-      // newValue[keys[0]][keys[1]][keys[2]] = value;
-
-      // computedValue = { [{ hours: '66.75' }, { hours: '2.75 }] }
-      // computedValue = {  }
-
       let computedValue = value;
 
       const targetKey = keys[0];
@@ -94,45 +80,36 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       }
       console.log(keys[0]);
 
-      this.setState({
-        data: {
-          ...this.state.data,
-          [keys[0]]: computedValue,
-          /*
-          items: [{
-            ...
-            hours: '45',
-          }, {
-            ...
-            hourse: '2.75'
-          }]
-          */
+      this.setState(
+        {
+          data: {
+            ...this.state.data,
+            [keys[0]]: computedValue,
+          },
         },
-      });
+        () => callback && callback()
+      );
     };
 
-    onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log('asd', e.currentTarget);
-      // this.setState({
-      //   data: {
-      //     ...this.state.data,
-      //     [e.currentTarget.name]: e.currentTarget.value,
-      //   },
-      // });
-      this.updateData(e.currentTarget.name, e.currentTarget.value);
-      // items[0].hours
-      // newItems = { ...items };
-      // newItems[0] = { ...newItems[0], hours: value }
-      // setState({ data: { ...this.state.data, [key]: newItems } })
+    // onInputChange = (
+    //   e: React.ChangeEvent<HTMLInputElement>,
+    //   { type, callback }: { type: string; callback: () => void }
+    // ) => {
+    onInputChange = (target: { name: string; value: any }, callback: () => void) => {
+      let { name, value } = target;
+      // if (type === 'number') {
+      // console.log('value', value);
+      // const numberFormat = new Intl.NumberFormat(this.props.intl.locale);
+      // const parts = numberFormat.formatToParts(1000000.5).find(part => part.type === 'decimal');
+      // const decimal = parts ? parts.value : '.';
+      // console.log('decimal', decimal);
+      // value = utils.unformatNumber(value, decimal).toString();
+      // console.log('HEY', value);
+      // }
+      this.updateData(name, value, callback);
     };
 
     onSelectChange = (key: string, value: Value) => {
-      // this.setState({
-      //   data: {
-      //     ...this.state.data,
-      //     [key]: value,
-      //   },
-      // });
       this.updateData(key, value);
     };
 
@@ -201,7 +178,9 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
         </Form>
       );
     }
-  };
+  }
+
+  return injectIntl(Component);
 };
 
 export { withForm };

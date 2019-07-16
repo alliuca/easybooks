@@ -5,11 +5,14 @@ import EditableCell from 'components/EditableCell';
 
 export interface EditableTableColumnProps<T> extends ColumnProps<T> {
   editable?: boolean;
+  number?: boolean;
+  currency?: string;
 }
 
 interface Props<T> extends TableProps<T> {
   columns: EditableTableColumnProps<T>[];
   dataSourceKey: string;
+  onCellChange: Function;
 }
 
 class EditableTable<T> extends PureComponent<
@@ -22,7 +25,7 @@ class EditableTable<T> extends PureComponent<
   }>
 > {
   render() {
-    const { className, dataSource, pagination = false, onChange } = this.props;
+    const { className, dataSource, pagination = false, onCellChange } = this.props;
     const components = {
       body: {
         cell: EditableCell,
@@ -32,15 +35,18 @@ class EditableTable<T> extends PureComponent<
       return {
         ...col,
         onCell: (record: { key: string }) => {
-          const { dataIndex, title, align = 'left' } = col;
+          const { dataIndex, title, editable = false, number, currency, align = 'left' } = col;
           const name = `${this.props.dataSourceKey}.${parseFloat(record.key) - 1}.${dataIndex}`;
           return {
             record,
             dataIndex,
             title,
             align,
+            editable,
+            number,
+            currency,
             name,
-            onChange,
+            onCellChange,
           };
         },
       };

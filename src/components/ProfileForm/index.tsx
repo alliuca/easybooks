@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { injectIntl } from 'react-intl';
 import { Input } from 'antd';
 import { Intl } from 'config/types';
 import { Profile } from 'actions/profile';
@@ -7,7 +6,7 @@ import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import { FormFields } from 'components/Form/form.theme';
 import { Row, Col } from 'components/Grid';
 
-interface Props extends InjectedFormProps<Profile>, ReactIntl.InjectedIntlProps {
+interface Props extends InjectedFormProps<Profile> {
   intl: Intl;
   data: Profile;
   save: Function;
@@ -123,4 +122,4 @@ class ProfileForm extends Component<Props> {
   }
 }
 
-export default injectIntl(withForm<Profile, Props>(ProfileForm));
+export default withForm<Profile, Props>(ProfileForm);
