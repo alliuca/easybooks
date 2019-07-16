@@ -21,6 +21,7 @@ export interface InjectedProps<T> {
   formState: FormState;
   onInputChange: any;
   onInputEdit: (key: keyof FormState, value: Value) => {};
+  updateData: Function;
   itemComponent: typeof FormItem;
   fieldGroupComponent: typeof FormFieldGroup;
 }
@@ -59,27 +60,43 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
       }
     }
 
-    updateData = (key: string, value: Value, callback?: Function) => {
-      const keys = key.split('.');
-      let computedValue = value;
+    // updateData = (
+    //   state: { [key: string]: any },
+    //   callback?: () => void
+    // ) => {
 
-      // TODO: Currently just works for three levels
-      // e.g. items.0.hours
-      const targetKey = keys[0];
-      if (keys.length > 1 && this.state.data && this.state.data.hasOwnProperty(targetKey)) {
-        let newItems = this.state.data[targetKey];
-        newItems[keys[1]] = {
-          ...newItems[keys[1]],
-          [keys[2]]: value,
-        };
-        computedValue = newItems;
-      }
+    // }
+
+    // this.updateData({ total: 'test', amount: 'test' })
+
+    // updateData = (key: string, value: Value, callback?: Function) => {
+    updateData = (state: { [key: string]: any }, callback?: () => void) => {
+      let newState = {};
+
+      Object.keys(state).forEach(key => {
+        const keys = key.split('.');
+        let computedValue = state[key];
+
+        // TODO: Currently just works for three levels
+        // e.g. items.0.hours
+        const targetKey = keys[0];
+        if (keys.length > 1 && this.state.data && this.state.data.hasOwnProperty(targetKey)) {
+          let newItems = this.state.data[targetKey];
+          newItems[keys[1]] = {
+            ...newItems[keys[1]],
+            [keys[2]]: state[key],
+          };
+          computedValue = newItems;
+        }
+
+        newState = { ...newState, [keys[0]]: computedValue };
+      });
 
       this.setState(
         {
           data: {
             ...this.state.data,
-            [keys[0]]: computedValue,
+            ...newState,
           },
         },
         () => callback && callback()
@@ -88,7 +105,7 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
 
     onInputChange = (target: InputTarget, callback: () => void) => {
       let { name, value } = target;
-      this.updateData(name, value, callback);
+      this.updateData({ [name]: value }, callback);
     };
 
     onInputEdit = (key: keyof FormState, value: FormState[keyof FormState]) => {
@@ -116,6 +133,7 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
               formState={{ showColorPicker }}
               onInputChange={this.onInputChange}
               onInputEdit={this.onInputEdit}
+              updateData={this.updateData}
               itemComponent={FormItem}
               fieldGroupComponent={FormFieldGroup}
             />

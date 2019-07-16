@@ -82,12 +82,10 @@ class InvoiceForm extends PureComponent<Props> {
   };
 
   updateTotal = () => {
-    const { items } = this.props.data;
-    const amountsSum = items.reduce((a, item) => {
-      // if (!a) return parseFloat(item.amount);
-      return a + parseFloat(item.amount);
-    }, 0);
-    console.log('amountsSum', amountsSum);
+    const { items, fees } = this.props.data;
+    const amountsSum = items.reduce((a, item) => a + parseFloat(item.amount), 0);
+    const feesSum = fees.items.reduce((a, item) => a + parseFloat(item.value), 0);
+    this.props.updateData({ subtotal: amountsSum, amount: amountsSum + feesSum });
   };
 
   render() {
