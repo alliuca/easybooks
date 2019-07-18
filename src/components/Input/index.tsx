@@ -7,15 +7,12 @@ export interface Props extends Omit<InputProps, 'onChange'> {
   align?: 'left' | 'center' | 'right';
 }
 
-const InputComponent: React.FunctionComponent<Props> = ({
-  id,
-  name,
-  value,
-  onChange,
-  align = 'left',
-}) => {
+const InputComponent: React.FunctionComponent<Props> = props => {
+  const { id, name, value, onChange, align = 'left' } = props;
+
   return (
     <Input
+      {...props}
       id={id}
       name={name}
       value={value}

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Subtract } from 'utility-types';
 import { injectIntl } from 'react-intl';
 import _set from 'lodash/set';
@@ -44,7 +44,7 @@ export interface State {
 }
 
 const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.ComponentType<P>) => {
-  class Component extends PureComponent<Props & Subtract<P, InjectedProps<T>>, State> {
+  class FormComponent extends Component<Props & Subtract<P, InjectedProps<T>>, State> {
     state = {
       data: this.props.initialData,
       isSaving: false,
@@ -72,7 +72,6 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
     };
 
     onInputChange = (target: InputTarget, callback: () => void) => {
-      console.log('target', target);
       let { name, value } = target;
       this.updateData({ [name]: value }, callback);
     };
@@ -134,7 +133,7 @@ const withForm = <T, P extends InjectedProps<T>>(WrappedComponent: React.Compone
     }
   }
 
-  return injectIntl(Component);
+  return injectIntl(FormComponent);
 };
 
 export { withForm };

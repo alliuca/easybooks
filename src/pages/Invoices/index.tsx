@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
@@ -15,7 +15,7 @@ import Text from 'components/Text';
 import Tag from 'components/Tag';
 import Currency from 'components/Currency';
 
-interface Props extends RouteComponentProps {
+interface Props {
   fetchInvoices: () => Promise<void>;
   invoices: Invoice[];
 }

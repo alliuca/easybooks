@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Input, Icon } from 'antd';
-import { UploadProps, UploadFile } from 'antd/lib/upload/interface';
+import { Icon } from 'antd';
+import { UploadProps } from 'antd/lib/upload/interface';
 import { uploadURL } from 'config';
 import { Intl } from 'config/types';
 import { SettingsData } from 'actions/app';
@@ -10,6 +10,7 @@ import { FormFields } from 'components/Form/form.theme';
 import { Row, Col } from 'components/Grid';
 import Upload from 'components/Upload';
 import Select from 'components/Select';
+import Input from 'components/Input';
 import { ColorPicker, Logo } from './settingsform.theme';
 
 interface Props extends InjectedFormProps<SettingsData> {
@@ -88,8 +89,8 @@ class SettingsForm extends Component<Props, State> {
             <FormFieldGroup>
               {labels.brandColor}
               <Input
-                id="name"
-                name="name"
+                id="brandColor"
+                name="brandColor"
                 value={data.brandColor}
                 onChange={onInputChange}
                 suffix={

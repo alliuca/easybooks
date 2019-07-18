@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Input } from 'antd';
 import { Intl } from 'config/types';
 import { Profile } from 'actions/profile';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import { FormFields } from 'components/Form/form.theme';
 import { Row, Col } from 'components/Grid';
+import Input from 'components/Input';
 
 interface Props extends InjectedFormProps<Profile> {
   intl: Intl;

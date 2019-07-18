@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
 import { addLocaleData, IntlProvider } from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en'; // eslint-disable-line
 import itLocaleData from 'react-intl/locale-data/it'; // eslint-disable-line
@@ -19,6 +20,7 @@ import { fetchSettings } from 'actions/app';
 import { fetchProfile } from 'actions/profile';
 import Center from 'components/Center';
 import Spinner from 'components/Spinner';
+const history = createHistory();
 addLocaleData([...enLocaleData, ...itLocaleData]);
 const messages: {
   [key: string]: typeof enMessages;
@@ -49,7 +51,7 @@ class App extends PureComponent<Props> {
 
     return locale ? (
       <IntlProvider locale={locale} key={locale} messages={messages[locale.substr(0, 2)]}>
-        <Router>
+        <Router history={history}>
           <Page>
             <ProtectedRoute exact path="/" component={Home} />
             <ProtectedRoute exact path="/invoices" component={Invoices} />
