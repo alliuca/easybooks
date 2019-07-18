@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import defaults from './defaults';
@@ -39,7 +39,7 @@ interface Props {
   deleteInvoice: Function;
 }
 
-class Invoice extends PureComponent<Props> {
+class Invoice extends Component<Props> {
   static contextType = PageContext;
 
   async componentDidMount() {

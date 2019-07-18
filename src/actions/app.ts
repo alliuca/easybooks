@@ -67,6 +67,7 @@ export const clearAllMessages = (): ClearAllMessagesAction => ({
 export const fetchSettings = () => async (dispatch: Dispatch) => {
   const res = await Api.get<SettingsData>('/settings');
   const settings = res.data;
+  if (!settings.locale) settings.locale = 'en-GB';
 
   dispatch<FetchSettingsAction>({
     type: FETCH_SETTINGS,

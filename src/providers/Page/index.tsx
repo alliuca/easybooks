@@ -10,7 +10,7 @@ export interface Props extends RouteComponentProps {
   messages: Message[];
   setMessages: typeof setMessages;
   sider?: boolean;
-  goTo: Function;
+  goTo?: Function;
 }
 
 class Page extends Component<Props> {

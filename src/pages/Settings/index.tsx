@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchSettings, saveSettings, setMessages } from 'actions/app';
+import { saveSettings, setMessages } from 'actions/app';
 import { PageContext } from 'providers/Page/context';
 import { RootState } from 'reducers';
 import { SettingsData } from 'actions/app';
@@ -11,17 +11,12 @@ import SettingsForm from 'components/SettingsForm';
 
 interface Props {
   settings: SettingsData;
-  fetchSettings: () => ReturnType<ReturnType<typeof fetchSettings>>;
   saveSettings: (data: SettingsData) => ReturnType<ReturnType<typeof saveSettings>>;
   setMessages: typeof setMessages;
 }
 
 class Settings extends Component<Props> {
   static contextType = PageContext;
-
-  componentDidMount() {
-    this.props.fetchSettings();
-  }
 
   save = async (data: SettingsData, options: { stay: boolean }) => {
     await this.props.saveSettings(data);
@@ -53,7 +48,6 @@ const mapStateToProps = ({ app: { settings } }: RootState) => ({
 });
 
 const mapDispatchToProps = {
-  fetchSettings,
   saveSettings,
   setMessages,
 };

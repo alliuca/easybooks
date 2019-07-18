@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Divider } from 'antd';
-import { fetchSettings } from 'actions/app';
 import { fetchProfile } from 'actions/profile';
 import { RootState } from 'reducers';
 import { Container, Top } from './mainsider.theme';
@@ -10,17 +9,9 @@ import MainMenu from 'components/MainMenu';
 
 type User = UserProps['data'];
 
-interface Props extends User {
-  fetchSettings: () => ReturnType<ReturnType<typeof fetchSettings>>;
-  fetchProfile: () => ReturnType<ReturnType<typeof fetchProfile>>;
-}
+interface Props extends User {}
 
-class MainSider extends Component<Props> {
-  componentDidMount() {
-    this.props.fetchSettings();
-    this.props.fetchProfile();
-  }
-
+class MainSider extends PureComponent<Props> {
   render() {
     const { logo, name, website } = this.props;
 
@@ -48,7 +39,6 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = {
-  fetchSettings,
   fetchProfile,
 };
 

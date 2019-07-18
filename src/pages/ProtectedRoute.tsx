@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 
 interface Props extends RouteProps {
-  component: React.ComponentClass;
+  component: React.ComponentType<any>;
 }
 
 class ProtectedRoute extends Component<Props> {
