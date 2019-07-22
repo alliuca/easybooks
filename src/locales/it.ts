@@ -22,6 +22,8 @@ export default {
   'invoice.form.fees.add_fee': 'Aggiungi Imposta',
   'invoice.form.totale': 'Totale',
   'invoice.form.amount_due': 'Importo Dovuto ({currencyText})',
+  'invoice.statuses.waiting': 'In attesa',
+  'invoice.statuses.paid': 'Pagata',
   name: 'Nome',
   website: 'Sito Web',
   taxCode: 'Codice Fiscale',

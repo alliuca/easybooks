@@ -22,6 +22,8 @@ interface Props {
 
 interface InvoicesColumnProps extends ColumnProps<Invoice> {}
 
+type StatusIntlId = 'invoice.statuses.waiting' | 'invoice.statuses.paid';
+
 const columns: InvoicesColumnProps[] = [
   {
     title: <Text intl="invoice.number" />,
@@ -53,7 +55,11 @@ const columns: InvoicesColumnProps[] = [
     title: <Text intl="status" />,
     dataIndex: 'status',
     sorter: (a, b) => a.status.length - b.status.length,
-    render: status => <Tag color={status}>{status}</Tag>,
+    render: status => (
+      <Tag color={status}>
+        <Text intl={`invoice.statuses.${status.toLowerCase()}` as StatusIntlId} />
+      </Tag>
+    ),
   },
 ];
 

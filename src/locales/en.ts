@@ -22,6 +22,8 @@ export default {
   'invoice.form.fees.add_fee': 'Add fee',
   'invoice.form.totale': 'Total',
   'invoice.form.amount_due': 'Amount Due ({currencyText})',
+  'invoice.statuses.waiting': 'Waiting',
+  'invoice.statuses.paid': 'Paid',
   name: 'Name',
   website: 'Website',
   taxCode: 'Tax Code',
