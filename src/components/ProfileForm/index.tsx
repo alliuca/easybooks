@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import _sortBy from 'lodash/sortBy';
+import { countries } from 'config';
 import { Intl } from 'config/types';
 import { Profile } from 'actions/profile';
 import { InjectedProps as InjectedFormProps, withForm } from 'components/Form';
 import { FormFields } from 'components/Form/form.theme';
 import { Row, Col } from 'components/Grid';
-import Input from 'components/Input';
+import Input, { InputGroup } from 'components/Input';
+import Select from 'components/Select';
 
 interface Props extends InjectedFormProps<Profile> {
   intl: Intl;
@@ -13,6 +16,20 @@ interface Props extends InjectedFormProps<Profile> {
 }
 
 class ProfileForm extends Component<Props> {
+  countryOptions: { value: string; label: string }[] = [];
+
+  constructor(props: Props) {
+    super(props);
+    const allCountries = countries.getNames(props.intl.locale.split('-')[0]);
+    this.countryOptions = _sortBy(
+      Object.keys(allCountries).map(k => ({
+        value: k,
+        label: allCountries[k],
+      })),
+      ['label']
+    );
+  }
+
   render() {
     const { intl, data, onInputChange, fieldGroupComponent } = this.props;
     const FormFieldGroup = fieldGroupComponent;
@@ -31,7 +48,7 @@ class ProfileForm extends Component<Props> {
     return (
       <FormFields>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.name}
               <Input id="name" name="name" value={data.name} onChange={onInputChange} />
@@ -39,7 +56,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.website}
               <Input id="website" name="website" value={data.website} onChange={onInputChange} />
@@ -47,7 +64,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.taxCode}
               <Input id="taxCode" name="taxCode" value={data.taxCode} onChange={onInputChange} />
@@ -55,7 +72,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.vat}
               <Input id="vat" name="vat" value={data.vat} onChange={onInputChange} />
@@ -63,7 +80,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.phone}
               <Input id="phone" name="phone" value={data.phone} onChange={onInputChange} />
@@ -71,7 +88,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.email}
               <Input id="email" name="email" value={data.email} onChange={onInputChange} />
@@ -79,7 +96,7 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.addressStreet}
               <Input
@@ -92,20 +109,27 @@ class ProfileForm extends Component<Props> {
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.addressCityCountry}
-              <Input
-                id="addressCityCountry"
-                name="addressCityCountry"
-                value={data.addressCityCountry}
-                onChange={onInputChange}
-              />
+              <InputGroup compact>
+                <Input
+                  id="addressCity"
+                  name="addressCity"
+                  value={data.addressCity}
+                  onChange={onInputChange}
+                />
+                <Select
+                  value={data.addressCountry}
+                  options={this.countryOptions}
+                  onChange={value => onInputChange({ name: 'addressCountry', value })}
+                />
+              </InputGroup>
             </FormFieldGroup>
           </Col>
         </Row>
         <Row gutter={15}>
-          <Col span={9}>
+          <Col span={12}>
             <FormFieldGroup>
               {labels.postalCode}
               <Input

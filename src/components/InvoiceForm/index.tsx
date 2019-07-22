@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { baseURL, currencies, statuses } from 'config';
+import { baseURL, currencies, statuses, countries } from 'config';
 import { Invoice, CurrencyValues } from 'actions/invoices';
 import {
   Template,
@@ -170,7 +170,10 @@ class InvoiceForm extends PureComponent<Props> {
               </Col>
               <Col span={8} align="right">
                 <Text as="div">{profile.addressStreet}</Text>
-                <Text as="div">{profile.addressCityCountry}</Text>
+                <Text as="div">
+                  {profile.addressCity},{' '}
+                  {countries.getName(profile.addressCountry, data.locale.toLowerCase())}
+                </Text>
                 <Text as="div">{profile.postalCode}</Text>
               </Col>
             </Row>

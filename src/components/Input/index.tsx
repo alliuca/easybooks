@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { InputProps } from 'antd/lib/input';
-import Input from './input.theme';
+import { InputProps, GroupProps } from 'antd/lib/input';
+import Input, { Group } from './input.theme';
 
 export interface Props extends Omit<InputProps, 'onChange'> {
   onChange: (target: EventTarget) => void;
@@ -27,5 +27,7 @@ const InputComponent: React.FunctionComponent<Props> = props => {
     />
   );
 };
+
+export const InputGroup = (props: GroupProps) => <Group {...props}>{props.children}</Group>;
 
 export default InputComponent;

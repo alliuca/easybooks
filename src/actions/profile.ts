@@ -11,7 +11,8 @@ export interface Profile {
   phone: string;
   email: string;
   addressStreet: string;
-  addressCityCountry: string;
+  addressCity: string;
+  addressCountry: string;
   postalCode: string;
 }
 

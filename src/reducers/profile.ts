@@ -12,7 +12,8 @@ const initialState: ProfileState = {
   phone: '+1 555-555',
   email: 'john@doe.com',
   addressStreet: '102 West Hastings',
-  addressCityCountry: 'Vancouver, BC, Canada',
+  addressCity: 'Vancouver, BC',
+  addressCountry: 'CA',
   postalCode: 'V6B',
 };
 
