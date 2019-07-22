@@ -8,6 +8,7 @@ import itLocaleData from 'react-intl/locale-data/it'; // eslint-disable-line
 import enMessages from 'locales/en.ts';
 import itMessages from 'locales/it.ts';
 import { RootState } from 'reducers';
+import { AppState } from 'reducers/app';
 import ProtectedRoute from 'pages/ProtectedRoute';
 import Home from 'pages/Home';
 import Invoices from 'pages/Invoices';
@@ -16,10 +17,8 @@ import Settings from 'pages/Settings';
 import Profile from 'pages/Profile';
 import SignIn from 'pages/SignIn';
 import Page from 'providers/Page';
-import { fetchSettings } from 'actions/app';
+import { getLoginToken, fetchSettings } from 'actions/app';
 import { fetchProfile } from 'actions/profile';
-import Center from 'components/Center';
-import Spinner from 'components/Spinner';
 const history = createHistory();
 addLocaleData([...enLocaleData, ...itLocaleData]);
 const messages: {
@@ -29,6 +28,9 @@ const messages: {
   it: itMessages,
 };
 
+import Center from 'components/Center';
+import Spinner from 'components/Spinner';
+
 // if (process.env.NODE_ENV !== 'production') {
 //   const whyDidYouRender = require('@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js');
 //   whyDidYouRender(React, { trackHooks: false, include: [/^Invoice$/] });
@@ -36,23 +38,34 @@ const messages: {
 
 interface Props {
   locale: string;
+  loggedIn?: AppState['loggedIn'];
+  getLoginToken: () => ReturnType<ReturnType<typeof getLoginToken>>;
   fetchSettings: () => ReturnType<ReturnType<typeof fetchSettings>>;
   fetchProfile: () => ReturnType<ReturnType<typeof fetchProfile>>;
 }
 
 class App extends PureComponent<Props> {
-  componentDidMount() {
-    this.props.fetchSettings();
-    this.props.fetchProfile();
+  async componentDidMount() {
+    await this.props.getLoginToken();
+    if (this.props.loggedIn) await this.init();
   }
 
-  render() {
-    const { locale } = this.props;
+  async componentDidUpdate(prevProps: Props) {
+    if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn) await this.init();
+  }
 
-    return locale ? (
+  init = async () => {
+    await this.props.fetchSettings();
+    await this.props.fetchProfile();
+  };
+
+  render() {
+    const locale = this.props.locale || 'en-GB';
+
+    return (
       <IntlProvider locale={locale} key={locale} messages={messages[locale.substr(0, 2)]}>
         <Router history={history}>
-          <Page>
+          <Page locale={this.props.locale}>
             <ProtectedRoute exact path="/" component={Home} />
             <ProtectedRoute exact path="/invoices" component={Invoices} />
             <ProtectedRoute path="/invoice/:number/:locale?" component={Invoice} />
@@ -62,10 +75,6 @@ class App extends PureComponent<Props> {
           </Page>
         </Router>
       </IntlProvider>
-    ) : (
-      <Center>
-        <Spinner />
-      </Center>
     );
   }
 }
@@ -73,12 +82,15 @@ class App extends PureComponent<Props> {
 const mapStateToProps = ({
   app: {
     settings: { locale },
+    loggedIn,
   },
 }: RootState) => ({
   locale,
+  loggedIn,
 });
 
 const mapDispatchToProps = {
+  getLoginToken,
   fetchSettings,
   fetchProfile,
 };

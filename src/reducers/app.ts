@@ -1,6 +1,13 @@
 import { Message, SettingsData, Action } from 'actions/app';
 import { ActionTypes } from 'actions/types';
-const { SET_MESSAGES, CLEAR_ALL_MESSAGES, FETCH_SETTINGS, SAVE_SETTINGS, LOGIN } = ActionTypes;
+const {
+  SET_MESSAGES,
+  CLEAR_ALL_MESSAGES,
+  FETCH_SETTINGS,
+  SAVE_SETTINGS,
+  LOGIN,
+  GET_LOGIN_TOKEN,
+} = ActionTypes;
 
 export interface AppState {
   messages: Message[];
@@ -32,6 +39,7 @@ export default (state = initialState, action: Action): AppState => {
     case SAVE_SETTINGS:
       return { ...state, settings: action.payload };
     case LOGIN:
+    case GET_LOGIN_TOKEN:
       return { ...state, loggedIn: action.payload };
     default:
       return state;

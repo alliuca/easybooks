@@ -6,6 +6,7 @@ import { RootState } from 'reducers';
 import { Provider } from './context';
 
 export interface Props extends RouteComponentProps {
+  locale: string;
   children: string | React.ReactNode;
   messages: Message[];
   setMessages: typeof setMessages;
@@ -20,9 +21,11 @@ class Page extends Component<Props> {
   };
 
   render() {
-    const { children, messages, setMessages } = this.props;
+    const { children, locale, messages, setMessages } = this.props;
 
-    return <Provider value={{ messages, setMessages, goTo: this.goTo }}>{children}</Provider>;
+    return (
+      <Provider value={{ locale, messages, setMessages, goTo: this.goTo }}>{children}</Provider>
+    );
   }
 }
 

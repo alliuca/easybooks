@@ -2,7 +2,14 @@ import { Dispatch } from 'redux';
 import Cookies from 'js-cookie';
 import { Api } from 'config';
 import { ActionTypes } from 'actions/types';
-const { FETCH_SETTINGS, SET_MESSAGES, CLEAR_ALL_MESSAGES, SAVE_SETTINGS, LOGIN } = ActionTypes;
+const {
+  FETCH_SETTINGS,
+  SET_MESSAGES,
+  CLEAR_ALL_MESSAGES,
+  SAVE_SETTINGS,
+  LOGIN,
+  GET_LOGIN_TOKEN,
+} = ActionTypes;
 
 export interface Message {
   id: string;
@@ -45,12 +52,18 @@ export interface LoginAction {
   payload: boolean;
 }
 
+export interface GetLoginToken {
+  type: ActionTypes.GET_LOGIN_TOKEN;
+  payload: boolean;
+}
+
 export type Action =
   | SetMessagesAction
   | ClearAllMessagesAction
   | FetchSettingsAction
   | SaveSettingsAction
-  | LoginAction;
+  | LoginAction
+  | GetLoginToken;
 
 export const setMessages = (obj: Message, remove: boolean = false): SetMessagesAction => ({
   type: SET_MESSAGES,
@@ -93,5 +106,14 @@ export const login = (data: LoginData) => async (dispatch: Dispatch) => {
   dispatch<LoginAction>({
     type: LOGIN,
     payload: user ? true : false,
+  });
+};
+
+export const getLoginToken = () => (dispatch: Dispatch) => {
+  const token = Cookies.get('EasyBooksToken');
+
+  dispatch<GetLoginToken>({
+    type: GET_LOGIN_TOKEN,
+    payload: token ? true : false,
   });
 };

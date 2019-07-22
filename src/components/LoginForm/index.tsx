@@ -1,29 +1,31 @@
 import React, { Component } from 'react';
 import { Form as AntdForm, Icon, Input } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+import { Props as SignInProps } from 'pages/SignIn';
+import { LoginData } from 'actions/app';
+import { Button } from 'components';
 import { Form, LoginButton } from './loginform.theme';
 const FormItem = AntdForm.Item;
 
-class LoginForm extends Component {
+interface Props extends Pick<SignInProps, 'login' | 'loggedIn'>, FormComponentProps {}
+
+class LoginForm extends Component<Props> {
   state = {
     submitting: false,
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const { form } = this.props;
     e.preventDefault();
     this.setState({ submitting: true });
-    form.validateFields(async (err, values) => {
-      if (!err) {
-        const values = form.getFieldsValue();
-        await this.props.login(values);
-      }
-      this.setState({ submitting: false });
-    });
-    // await this.props.setMessages({
-    //   id: 'save_profile',
-    //   type: 'success',
-    //   text: 'Profile has been successfully saved',
-    // });
+    if (form) {
+      form.validateFields(async err => {
+        if (!err) {
+          const values = form.getFieldsValue() as LoginData;
+          await this.props.login(values);
+        }
+      });
+    }
   };
 
   render() {
@@ -44,14 +46,14 @@ class LoginForm extends Component {
           })(<Input prefix={<Icon type="lock" />} type="password" placeholder="password" />)}
         </FormItem>
         <FormItem>
-          <LoginButton type="primary" htmlType="submit" loading={submitting}>
+          <Button htmlType="submit" loading={submitting}>
             Log in
-          </LoginButton>
+          </Button>
         </FormItem>
-        {loggedIn === false && <FormItem>Oooops</FormItem>}
+        {/* {loggedIn === false && <FormItem>Oooops</FormItem>} */}
       </Form>
     );
   }
 }
 
-export default AntdForm.create()(LoginForm);
+export default AntdForm.create<Props>()(LoginForm);
