@@ -21,7 +21,7 @@ import { getLoginToken, fetchSettings } from 'actions/app';
 import { fetchProfile } from 'actions/profile';
 const history = createHistory();
 addLocaleData([...enLocaleData, ...itLocaleData]);
-const messages: {
+export const messages: {
   [key: string]: typeof enMessages;
 } = {
   en: enMessages,
