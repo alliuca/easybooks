@@ -37,14 +37,20 @@ const currencyOptions = (Object.keys(currencies) as Array<keyof typeof CurrencyV
   };
 });
 
-const statusOptions = statuses.map(s => {
-  return {
-    value: s,
-    label: s,
-  };
-});
-
 class InvoiceForm extends PureComponent<Props> {
+  statusOptions: { value: string; label: string }[] = [];
+
+  constructor(props: Props) {
+    super(props);
+    const { intl } = props;
+    this.statusOptions = statuses.map(s => {
+      return {
+        value: s,
+        label: intl.formatMessage({ id: `invoice.statuses.${s.toLowerCase()}` }),
+      };
+    });
+  }
+
   getColumnsData = (): EditableTableColumnProps<Invoice['items'][0]>[] => {
     const {
       intl,
@@ -138,9 +144,9 @@ class InvoiceForm extends PureComponent<Props> {
             <FormFieldGroup>
               {labels.status}
               <Select
-                value={data.status}
+                value={this.statusOptions.filter(s => s.value === data.status)[0].label}
                 onChange={value => onInputChange({ name: 'status', value })}
-                options={statusOptions}
+                options={this.statusOptions}
               />
             </FormFieldGroup>
           </Col>

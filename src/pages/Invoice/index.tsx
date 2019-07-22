@@ -69,7 +69,6 @@ class Invoice extends Component<Props> {
       client: data.client,
       currency: data.currency,
       status: data.status,
-      // locale,
     };
     // https://codeburst.io/use-es2015-object-rest-operator-to-omit-properties-38a3ecffe90
     const { client, currency, status, ...currentData } = data;
