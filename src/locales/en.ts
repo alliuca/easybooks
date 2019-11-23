@@ -11,7 +11,7 @@ export default {
   'invoices.create_new': 'Create New Invoice',
   'invoice.number': 'Number',
   'invoice.date_of_issue': 'Date of issue',
-  'invoice.form.description': 'Description',
+  'invoice.form.description': 'Name / Description',
   'invoice.form.hours': 'Hours',
   'invoice.form.amount': 'Amount',
   'invoice.form.billed_to': 'Billed To:',

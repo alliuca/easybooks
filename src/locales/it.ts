@@ -11,7 +11,7 @@ export default {
   'invoices.create_new': 'Crea Nuova Fattura',
   'invoice.number': 'Numero',
   'invoice.date_of_issue': 'Data di emissione',
-  'invoice.form.description': 'Descrizione',
+  'invoice.form.description': 'Nome / Descrizione',
   'invoice.form.hours': 'Ore',
   'invoice.form.amount': 'Importo',
   'invoice.form.billed_to': 'Intestazione Fattura',

@@ -4,21 +4,23 @@ import { Cell, Input } from './editablecell.theme';
 import InputNumber from 'components/InputNumber';
 
 interface Props extends ReactIntl.InjectedIntlProps {
+  width?: number;
   record: { [key: string]: string };
   dataIndex: string;
-  title: string;
+  title?: string;
   editable: boolean;
-  number: boolean;
-  currency: string;
+  number?: boolean;
+  currency?: string;
   align: 'left' | 'center' | 'right';
   name: string;
-  onCellChange: (target: { name: string; value: number }) => void;
+  render?: Function;
+  onCellChange: (target: { name: string; value: number | string }) => void;
 }
 
 class EditableCell extends Component<Props> {
   onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    this.props.onCellChange({ name, value: parseFloat(value) });
+    this.props.onCellChange({ name, value });
   };
 
   // onNumberChange = (value: number | undefined) => {
@@ -27,7 +29,7 @@ class EditableCell extends Component<Props> {
   // };
 
   renderCell = () => {
-    const { record, dataIndex, number, currency, name, align } = this.props;
+    const { record, dataIndex, number = false, currency, name, align } = this.props;
     const value = record[dataIndex];
 
     return (
@@ -48,7 +50,21 @@ class EditableCell extends Component<Props> {
   };
 
   render() {
-    const { record, dataIndex, title, editable, onCellChange, children, ...rest } = this.props;
+    const {
+      record,
+      dataIndex,
+      title,
+      editable,
+      render,
+      onCellChange,
+      children,
+      ...rest
+    } = this.props;
+
+    if (render) {
+      return render(record);
+    }
+
     return <Cell {...rest}>{editable ? this.renderCell() : children}</Cell>;
   }
 }

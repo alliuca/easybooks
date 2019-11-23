@@ -24,6 +24,7 @@ import InputNumber from 'components/InputNumber';
 import { Row, Col } from 'components/Grid';
 import Currency from 'components/Currency';
 import { EditableTableColumnProps } from 'components/EditableTable';
+import EditableCell from 'components/EditableCell';
 import { AppState } from 'reducers/app';
 import { ProfileState } from 'reducers/profile';
 
@@ -61,12 +62,41 @@ class InvoiceForm extends PureComponent<Props> {
 
     return [
       {
+        key: 'description',
         title: <Text intl="invoice.form.description" />,
-        dataIndex: 'description',
         width: '60%',
         editable: true,
+        render: record => (
+          <td>
+            <table>
+              <tbody>
+                <tr>
+                  <EditableCell
+                    record={record}
+                    dataIndex="name"
+                    align="left"
+                    editable={true}
+                    name={`items[${parseFloat(record.key) - 1}].name`}
+                    onCellChange={this.onItemChange}
+                  />
+                </tr>
+                <tr>
+                  <EditableCell
+                    record={record}
+                    dataIndex="description"
+                    align="left"
+                    editable={true}
+                    name={`items[${parseFloat(record.key) - 1}].description`}
+                    onCellChange={this.onItemChange}
+                  />
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        ),
       },
       {
+        key: 'hours',
         title: <Text intl="invoice.form.hours" />,
         dataIndex: 'hours',
         width: '20%',
@@ -75,6 +105,7 @@ class InvoiceForm extends PureComponent<Props> {
         number: true,
       },
       {
+        key: 'amount',
         title: <Text intl="invoice.form.amount" />,
         dataIndex: 'amount',
         width: '20%',

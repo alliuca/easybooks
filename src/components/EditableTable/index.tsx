@@ -35,7 +35,15 @@ class EditableTable<T> extends PureComponent<
       return {
         ...col,
         onCell: (record: { key: string }) => {
-          const { dataIndex, title, editable = false, number, currency, align = 'left' } = col;
+          const {
+            dataIndex,
+            title,
+            editable = false,
+            number,
+            currency,
+            align = 'left',
+            render,
+          } = col;
           const name = `${this.props.dataSourceKey}[${parseFloat(record.key) - 1}].${dataIndex}`;
           return {
             record,
@@ -46,6 +54,7 @@ class EditableTable<T> extends PureComponent<
             number,
             currency,
             name,
+            render,
             onCellChange,
           };
         },

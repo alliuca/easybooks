@@ -66,7 +66,7 @@ export const ItemsTable = styled(EditableTable)<Props>(
       color: ${brandColor};
       font-size: 16px;
 
-      &:first-child,
+      &:first-of-type,
       &:last-child {
         border-radius: 0;
       }
@@ -90,7 +90,7 @@ export const Summary = styled('div')<Props>(
     .ant-row > div {
       text-align: right;
 
-      &:first-child {
+      &:first-of-type {
         color: ${brandColor};
         font-size: 16px;
         font-weight: 500;
