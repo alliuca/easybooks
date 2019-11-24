@@ -46,4 +46,6 @@ export default {
   'messages.profile_saved_success': 'Le informazioni del profilo sono state salvate correttamente',
   'pdf.loading': 'Arriva...',
   'pdf.download': 'Scarica .PDF',
+  'confirm.delete': 'Sei sicuro di voler eliminare questa {type}?',
+  'confirm.types.item': 'voce',
 };

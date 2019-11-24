@@ -64,7 +64,6 @@ class InvoiceForm extends PureComponent<Props> {
       {
         key: 'description',
         title: <Text intl="invoice.form.description" />,
-        width: '60%',
         editable: true,
         render: record => (
           <td>

@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { injectIntl } from 'react-intl';
 import { TableProps, ColumnProps } from 'antd/lib/table/interface';
-import { Table } from 'antd';
+import { Table, Popconfirm } from 'antd';
 import { AddButton } from './editabletable.theme';
-import { Text } from 'components';
+import { Text, Button } from 'components';
 import EditableCell from 'components/EditableCell';
 
 export interface EditableTableColumnProps<T> extends ColumnProps<T> {
@@ -45,14 +45,46 @@ class EditableTable<T> extends PureComponent<
     });
   };
 
+  handleDelete = (key: string) => {
+    const { dataSource = [] } = this.props;
+
+    this.props.updateData({
+      items: dataSource.filter(item => item.key !== key),
+    });
+  };
+
   render() {
-    const { className, dataSource, pagination = false, onCellChange } = this.props;
+    const { intl, className, dataSource, pagination = false, onCellChange } = this.props;
     const components = {
       body: {
         cell: EditableCell,
       },
     };
-    const columns = this.props.columns.map(col => {
+
+    let columns = [...this.props.columns];
+    columns.push({
+      key: 'actions',
+      align: 'right',
+      render: record => (
+        <td style={{ width: '50px' }}>
+          <Popconfirm
+            title={
+              <Text
+                intl="confirm.delete"
+                values={{ type: intl.formatMessage({ id: 'confirm.types.item' }) }}
+              />
+            }
+            onConfirm={this.handleDelete.bind(this, record.key)}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="danger" icon="delete" />
+          </Popconfirm>
+        </td>
+      ),
+    });
+    columns = columns.map(col => {
       return {
         ...col,
         onCell: (record: { key: string }) => {
