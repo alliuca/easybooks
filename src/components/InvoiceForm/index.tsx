@@ -249,6 +249,7 @@ class InvoiceForm extends PureComponent<Props> {
               dataSourceKey="items"
               dataSource={data.items}
               onCellChange={this.onItemChange}
+              updateData={this.props.updateData}
             />
             <Row gutter={15} type="flex" align="bottom">
               <Col span={12}>

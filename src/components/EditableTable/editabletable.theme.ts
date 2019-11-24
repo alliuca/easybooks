@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button } from 'antd';
+import { Button } from 'components';
 
 export const AddButton = styled(Button)`
   display: block;
