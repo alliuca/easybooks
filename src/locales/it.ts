@@ -48,4 +48,5 @@ export default {
   'pdf.download': 'Scarica .PDF',
   'confirm.delete': 'Sei sicuro di voler eliminare questa {type}?',
   'confirm.types.item': 'voce',
+  'confirm.types.invoice': 'fattura',
 };

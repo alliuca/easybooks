@@ -48,4 +48,5 @@ export default {
   'pdf.download': 'Download .PDF',
   'confirm.delete': 'Are you sure you want to delete this {type}?',
   'confirm.types.item': 'item',
+  'confirm.types.invoice': 'invoice',
 };

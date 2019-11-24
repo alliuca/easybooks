@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 import { Popconfirm } from 'antd';
 import { Button, Text } from 'components';
 import { Row, Col } from 'components/Grid';
@@ -9,7 +10,7 @@ enum InvoiceAction {
   delete = 'delete',
 }
 
-export interface Props {
+export interface Props extends ReactIntl.InjectedIntlProps {
   invoice: Invoice | null;
   downloadPDF: Function;
   deleteInvoice: Function;
@@ -52,7 +53,7 @@ class InvoiceActions extends Component<Props, State> {
   };
 
   render() {
-    const { invoice } = this.props;
+    const { intl, invoice } = this.props;
     const { actions } = this.state;
 
     return (
@@ -72,7 +73,12 @@ class InvoiceActions extends Component<Props, State> {
             </Col>
             <Col>
               <Popconfirm
-                title="Are you sure you want to delete this invoice?"
+                title={
+                  <Text
+                    intl="confirm.delete"
+                    values={{ type: intl.formatMessage({ id: 'confirm.types.invoice' }) }}
+                  />
+                }
                 onConfirm={this.deleteInvoice.bind(this, invoice.invoiceNumber, invoice.locale)}
                 onCancel={() => {}}
                 okText="Yes"
@@ -95,4 +101,4 @@ class InvoiceActions extends Component<Props, State> {
   }
 }
 
-export default InvoiceActions;
+export default injectIntl(InvoiceActions);
