@@ -8,6 +8,7 @@ import {
   CompanyLogo,
   Content,
   ItemsTable,
+  FeesTable,
   Terms,
   Summary,
   AddFeeButton,
@@ -56,7 +57,6 @@ class InvoiceForm extends PureComponent<Props> {
 
   getColumnsData = (): EditableTableColumnProps<Invoice['items'][0]>[] => {
     const {
-      intl,
       data: { currency },
     } = this.props;
 
@@ -108,6 +108,28 @@ class InvoiceForm extends PureComponent<Props> {
         title: <Text intl="invoice.form.amount" />,
         dataIndex: 'amount',
         width: '20%',
+        align: 'right',
+        editable: true,
+        number: true,
+        currency: currency.symbol,
+      },
+    ];
+  };
+
+  getFeesColumnsData = (): EditableTableColumnProps<Invoice['fees']['items'][0]>[] => {
+    const {
+      data: { currency },
+    } = this.props;
+
+    return [
+      {
+        key: 'name',
+        dataIndex: 'name',
+        editable: true,
+      },
+      {
+        key: 'amount',
+        dataIndex: 'amount',
         align: 'right',
         editable: true,
         number: true,
@@ -244,7 +266,7 @@ class InvoiceForm extends PureComponent<Props> {
             </Content>
             <ItemsTable
               brandColor={brandColor}
-              columns={this.getColumnsData()}
+              columns={this.getColumnsData() as any} // TODO: Fix this TS thing
               dataSourceKey="items"
               dataSource={data.items}
               onCellChange={this.onItemChange}
@@ -274,6 +296,13 @@ class InvoiceForm extends PureComponent<Props> {
                       <Currency value={parseFloat(data.subtotal)} currency={data.currency.value} />
                     </Col>
                   </Row>
+                  <FeesTable
+                    columns={this.getFeesColumnsData() as any} // TODO: Fix this TS thing
+                    dataSourceKey="fees.items"
+                    dataSource={data.fees.items}
+                    onCellChange={this.onItemChange}
+                    updateData={this.props.updateData}
+                  />
                   {data.fees.items.map((f, index) => (
                     <Row key={f.key} gutter={15}>
                       <Col span={13}>

@@ -62,7 +62,7 @@ export interface Invoice {
   }[];
   fees: {
     items: {
-      key: number;
+      key: string;
       name: string;
       value: string;
       editable: boolean;

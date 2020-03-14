@@ -7,26 +7,31 @@ import { Text, Button } from 'components';
 import EditableCell from 'components/EditableCell';
 
 export interface EditableTableColumnProps<T> extends ColumnProps<T> {
+  key?: string;
   editable?: boolean;
   number?: boolean;
   currency?: string;
 }
 
-interface Props<T> extends TableProps<T>, ReactIntl.InjectedIntlProps {
+type DataSource = any[] & {
+  key: string;
+  name: string;
+  description?: string;
+  hours?: number;
+  amount?: string;
+  value?: string;
+}[]
+
+export interface Props<T> extends TableProps<T>, ReactIntl.InjectedIntlProps {
   columns: EditableTableColumnProps<T>[];
+  dataSource: DataSource;
   dataSourceKey: string;
   onCellChange: Function;
   updateData: Function;
 }
 
 class EditableTable<T> extends PureComponent<
-  Props<{
-    key: string;
-    name: string;
-    description: string;
-    hours: number;
-    amount: string;
-  }>
+  Props<T>
 > {
   handleAdd = () => {
     const { intl, dataSource = [] } = this.props;
@@ -87,7 +92,7 @@ class EditableTable<T> extends PureComponent<
     columns = columns.map(col => {
       return {
         ...col,
-        onCell: (record: { key: string }) => {
+        onCell: (record) => {
           const {
             dataIndex,
             title,
@@ -97,7 +102,7 @@ class EditableTable<T> extends PureComponent<
             align = 'left',
             render,
           } = col;
-          const name = `${this.props.dataSourceKey}[${parseFloat(record.key) - 1}].${dataIndex}`;
+          const name = `${this.props.dataSourceKey}[${parseFloat((record as any).key) - 1}].${dataIndex}`; // TODO: Fix this TS thing
           return {
             record,
             dataIndex,
