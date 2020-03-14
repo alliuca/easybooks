@@ -74,6 +74,8 @@ export const ItemsTable = styled(EditableTable)<Props>(
   `
 );
 
+export const FeesTable = styled(EditableTable)``;
+
 export const Terms = styled('div')`
   padding: 37px;
 
