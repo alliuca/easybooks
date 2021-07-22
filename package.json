@@ -64,6 +64,9 @@
     "react-testing-library": "^5.4.4",
     "redux-logger": "^3.0.6"
   },
+  "resolutions": {
+    "upath": "1.0.5"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
