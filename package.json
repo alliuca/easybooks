@@ -1,0 +1,8 @@
+{
+  "name": "easybooks",
+  "private": true,
+  "scripts": {},
+  "workspaces": [
+    "packages/*"
+  ]
+}
