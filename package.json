@@ -1,7 +1,10 @@
 {
   "name": "easybooks",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "api": "yarn workspace easybooks-api start",
+    "app": "yarn workspace easybooks-app start"
+  },
   "workspaces": [
     "packages/*"
   ]
