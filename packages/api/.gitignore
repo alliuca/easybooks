@@ -1,0 +1,12 @@
+.elasticbeanstalk
+node_modules
+files/invoices
+files/old_invoices
+files/*.json
+public/files/invoices
+public/files/upload
+
+*-error.log
+
+.env
+.history

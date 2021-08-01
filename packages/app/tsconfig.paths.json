@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "actions/*": ["src/actions/*"],
+      "config": ["src/config"],
+      "config/*": ["src/config/*"],
+      "components": ["src/components"],
+      "components/*": ["src/components/*"],
+      "layout/*": ["src/layout/*"],
+      "locales/*": ["src/locales/*"],
+      "pages/*": ["src/pages/*"],
+      "providers/*": ["src/providers/*"],
+      "reducers": ["src/reducers"],
+      "reducers/*": ["src/reducers/*"],
+      "utils": ["src/utils"]
+    }
+  }
+}
