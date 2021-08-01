@@ -52,6 +52,7 @@ class SettingsForm extends Component<Props, State> {
       return;
     }
     if (file.status === 'done' && file.originFileObj) {
+      // @ts-ignore
       getBase64(file.originFileObj, () => {
         this.setState({
           loadingLogo: false,

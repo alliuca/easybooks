@@ -20,6 +20,7 @@ class SignIn extends Component<Props> {
       location: { state },
     } = this.props;
     await this.props.login(obj);
+    // @ts-ignore
     if (state && state.from) return this.context.goTo(state.from.pathname);
     return this.context.goTo('/');
   };
