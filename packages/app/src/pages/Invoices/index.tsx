@@ -61,6 +61,10 @@ const columns: InvoicesColumnProps[] = [
       </Tag>
     ),
   },
+  {
+    title: <Text intl="actions" />,
+    render: () => <a>Duplicate</a>
+  }
 ];
 
 class Invoices extends Component<Props> {

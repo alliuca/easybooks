@@ -2,6 +2,7 @@ export default {
   client: 'Client',
   currency: 'Currency',
   status: 'Status',
+  actions: 'Actions',
   save: 'Save',
   save_and_stay: 'Save & Stay',
   delete: 'Delete',
