@@ -2,6 +2,7 @@
 node_modules
 files/invoices
 files/old_invoices
+files/2023_invoices
 files/*.json
 public/files/invoices
 public/files/upload
