@@ -6,6 +6,7 @@ const {
   FETCH_INVOICE,
   DELETE_INVOICE,
   SAVE_INVOICE,
+  DUPLICATE_INVOICE,
   DOWNLOAD_INVOICE_PDF,
 } = ActionTypes;
 
@@ -64,6 +65,11 @@ export default (state = initialState, action: Action): InvoicesState => {
       }
 
       return { ...state, all: newInvoices, current: action.current };
+    case DUPLICATE_INVOICE: {
+      let newInvoices = [...state.all];
+      newInvoices.push(action.payload.EN)
+      return { ...state, all: newInvoices };
+    }
     case DOWNLOAD_INVOICE_PDF: {
       const { locale, pdfPath } = action.payload;
       return updateStateObject(state, 'current', locale, { pdfPath });

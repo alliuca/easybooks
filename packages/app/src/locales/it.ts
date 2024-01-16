@@ -43,6 +43,7 @@ export default {
   settings: 'Impostazioni',
   'messages.settings_saved_success': 'Le Impostazioni sono state salvate correttamente',
   'messages.invoice_saved_success': 'Fattura #{number} è stata salvata correttamente',
+  'messages.invoice_duplicated_success': 'Fattura #{number} è stata duplicata correttamente',
   'messages.invoice_deleted_success': 'Fattura #{number} è stata eliminata',
   'messages.profile_saved_success': 'Le informazioni del profilo sono state salvate correttamente',
   'pdf.loading': 'Arriva...',

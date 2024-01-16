@@ -5,6 +5,7 @@ import utils from 'utils';
 import { InvoicesState } from 'reducers/invoices';
 import { ActionTypes } from 'actions/types';
 import { SettingsData } from 'actions/app';
+import moment from 'moment-mini';
 const {
   FETCH_INVOICES,
   RESET_CURRENT_INVOICE,
@@ -12,6 +13,7 @@ const {
   DELETE_INVOICE,
   SAVE_INVOICE_REQUEST,
   SAVE_INVOICE,
+  DUPLICATE_INVOICE,
   DOWNLOAD_INVOICE_PDF,
 } = ActionTypes;
 
@@ -83,6 +85,7 @@ export type Action =
   | FetchInvoiceAction
   | DeleteInvoiceAction
   | SaveInvoiceAction
+  | DuplicateInvoiceAction
   | DownloadInvoicePDFAction;
 
 export interface ResetCurrentInvoiceAction {
@@ -115,6 +118,11 @@ export interface SaveInvoiceAction {
   type: ActionTypes.SAVE_INVOICE;
   payload: Invoice;
   current: InvoicesState['current'];
+}
+
+export interface DuplicateInvoiceAction {
+  type: ActionTypes.DUPLICATE_INVOICE;
+  payload: any; // TODO: fix type
 }
 
 export interface DownloadInvoicePDFAction {
@@ -170,7 +178,7 @@ export const saveInvoice = (
   number: string,
   locale: keyof typeof Locale,
   globals: InvoiceGlobals,
-  data: Subtract<Invoice, InvoiceGlobals>
+  data: Subtract<Invoice, InvoiceGlobals>,
 ) => async (dispatch: Dispatch, getState: Function) => {
   await utils.stall();
 
@@ -194,6 +202,35 @@ export const saveInvoice = (
     type: SAVE_INVOICE,
     payload: { ...data, ...globals },
     current: { locales },
+  });
+};
+
+export const duplicateInvoice = (
+  number: string,
+  newNumber: string,
+) => async (dispatch: Dispatch) => {
+  await utils.stall();
+  
+  const { data: { locales } } = await Api.get(`/invoices/${number}`);
+  let data = { EN: {}, IT: {} };
+  await Promise.all(
+    Object.keys(locales).map(async (l) => {
+      const newData = {
+        ...locales[l],
+        dateOfIssue: moment().utc().format(),
+        invoiceNumber: newNumber,
+        key: newNumber,
+        status: StatusValues.Waiting,
+      };
+      await new Promise((resolve) => resolve({}));
+      await Api.post(`/invoices/${newNumber}/${l}`, newData);
+      data[l as Locale] = newData
+    })
+  );
+
+  dispatch<DuplicateInvoiceAction>({
+    type: DUPLICATE_INVOICE,
+    payload: { ...data },
   });
 };
 

@@ -1,71 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-import { ColumnProps } from 'antd/lib/table/interface';
 import utils from 'utils';
 import { PageContext } from 'providers/Page/context';
-import { Locale } from 'actions/invoices';
+import { setMessages } from 'actions/app';
+import { Locale, saveInvoice, duplicateInvoice } from 'actions/invoices';
 import { Invoice, fetchInvoices } from 'actions/invoices';
 import { RootState } from 'reducers';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
-import Table from 'components/Table';
 import Text from 'components/Text';
-import Tag from 'components/Tag';
-import Currency from 'components/Currency';
+import InvoicesTable from 'components/InvoicesTable';
 
 interface Props {
   fetchInvoices: () => Promise<void>;
+  saveInvoice: Function;
+  duplicateInvoice: Function;
   invoices: Invoice[];
+  setMessages: typeof setMessages;
 }
-
-interface InvoicesColumnProps extends ColumnProps<Invoice> {}
-
-type StatusIntlId = 'invoice.statuses.waiting' | 'invoice.statuses.paid';
-
-const columns: InvoicesColumnProps[] = [
-  {
-    title: <Text intl="invoice.number" />,
-    dataIndex: 'invoiceNumber',
-    sorter: (a, b) => parseInt(a.invoiceNumber) - parseInt(b.invoiceNumber),
-    render: (number: string, invoice: Invoice) => (
-      <Link to={`/invoice/${number}/${invoice.locale}`}>{number}</Link>
-    ),
-  },
-  {
-    title: <Text intl="invoice.date_of_issue" />,
-    dataIndex: 'dateOfIssue',
-    render: (date: Date) => <Text type="date" value={date} />,
-  },
-  {
-    title: <Text intl="client" />,
-    dataIndex: 'client',
-    sorter: (a, b) => a.client.length - b.client.length,
-  },
-  {
-    title: <Text intl="invoice.form.amount" />,
-    dataIndex: 'amount',
-    sorter: (a, b) => parseInt(a.amount) - parseInt(b.amount),
-    render: (amount: number, invoice: Invoice) => (
-      <Currency value={parseFloat(invoice.amount)} currency={invoice.currency.value} />
-    ),
-  },
-  {
-    title: <Text intl="status" />,
-    dataIndex: 'status',
-    sorter: (a, b) => a.status.length - b.status.length,
-    render: status => (
-      <Tag color={status}>
-        <Text intl={`invoice.statuses.${status.toLowerCase()}` as StatusIntlId} />
-      </Tag>
-    ),
-  },
-  {
-    title: <Text intl="actions" />,
-    render: () => <a>Duplicate</a>
-  }
-];
 
 class Invoices extends Component<Props> {
   static contextType = PageContext;
@@ -95,7 +48,11 @@ class Invoices extends Component<Props> {
             </Button>
           }
         />
-        <Table columns={columns} dataSource={invoices} />
+        <InvoicesTable
+          dataSource={invoices}
+          duplicateInvoice={this.props.duplicateInvoice}
+          setMessages={this.props.setMessages}
+        />
       </Layout>
     );
   }
@@ -107,6 +64,9 @@ const mapStateToProps = ({ invoices: { all } }: RootState) => ({
 
 const mapDispatchToProps = {
   fetchInvoices,
+  saveInvoice,
+  duplicateInvoice,
+  setMessages,
 };
 
 export default connect(

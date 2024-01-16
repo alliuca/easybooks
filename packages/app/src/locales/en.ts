@@ -43,6 +43,7 @@ export default {
   settings: 'Settings',
   'messages.settings_saved_success': 'Settings have been successfully saved',
   'messages.invoice_saved_success': 'Invoice #{number} has been successfully saved',
+  'messages.invoice_duplicated_success': 'Invoice #{number} has been successfully duplicated',
   'messages.invoice_deleted_success': 'Invoice #{number} has been deleted',
   'messages.profile_saved_success': 'Profile has been successfully saved',
   'pdf.loading': 'Getting it...',
